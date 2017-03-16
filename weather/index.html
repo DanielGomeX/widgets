@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>widget-weather</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 480px;
+            height: 360px;
+        }
+
+        .placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            font-size: 0;
+            overflow: hidden;
+            font-family: 'Oswald', sans-serif;
+            color: #fff;
+            display: none;
+        }
+
+        .header {
+            font-size: 0;
+            background-color: #48a2b1;
+            padding: 10px;
+            position: relative;
+            height: 65%;
+            font-weight: 300;
+        }
+
+        .header_col {
+            display: inline-block;
+            vertical-align: top;
+            font-size: 22px;
+        }
+
+        .header_col_first {
+            width: 65%;
+            text-align: center;
+        }
+
+        .header_col_second {
+            width: 35%;
+            text-align: right;
+            letter-spacing: 0.6px;
+        }
+
+        .header_icon {
+            display: inline-block;
+            vertical-align: middle;
+            width: 68%;
+        }
+
+        .temp {
+            position: relative;
+            font-size: 70px;
+            font-weight: bold;
+        }
+
+        .weather {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .temp:after {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border: 5px solid #fff;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 10px;
+            right: -25px;
+        }
+
+        .footer {
+            background: #287a88;
+            font-size: 0;
+            border-top: 1px solid #eee;
+            height: 35%;
+        }
+
+        .footer_col {
+            display: inline-block;
+            vertical-align: top;
+            width: 25%;
+            font-size: 25px;
+            color: #eee;
+            text-align: center;
+            height: 100%;
+        }
+
+        .footer_col:last-child .footer_col_inner:after{
+            display : none;
+        }
+
+        .footer_col_inner {
+            height: 100%;
+            position: relative;
+            padding: 6px 0 10px;
+        }
+
+        .footer_col_inner:after {
+            content: "";
+            display: block;
+            position: absolute;
+            right: 0;
+            top: 10%;
+            height: 70%;
+            width: 1px;
+            background: #eee;
+        }
+
+        .footer_icon {
+            display: block;
+            margin: 0 auto;
+            width: 42%;
+            margin-top: -10px;
+        }
+
+        .footer_day {
+            font-size: 24px;
+        }
+
+        .footer_temp {
+            position: relative;
+            margin-left: 15px;
+        }
+
+        .footer_temp:after {
+            content: "";
+            width: 5px;
+            height: 5px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            top: 4px;
+            right: -12px;
+        }
+
+        .footer_footer {
+            position: relative;
+            top: -13px;
+            font-size: 20px;
+            font-weight: 300;
+        }
+
+
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var $placeholder = $('.placeholder');
+        var now = new Date();
+        var options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            weekday: 'long',
+            timezone: 'UTC',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        };
+        function getWeekDay(date) {
+            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            return days[date.getDay()];
+        }
+
+        var split = now.toLocaleString("ru").split(',');
+        var dateNow = split[0];
+        var timeNow = split[1];
+        var dayNow = getWeekDay(now);
+
+        $('.date').html(dateNow);
+        $('.time').html(timeNow.slice(0, -3));
+        $('.day').html(dayNow);
+
+
+        $.ajax({
+            url: '//js.dooh.xyz/weather/index.php',
+            data: {
+                q: 'Moscow',
+                units: 'metric',
+                cnt: '5',
+                appid: 'e3f690ee024821af579304def0e6ecb7'
+            },
+            success: function(data){
+
+                var response = JSON.parse(data);
+                //console.log(response.result);
+
+                $('.name').html(response.result.city.name);
+                $('.description').html(response.result.list[0].weather[0].description);
+                $('.wind').html('Wind ' + response.result.list[0].speed + ' m/s');
+                $('.water').html('Humidity ' + response.result.list[0].humidity + ' %');
+                $('.pressure').html('Pressure ' + response.result.list[0].pressure + ' hPa');
+                $('.temp').html(Math.round(response.result.list[0].temp.day));
+
+                var d = new Date();
+
+                var dataIcon = response.result.list[0].weather[0].icon;
+                var icon;
+
+                switch (dataIcon) {
+                    case '01d':
+                        icon = 'sun';
+                        break;
+                    case '02d':
+                        icon = 'few-clouds';
+                        break;
+                    case '03d':
+                        icon = 'scattered-clouds';
+                        break;
+                    case '04d':
+                        icon = 'broken-clouds';
+                        break;
+                    case '09d':
+                        icon = 'rain';
+                        break;
+                    case '10d':
+                        icon = 'rain';
+                        break;
+                    case '11d':
+                        icon = 'storm';
+                        break;
+                    case '13d':
+                        icon = 'snow';
+                        break;
+                    case '50d':
+                        icon = 'storm';
+                        break;
+                    case '01n':
+                        icon = 'sun';
+                        break;
+                    case '02n':
+                        icon = 'few-clouds';
+                        break;
+                    case '03n':
+                        icon = 'scattered-clouds';
+                        break;
+                    case '04n':
+                        icon = 'broken-clouds';
+                        break;
+                    case '09n':
+                        icon = 'rain';
+                        break;
+                    case '10n':
+                        icon = 'rain';
+                        break;
+                    case '11n':
+                        icon = 'storm';
+                        break;
+                    case '13n':
+                        icon = 'snow';
+                        break;
+                    case '50n':
+                        icon = 'storm';
+                        break;
+                }
+
+                $('.header_icon').attr('src', 'https://storage.googleapis.com/jscr/widget_weather/' + icon + '.png');
+
+                for (var i = 0; response.result.list.length > i; i++) {
+                    if (i != 0) {
+                        d.setTime(response.result.list[i].dt * 1000);
+                        var day = getWeekDay(d);
+                        var col = $('.footer_col').eq(i - 1);
+                        col.find('.footer_day').html(day);
+                        col.find('.footer_description').html(response.result.list[i].weather[0].main);
+                        col.find('img').attr('src', 'https://openweathermap.org/img/w/' + response.result.list[i].weather[0].icon + '.png');
+                        col.find('.footer_temp').html(Math.round(response.result.list[i].temp.day));
+
+                        $placeholder.show();
+                    }
+                }
+            }
+        });
+    })
+</script>
+<div class="placeholder">
+    <div class="header">
+        <div class="header_col_first header_col">
+            <img src="images/rain.png" class="header_icon">
+            <span class="temp">-4</span>
+            <div class="description">
+                пасмурно, небольшой дождь
+            </div>
+        </div>
+        <div class="header_col_second header_col">
+            <div class="city">
+                <div class="name">lonsdfdon</div>
+                <div class="date">28.02.2017</div>
+                <div class="day">Вторник</div>
+                <div class="time">18:00</div>
+            </div>
+            <div class="weather">
+                <div class="wind">ветер 6м/с</div>
+                <div class="water">влажность 81%</div>
+                <div class="pressure">Давление 743 мм. рт. ст.</div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footer_col">
+            <div class="footer_col_inner">
+                <div class="footer_day">Понедельник</div>
+                <img  src="" class="footer_icon">
+                <div class="footer_footer">
+                    <span class="footer_description">Ясно</span>
+                    <span class="footer_temp">4</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer_col">
+            <div class="footer_col_inner">
+                <div class="footer_day">Понедельник</div>
+                <img  src="" class="footer_icon">
+                <div class="footer_footer">
+                    <span class="footer_description">Ясно</span>
+                    <span class="footer_temp">4</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer_col">
+            <div class="footer_col_inner">
+                <div class="footer_day">Понедельник</div>
+                <img  src="" class="footer_icon">
+                <div class="footer_footer">
+                    <span class="footer_description">Ясно</span>
+                    <span class="footer_temp">4</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer_col">
+            <div class="footer_col_inner">
+                <div class="footer_day">Понедельник</div>
+                <img  src="" class="footer_icon">
+                <div class="footer_footer">
+                    <span class="footer_description">Ясно</span>
+                    <span class="footer_temp">4</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
