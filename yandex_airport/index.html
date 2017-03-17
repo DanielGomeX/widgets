@@ -39,6 +39,10 @@
             vertical-align: middle;
         }
 
+        .widget_block {
+            display: none;
+        }
+
         .widget__title {
             position: absolute;
             top:0;
@@ -55,11 +59,22 @@
         $(document).ready(function() {
             $.ajax({
                 url: 'http://widgets/yandex_airport/server/index.php',
+                beforeSend: function() {
+                    d = new Date();
+                    start_time = d.getTime();
+                },
                 success: function(data){
 
                     var response = JSON.parse(data);
                     console.log(response);
 
+                },
+                complete: function() {
+                    d = new Date();
+                    console.log('Query execution time', (d.getTime() - start_time) * 0.001);
+
+                    $('.widget_block').show();
+                    $('.preloader').hide();
                 }
             });
         })

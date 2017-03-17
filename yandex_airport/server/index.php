@@ -59,7 +59,6 @@
         }
 
         $response['count'] += count($resp->schedule);
-        //$response[$page] = json_decode($resp);
 
     }
     curl_close($ch);
