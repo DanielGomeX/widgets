@@ -5,22 +5,29 @@
     <title>Расписание самолетов</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style type="text/css">
         html,
         body {
             margin: 0;
             padding: 0;
-            width: 480px;
-            height: 360px;
+            width: 100%;
+            height: 100%;
+            background-color: #dadada;
         }
 
         .placeholder {
-            width: 100%;
-            height: 100%;
+            width: 480px;
+            height: 360px;
             background-color: #dadada;
             overflow: hidden;
             font-family: 'Oswald', sans-serif;
             color: #585858;
+            position: absolute;
+            top: 50%;
+            margin-top: -180px;
+            left: 50%;
+            margin-left: -240px;
         }
 
         .preloader {
@@ -43,22 +50,82 @@
             display: none;
         }
 
+        .widget_block_inner {
+            position: relative;
+            left: 100%;
+        }
+
         .widget__title {
-            position: absolute;
+            position: relative;
             top:0;
             left: 0;
             width: 100%;
             font-size: 35px;
+            vertical-align: middle;
+            padding-left: 30px;
         }
 
+        .terminal {
+            position: relative;
+            left: 40%;
+            font-size: 35px;
+            line-height: 37px;
+            vertical-align: middle;
+            display: inline-block;
+            width: 26px;
+            text-align: center;
+            border: 1px solid black;
+        }
+
+        .term {
+            opacity: 0;
+        }
+
+        .terminal__row {
+            font-size: 0;
+            padding: 0 20px 3px 30px;
+            border-bottom: 1px solid #585858;
+            position: relative;
+        }
+
+        .terminal__row > i {
+            position: absolute;
+            top:10px;
+            left:0;
+        }
+
+        .terminal_block {
+            display: inline-block;
+            vertical-align: top;
+            width: 480px;
+        }
+
+        .terminal_col {
+            display: inline-block;
+            vertical-align: top;
+            width: 70%;
+            font-size: 25px;
+        }
+
+        .terminal_col:last-child {
+            width: 30%;
+        }
+
+        .flight_time {
+            position: relative;
+            top: 16px;
+            text-align: right;
+        }
 
     </style>
 </head>
 <body>
     <script type="text/javascript">
         $(document).ready(function() {
+
+            var responseCount = 0;
             $.ajax({
-                url: 'http://widgets/yandex_airport/server/index.php',
+                url: 'http://localhost/widgets_git/yandex_airport/server/index.php',
                 beforeSend: function() {
                     d = new Date();
                     start_time = d.getTime();
@@ -68,21 +135,85 @@
                     var response = JSON.parse(data);
                     console.log(response);
 
+                    var ii = 0;
+                    $('.widget_block_inner').css('width', 480 * response.length);
+                    
+                    responseCount = response.length;
+                    for (var prop in response) {
+                        if (prop != 'length') {
+                            $('.widget__title').after('<span class="terminal terminal_'+ prop +'">'+ prop +'</span>')
+                            
+
+                            $('.widget_block_inner').append('<div class="terminal_block terminal_'+prop+'"></div>');
+
+
+                            for (var i = 0; 4 > i; i++) {
+
+                                if (response[prop][i] != undefined) {
+                                    $('.widget_block_inner').find('.terminal_block').eq(ii)
+                                        .append('<div class="terminal__row ">'+
+                                                    '<i class="material-icons">flight_land</i>' +
+                                                    '<div class="terminal_col">' +
+                                                        '<div class="flight_title">' + response[prop][i]['flighttitle'] +'</div>' +
+                                                        '<div class="flight_number">' + response[prop][i]['flightNumber'] + '</div>' +
+                                                    '</div>' +
+                                                    '<div class="terminal_col">' +
+                                                        '<div class="flight_time">' + response[prop][i]['time'] + '</div>' +
+                                                    '</div>' +
+                                                '</div>');
+                                }
+                                
+                            }
+                        }
+                        ii++;
+                    }
                 },
                 complete: function() {
                     d = new Date();
+                    var queryTime =  d.getTime() - start_time;
+                    var delay = (60000 - queryTime) / responseCount;
+
                     console.log('Query execution time', (d.getTime() - start_time) * 0.001);
 
                     $('.widget_block').show();
                     $('.preloader').hide();
+                    $('.term').animate({
+                        opacity: 1
+                    }, 200);
+
+                    $('.terminal').eq(0).animate({
+                            left: '10px'
+                        }, 300).addClass('active');
+
+                    $('.widget_block_inner').animate({
+                        left: 0
+                    }, 300)
+
+                    var it = 1;
+
+                    var timerId = setTimeout(function tick() {
+                        if (it != responseCount) {
+                            $('.terminal.active').fadeOut(200).removeClass('active');
+
+                            $('.terminal').eq(it).animate({
+                                left: '10px'
+                            }, 300).addClass('active');
+                            $('.widget_block_inner').animate({
+                                left: parseInt($('.widget_block_inner').css('left')) - 480 + 'px'
+                            }, 300);
+
+                            it++;
+                        } 
+                        timerId = setTimeout(tick, delay);
+                    }, delay);
                 }
             });
         })
     </script>
     <div class="placeholder">
-        <div class="widget__title">Аэропорт Шереметьево <span class="tablo_title">вылеты</span></div>
-        <div class="wideget_block">
-
+        <span class="widget__title">Шереметьево <span class="term">терминал</span></span>
+        <div class="widget_block">
+            <div class="widget_block_inner"></div>
         </div>
         <div class="preloader">
             <div class="cssload-loader">
