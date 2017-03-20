@@ -35,6 +35,10 @@
             height: 100%;
         }
 
+        .preloader.error .cssload-inner {
+            border-color: red;
+        }
+
         .cssload-loader {
             display: inline-block;
             vertical-align: middle;
@@ -103,12 +107,12 @@
         .terminal_col {
             display: inline-block;
             vertical-align: top;
-            width: 70%;
+            width: 80%;
             font-size: 25px;
         }
 
         .terminal_col:last-child {
-            width: 30%;
+            width: 20%;
         }
 
         .flight_time {
@@ -125,48 +129,49 @@
 
             var responseCount = 0;
             $.ajax({
-                url: 'http://localhost/widgets_git/yandex_airport/server/index.php',
+                url: 'https://js.dooh.xyz/sheremetevo_arrival/index.php',
                 beforeSend: function() {
                     d = new Date();
                     start_time = d.getTime();
                 },
                 success: function(data){
+                    try {
+                        var response = JSON.parse(data);
+                        console.log(response);
 
-                    var response = JSON.parse(data);
-                    console.log(response);
+                        $('.widget_block_inner').css('width', 480 * response.length);
 
-                    var ii = 0;
-                    $('.widget_block_inner').css('width', 480 * response.length);
-                    
-                    responseCount = response.length;
-                    for (var prop in response) {
-                        if (prop != 'length') {
-                            $('.widget__title').after('<span class="terminal terminal_'+ prop +'">'+ prop +'</span>')
-                            
+                        responseCount = response.length;
 
-                            $('.widget_block_inner').append('<div class="terminal_block terminal_'+prop+'"></div>');
+                        for (var i = 0; response.length > i; i++) {
+                            $('.widget__title').append('<span class="terminal terminal_'+ response[i].teminalTitle +'">'+ response[i].teminalTitle +'</span>');
+                            $('.widget_block_inner').append('<div class="terminal_block terminal_'+response[i].teminalTitle+'"></div>');
 
+                            for (var it = 0; 4 > it; it++) {
 
-                            for (var i = 0; 4 > i; i++) {
+                                $('.widget_block_inner').find('.terminal_block').eq(i)
+                                    .append('<div class="terminal__row ">'+
+                                                '<i class="material-icons">flight_land</i>' +
+                                                '<div class="terminal_col">' +
+                                                    '<div class="flight_title">' + response[i][it].flighttitle +'</div>' +
+                                                    '<span class="flight_number">' + response[i][it].flightNumber + '</span>' +
+                                                '</div>' +
+                                                '<div class="terminal_col">' +
+                                                    '<div class="flight_time">' + response[i][it].time + '</div>' +
+                                                '</div>' +
+                                            '</div>');
 
-                                if (response[prop][i] != undefined) {
-                                    $('.widget_block_inner').find('.terminal_block').eq(ii)
-                                        .append('<div class="terminal__row ">'+
-                                                    '<i class="material-icons">flight_land</i>' +
-                                                    '<div class="terminal_col">' +
-                                                        '<div class="flight_title">' + response[prop][i]['flighttitle'] +'</div>' +
-                                                        '<div class="flight_number">' + response[prop][i]['flightNumber'] + '</div>' +
-                                                    '</div>' +
-                                                    '<div class="terminal_col">' +
-                                                        '<div class="flight_time">' + response[prop][i]['time'] + '</div>' +
-                                                    '</div>' +
-                                                '</div>');
-                                }
-                                
                             }
+
                         }
-                        ii++;
+                    } catch (e) {
+                        $('.preloader').addClass('error');
+                        console.log('Ошибка ' + e.name + ":" + e.message + "\n" + e.stack);
                     }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $('.preloader').addClass('error');
+                    console.log(textStatus);
                 },
                 complete: function() {
                     d = new Date();
@@ -182,8 +187,8 @@
                     }, 200);
 
                     $('.terminal').eq(0).animate({
-                            left: '10px'
-                        }, 300).addClass('active');
+                        left: '10px'
+                    }, 300).addClass('active');
 
                     $('.widget_block_inner').animate({
                         left: 0
@@ -203,7 +208,7 @@
                             }, 300);
 
                             it++;
-                        } 
+                        }
                         timerId = setTimeout(tick, delay);
                     }, delay);
                 }
@@ -211,7 +216,9 @@
         })
     </script>
     <div class="placeholder">
-        <span class="widget__title">Шереметьево <span class="term">терминал</span></span>
+        <div class="widget__title">Шереметьево
+            <span class="term">терминал</span>
+        </div>
         <div class="widget_block">
             <div class="widget_block_inner"></div>
         </div>

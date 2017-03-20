@@ -61,7 +61,7 @@
             display: block;
         }
 
-        
+
     </style>
     <script>
     /* eslint no-console: 0 */
@@ -69,7 +69,7 @@
             $.ajax({
                 url: 'https://js.dooh.xyz/holiday_today/index.php',
                 beforeSend: function() {
-                    
+
                 },
                 success: function(data) {
                     try {
@@ -86,10 +86,10 @@
                                 fontSize = 45;
                             } else if ( length > 70) {
                                 fontSize = 35;
-                            } 
+                            }
 
                             return fontSize;
-                        } 
+                        }
 
                         for (var i = 0; responce.today.length > i; i++) {
                             //$('.text_block').append('<div class="text">' + responce.today[i].text + '</div>');
@@ -98,13 +98,13 @@
                                 .addClass('active').css({
                                     'font-size': getFontSize(responce.today[0].text.length),
                                     'line-height': getFontSize(responce.today[0].text.length) * 1.2 + 'px'
-                                });;
+                                });
                         }
 
                         var it = 1;
 
                         setInterval(function() {
-                            
+
 
                             if (it != responce.today.length) {
                                 $('.text.active').css({
@@ -124,7 +124,7 @@
                                 }
 
                                 var interval = setInterval(function() {
-                                    
+
                                     //string = string[ii];
                                     //console.log(speed);
 
@@ -138,16 +138,16 @@
                                 }, string.length * speed);
 
                                 it++;
-                                
+
                             } else {
                                 it = 1;
                             }
-                            
+
                         }, 6000);
-                        
+
 
                     } catch (err) {
-                        
+
                     }
                 },
                 complete: function() {

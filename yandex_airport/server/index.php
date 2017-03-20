@@ -1,17 +1,18 @@
 <?php
     //include('../../auth.php');
 
-    /*$domain = $_SERVER['HTTP_ORIGIN'];
+    $domain = $_SERVER['HTTP_ORIGIN'];
     $queryString = $_SERVER['QUERY_STRING'];
 
-    header("Access-Control-Allow-Origin:" . $domain );*/
+    header("Access-Control-Allow-Origin:" . $domain );
 
     //echo phpinfo();
+    date_default_timezone_set('Europe/Moscow');
     $response = array();
     $date = date('Y-m-d');
     $nowDate = date('Y-m-d H:i:s');
     $page = 1;
-    $pageCount= 0;    
+    $pageCount= 0;
 
     function setUrl ($page = 1) {
         global $date;
@@ -34,6 +35,7 @@
 
     $result = file_get_contents(setUrl());
     $resArr = json_decode($result);
+    $arr = array();
     $count = 0;
 
     foreach ($resArr->schedule as $key => $value) {
@@ -43,16 +45,16 @@
 
         if ($nowDate < $timeArrival) {
 
-            //$flightTime = date($value->arrival);
             $flightTime = new DateTime($value->arrival);
-            
+
             $response[$value->terminal][] = array(
                 'nowTime' => $nowDate,
                 'time' => $flightTime->format('H:i'),
+                'departure' => $value->departure,
                 'flightNumber' => $value->thread->number,
-                'flighttitle' => $value->thread->title
+                'flighttitle' => $value->thread->title,
+                'carrierTitle' => $value->thread->carrier->title
             );
-            //$response['count'] = ++$count;
         }
 
     }
@@ -61,7 +63,7 @@
 
     $ch = curl_init();
     for ($i = 2; $i <= $pageCount; $i += 1) {
-        
+
         curl_setopt_array($ch, array(
             CURLOPT_URL => setUrl($i),
             CURLOPT_VERBOSE => True,
@@ -77,23 +79,25 @@
             if ($nowDate < $timeArrival) {
 
                 $flightTime = new DateTime($value->arrival);
+                $response[$value->terminal]['teminalTitle'] = $value->terminal;
 
                 $response[$value->terminal][] = array(
                     'nowTime' => $nowDate,
                     'time' => $flightTime->format('H:i'),
+                    'departure' => $value->departure,
                     'flightNumber' => $value->thread->number,
-                    'flighttitle' => $value->thread->title
+                    'flighttitle' => $value->thread->title,
+                    'carrierTitle' => $value->thread->carrier->title
                 );
-
-                //$response['count'] = ++$count;
             }
-            
         }
+    }
 
+
+    foreach ($response as $key => $value) {
+       $arr[] = $value;
     }
     curl_close($ch);
 
-    $response['length'] = count($response);
-    ksort($response);
-    echo json_encode($response);
+    echo json_encode($arr);
 ?>
