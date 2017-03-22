@@ -63,23 +63,54 @@
         }
 
         .right_col {
-            width: 80%;
+            width: 81%;
+            overflow: hidden;
         }
 
         .left_col {
-            width: 20%;
-            padding: 20px 30px;
+            width: 19%;
+            padding: 30px;
             font-size: 65px;
         }
 
         .rate {
-            text-align: center;
         }
 
         .symbol {
             margin-right: 15px;
         }
 
+        .right_col_inner {
+            width: calc(285px * 12);
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+            left: 0;
+        }
+
+        .news_block {
+            display: inline-block;
+            vertical-align: top;
+            width: 270px;
+            margin-top: 38px;
+            padding-right: 25px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 300;
+            line-height: 34px;
+            max-height: calc(34px * 4);
+            min-height:  calc(34px * 4);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .publish {
+            font-size: 22px;
+            color: #909090;
+            font-weight: 200;
+        }
 
 
     </style>
@@ -93,7 +124,7 @@
               ;
 
             $.ajax({
-                url: 'http://widgets/buisness_news/server/index.php',
+                url: '//localhost/widgets_git/buisness_news/server/index.php',
                 beforeSend: function() {
                     d = new Date();
                     startTime = d.getTime();
@@ -107,6 +138,39 @@
 
                         $('.USD').html(response.rate.USD);
                         $('.EUR').html(response.rate.EUR);
+
+                        var $newsBlock = $('.news_block');
+                        var countNews = 40;
+
+                        $('.right_col_inner').css('width', 289 * countNews + 'px')
+                        $newsBlock.find('.title').html(response.news[0].title);
+                        $newsBlock.find('.publish').html(response.news[0].pubDate);
+
+                        for (var i =0; response.news.length > i; i++) {
+                            if (i > 0 && i <= countNews - 1) {
+                                var $clone = $newsBlock.clone();
+                                $clone.find('.title').html(response.news[i].title);
+                                $clone.find('.publish').html(response.news[i].pubDate);
+                                $clone.appendTo('.right_col_inner');
+                            }
+                        }
+                        var it = 0;
+                        var left = parseInt($('.right_col_inner').css('left'));
+
+                        var timerId = setTimeout(function tick() {
+
+                            if (it <= countNews / 4) {
+                                console.log(left);
+                                $('.right_col_inner').animate({
+                                    left: left - (295 * 4) +'px'
+                                }, 500);
+                                left = left - (295 * 4);
+                                it++;
+                            }
+
+
+                            timerId = setTimeout(tick, 60000 / (countNews / 4));
+                        }, 60000 / (countNews / 4));
 
                     } catch (e) {
                         $('.preloader').addClass('error');
@@ -142,19 +206,8 @@
                         <div class="title">В Сибири преподавателя уволили после показа студентам фильма о Медведеве</div>
                         <div class="publish">22 Mar 2017 16:05</div>
                     </div>
-                    <div class="news_block">
-                        <div class="title">В Сибири преподавателя уволили после показа студентам фильма о Медведеве</div>
-                        <div class="publish">22 Mar 2017 16:05</div>
-                    </div>
-                    <div class="news_block">
-                        <div class="title">В Сибири преподавателя уволили после показа студентам фильма о Медведеве</div>
-                        <div class="publish">22 Mar 2017 16:05</div>
-                    </div>
-                    <div class="news_block">
-                        <div class="title">В Сибири преподавателя уволили после показа студентам фильма о Медведеве</div>
-                        <div class="publish">22 Mar 2017 16:05</div>
-                    </div>
                 </div>
+                <div class="fake"></div>
             </div>
         </div>
         <div class="preloader">

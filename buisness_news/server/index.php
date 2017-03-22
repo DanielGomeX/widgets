@@ -19,11 +19,13 @@
 
     foreach ($news->channel->item as $key => $value) {
 
+        $date = new DateTime($value->pubDate);
+
         $response['news'][] = array(
             'title' => (string) $value->title,
             'description' => (string) $value->description,
             'author' => (string) $value->author,
-            'pubDate' => (string) $value->pubDate
+            'pubDate' => (string) $date->format('d M H:i')
         );
 
     }
