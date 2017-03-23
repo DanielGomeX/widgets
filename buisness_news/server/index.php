@@ -1,5 +1,5 @@
 <?php
-
+    //echo phpinfo();
     $domain = $_SERVER['HTTP_ORIGIN'];
     $queryString = $_SERVER['QUERY_STRING'];
 
@@ -21,12 +21,7 @@
 
         $date = new DateTime($value->pubDate);
 
-        /*echo '<pre>';
-        var_dump($value);
-        echo '</pre>';*/
-
         if ($value->description == "" and array_key_exists('enclosure', $value) == FALSE) {
-            //echo $key . array_key_exists('enclosure', $value) . '</br>';
 
             continue;
         }
