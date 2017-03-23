@@ -1,0 +1,623 @@
+<html><head>
+    <title>Today US</title>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 480px;
+            height: 360px;
+        }
+
+        .placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            /*font-size: 0;*/
+            overflow: hidden;
+            font-family: 'Oswald', sans-serif;
+            color: #fff;
+        }
+
+        .widget_block {
+            display: none;
+        }
+
+        .preloader {
+            display: block;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 45px;
+            color: #F8F8F8;
+        }
+
+        .digits {
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        .text {
+            padding: 0 25px;
+            text-align: justify;
+            font-size: 30px;
+            font-weight: 200;
+            letter-spacing: 1.2px;
+            line-height: 35px;
+        }
+
+        .text:first-letter {
+            text-transform: uppercase;
+        }
+
+        .l {
+            display: inline-block;
+            width: 67px;
+            height: 90px;
+            margin-left: 20px;
+            background-image: url(https://storage.googleapis.com/jscr/today_us/digits.png);
+            background-position: 0px 0px;
+        }
+        </style>
+    <script type="text/javascript">
+    /* eslint camelcase: 0 */
+    /* eslint no-console : 0 */
+
+        (function( $ ){
+
+            var methods = {
+                init: function( options ) {
+                     //Default settings
+                    var settings = $.extend({
+                        autostart: false,
+                        img: 'digits.png',
+                        format: 'yy',
+                        time: '2017'
+                    }, options);
+
+
+                    //variables
+                    var $this = $(this);
+
+                    function getCountEl(settings) {
+                        var count_arr = settings.format.split(':');
+                        return count_arr;
+                    }
+
+                    function createElements(count_arr) {
+
+                        for (var i = 0; count_arr.length > i; i++) {
+
+                            var el = $this.append('<div class="el_' + count_arr[i] + '"></div>');
+                            el.find('.el_' + count_arr[i]).append('<span class="l l_1"></span><span class="l l_2"></span><span class="l l_3"></span><span class="l l_4"></span>');
+                        }
+                    }
+
+                    function setTime(time) {
+                        //var time = settings.time;
+
+                        $this.find('.l').each(function(index) {
+                            var val = -90 * 6 * time[index];
+
+                            $(this).animate({
+                                'background-position-y': val + 'px',
+
+                            }, 100)
+                            $(this).attr('data-index', time[index])
+                        })
+                    }
+
+                    function init() {
+                        createElements(getCountEl(settings));
+                        setTime(settings.time);
+                    }
+
+                    init();
+
+                },
+                changeTime: function(newTime) {
+
+                    this.find('.l').each(function(index) {
+                        var nowPos = parseInt($(this).css('background-position-y'));
+                        var delta = 0;
+                        var i = 0;
+                        var th = $(this);
+
+
+                        if (newTime[index] != $(this).attr('data-index')) {
+                            if (newTime[index] > $(this).attr('data-index')) {
+
+                                delta = newTime[index] - $(this).attr('data-index');
+
+                                var timerId = setTimeout(function tick() {
+                                    if ( i != delta * 6 ) {
+                                        th.css({'background-position-y': (nowPos - 90) + 'px'});
+                                        nowPos = nowPos - 90;
+                                        i++;
+                                    }
+                                    timerId = setTimeout(tick, 30);
+                                }, 30);
+
+                            } else if (newTime[index] < $(this).attr('data-index')) {
+
+                                delta = $(this).attr('data-index') - newTime[index];
+
+                                var timerId = setTimeout(function tick() {
+                                    if ( i != delta * 6 ) {
+                                        th.css({'background-position-y': (nowPos + 90) + 'px'});
+                                        nowPos = nowPos + 90;
+
+                                        i++;
+                                    }
+                                    timerId = setTimeout(tick, 30);
+                                }, 30);
+                            }
+                        }
+
+                        $(this).attr('data-index', newTime[index]);
+
+
+                    })
+
+                }
+            };
+
+            $.fn.flipClock = function( method ) {
+                // логика вызова метода
+                if ( methods[method] ) {
+                    return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+                } else if ( typeof method === 'object' || ! method ) {
+                    return methods.init.apply( this, arguments );
+                } else {
+                    $.error( 'Метод с именем ' +  method + ' не существует для jQuery.tooltip' );
+                }
+            };
+
+        })( jQuery );
+    </script>
+    <script>
+    /* eslint no-console: 0 */
+        $(document).ready(function () {
+            $.ajax({
+                url: 'https://js.dooh.xyz/today_us/server/index.php',
+                beforeSend: function() {
+                    var date = new Date();
+                    var options = {
+                        month: 'long',
+                        day: 'numeric',
+                    };
+
+                    $('.title').html(date.toLocaleString("en-US", options));
+                },
+                success: function(data) {
+                    try {
+                        console.log(JSON.parse(data));
+                        var response = JSON.parse(data);
+
+
+                        $('.digits').flipClock({
+                            time: response[0].year + ''
+                        });
+
+                        console.log(response[0].year + '')
+
+                        $('.text').html(response[0].text.slice(0,125) + '...');
+                        var i = 1;
+                        var timerId = setTimeout(function tick() {
+
+                            if ( i != response.length) {
+                                $('.digits').flipClock('changeTime', response[i].year + '');
+                                $('.text').animate({
+                                    opacity: 0
+                                }, 300, function() {
+                                    $('.text').html(response[i].text.slice(0,125) + '...');
+                                    i++;
+                                }).animate({
+                                    opacity: 1
+                                }, 300)
+                            }
+                            timerId = setTimeout(tick, 6000);
+                        }, 6000);
+
+                        $('.preloader').hide();
+                        $('.widget_block').show();
+                    } catch (err) {
+                        $('.preloader').addClass('error');
+                    }
+                },
+                complete: function() {
+
+                },
+                error: function() {
+                    $('.preloader').addClass('error');
+                }
+            });
+
+        })
+    </script>
+</head>
+<body cz-shortcut-listen="true">
+   <div class="placeholder">
+        <div class="widget_block">
+            <div class="title"></div>
+            <div class="digits"></div>
+            <div class="text"></div>
+        </div>
+        <div class="windows8 preloader">
+            <div class="wBall" id="wBall_1">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_2">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_3">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_4">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_5">
+                <div class="wInnerBall"></div>
+            </div>
+        </div>
+   </div>
+
+<style type="text/css">
+        .windows8 {
+            position: relative;
+            width: 78px;
+            height:78px;
+            margin:auto;
+            display: block;
+            left: 50%;
+            margin-left: -37px;
+            top: 50%;
+            margin-top: -37px;
+        }
+
+        .windows8 .wBall {
+            position: absolute;
+            width: 74px;
+            height: 74px;
+            opacity: 0;
+            transform: rotate(225deg);
+                -o-transform: rotate(225deg);
+                -ms-transform: rotate(225deg);
+                -webkit-transform: rotate(225deg);
+                -moz-transform: rotate(225deg);
+            animation: orbit 6.96s infinite;
+                -o-animation: orbit 6.96s infinite;
+                -ms-animation: orbit 6.96s infinite;
+                -webkit-animation: orbit 6.96s infinite;
+                -moz-animation: orbit 6.96s infinite;
+        }
+
+        .windows8.error .wBall .wInnerBall {
+            background: red;
+        }
+
+        .windows8 .wBall .wInnerBall{
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgb(255,255,255);
+            left:0px;
+            top:0px;
+            border-radius: 10px;
+        }
+
+        .windows8 #wBall_1 {
+            animation-delay: 1.52s;
+                -o-animation-delay: 1.52s;
+                -ms-animation-delay: 1.52s;
+                -webkit-animation-delay: 1.52s;
+                -moz-animation-delay: 1.52s;
+        }
+
+        .windows8 #wBall_2 {
+            animation-delay: 0.3s;
+                -o-animation-delay: 0.3s;
+                -ms-animation-delay: 0.3s;
+                -webkit-animation-delay: 0.3s;
+                -moz-animation-delay: 0.3s;
+        }
+
+        .windows8 #wBall_3 {
+            animation-delay: 0.61s;
+                -o-animation-delay: 0.61s;
+                -ms-animation-delay: 0.61s;
+                -webkit-animation-delay: 0.61s;
+                -moz-animation-delay: 0.61s;
+        }
+
+        .windows8 #wBall_4 {
+            animation-delay: 0.91s;
+                -o-animation-delay: 0.91s;
+                -ms-animation-delay: 0.91s;
+                -webkit-animation-delay: 0.91s;
+                -moz-animation-delay: 0.91s;
+        }
+
+        .windows8 #wBall_5 {
+            animation-delay: 1.22s;
+                -o-animation-delay: 1.22s;
+                -ms-animation-delay: 1.22s;
+                -webkit-animation-delay: 1.22s;
+                -moz-animation-delay: 1.22s;
+        }
+
+        @keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                transform: rotate(180deg);
+                animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                transform: rotate(300deg);
+                animation-timing-function: linear;
+                origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                transform:rotate(410deg);
+                animation-timing-function: ease-in-out;
+                origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                transform: rotate(645deg);
+                animation-timing-function: linear;
+                origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                transform: rotate(770deg);
+                animation-timing-function: ease-out;
+                origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                transform: rotate(900deg);
+                animation-timing-function: ease-out;
+                origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                transform: rotate(900deg);
+            }
+        }
+
+        @-o-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -o-transform: rotate(180deg);
+                -o-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -o-transform: rotate(300deg);
+                -o-animation-timing-function: linear;
+                -o-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -o-transform:rotate(410deg);
+                -o-animation-timing-function: ease-in-out;
+                -o-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -o-transform: rotate(645deg);
+                -o-animation-timing-function: linear;
+                -o-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -o-transform: rotate(770deg);
+                -o-animation-timing-function: ease-out;
+                -o-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -o-transform: rotate(900deg);
+                -o-animation-timing-function: ease-out;
+                -o-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -o-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -o-transform: rotate(900deg);
+            }
+        }
+
+        @-ms-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -ms-transform: rotate(180deg);
+                -ms-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -ms-transform: rotate(300deg);
+                -ms-animation-timing-function: linear;
+                -ms-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -ms-transform:rotate(410deg);
+                -ms-animation-timing-function: ease-in-out;
+                -ms-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -ms-transform: rotate(645deg);
+                -ms-animation-timing-function: linear;
+                -ms-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -ms-transform: rotate(770deg);
+                -ms-animation-timing-function: ease-out;
+                -ms-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -ms-transform: rotate(900deg);
+                -ms-animation-timing-function: ease-out;
+                -ms-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -ms-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -ms-transform: rotate(900deg);
+            }
+        }
+
+        @-webkit-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -webkit-transform: rotate(180deg);
+                -webkit-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -webkit-transform: rotate(300deg);
+                -webkit-animation-timing-function: linear;
+                -webkit-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -webkit-transform:rotate(410deg);
+                -webkit-animation-timing-function: ease-in-out;
+                -webkit-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -webkit-transform: rotate(645deg);
+                -webkit-animation-timing-function: linear;
+                -webkit-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -webkit-transform: rotate(770deg);
+                -webkit-animation-timing-function: ease-out;
+                -webkit-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -webkit-transform: rotate(900deg);
+                -webkit-animation-timing-function: ease-out;
+                -webkit-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -webkit-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -webkit-transform: rotate(900deg);
+            }
+        }
+
+        @-moz-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -moz-transform: rotate(180deg);
+                -moz-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -moz-transform: rotate(300deg);
+                -moz-animation-timing-function: linear;
+                -moz-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -moz-transform:rotate(410deg);
+                -moz-animation-timing-function: ease-in-out;
+                -moz-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -moz-transform: rotate(645deg);
+                -moz-animation-timing-function: linear;
+                -moz-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -moz-transform: rotate(770deg);
+                -moz-animation-timing-function: ease-out;
+                -moz-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -moz-transform: rotate(900deg);
+                -moz-animation-timing-function: ease-out;
+                -moz-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -moz-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -moz-transform: rotate(900deg);
+            }
+        }
+</style>
+</body></html>

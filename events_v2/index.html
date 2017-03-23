@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>widget-events</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 480px;
+            height: 360px;
+        }
+
+        .placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            /*font-size: 0;*/
+            overflow: hidden;
+            font-family: 'Oswald', sans-serif;
+            color: #fff;
+            position: relative;
+        }
+
+        .widget_block {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 150px;
+            height: 150px;
+}
+        }
+
+        .widget_title {
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .row {
+            width: calc( 100% - 100px);
+            margin-left: 50px;
+            font-size: 0;
+            font-weight: 200;
+            padding: 20px 0;
+            border-bottom: 1px solid #fff;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .col {
+            font-size: 25px;
+            padding: 15px 15px 0 35px;
+            font-weight: 300;
+            position: relative;
+            min-height: 60px;
+        }
+
+        .col .material-icons {
+            position: absolute;
+            top: 23px;
+            left: 5px;
+        }
+
+        .title {
+            font-size: 30px;
+            line-height: 30px;
+            font-weight: 600;
+            color: red;
+            padding: 0 10px;
+            text-align: center;
+        }
+
+        .title:first-letter {
+            text-transform: uppercase;
+        }
+
+        .end {
+            padding-left: 65px;
+        }
+
+        .start {
+        }
+
+        .stop {
+        }
+
+        .venue {
+        }
+
+        .venue:first-letter {
+            text-transform: uppercase;
+        }
+
+        .events_item {
+            width: calc(100% - 20px);
+            height: calc(100% - 30px);
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            padding: 30px 0 0 20px;
+            transition:All 2s ease;
+            -webkit-transition:All 2s ease;
+            -moz-transition:All 2s ease;
+            -o-transition:All 2s ease;
+        }
+
+        .events_item.active {
+            opacity: 1;
+            transition:All 2s ease;
+            -webkit-transition:All 2s ease;
+            -moz-transition:All 2s ease;
+            -o-transition:All 2s ease;
+
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        var nowDate = Math.round(new Date().getTime() / 1000);
+
+        var location_arr = [
+            'spb', // [0] Санкт-Петербург
+            'msk', // [1] Москва
+            'nsk', // [2] Новосибирск
+            'ekb',  // [3] Екатеринбург
+            'nnv', // [4] Нижний Новгород
+            'kzn', // [5] Казань
+            'vbg', // [6] Выборг
+            'smr', // [7] Самара
+            'krd', // [8] Краснодар
+            'sochi', // [9] Сочи
+            'ufa', // [10] Уфа
+            'krasnoyarsk',  // [11] Красноярск
+            'kev', // [12] Киев
+            'new-york' // [13] Нью-Йорк
+        ]
+
+        var options = {
+            month: 'long',
+            day: 'numeric',
+        };
+
+        var fields = 'dates,title,short_title,place,description,price,images,is_free'
+          , actual_since = nowDate
+          , expand = 'place,dates'
+          , categories = 'exhibition,concert' // Посмотреть все категрии https://kudago.com/public-api/v1.2/place-categories/?lang=ru
+          ;
+
+        $.ajax({
+            url: 'https://js.dooh.xyz/kudago/server/index.php',
+            data: {
+                location: location_arr[1],
+                fields: fields,
+                actual_since: actual_since,
+                expand: expand,
+                categories: categories
+            },
+            beforeSend: function(xhr){
+
+            },
+            success: function(data){
+                var response = JSON.parse(data);
+                console.log(JSON.parse(data));
+
+                try {
+                    for (var i = 0; response.result.results.length > i; i++) {
+
+                        var currentFigure = $('figure').eq(i)
+                          , currentRow = $('.events_item').eq(i)
+                          , currentData = response.result.results[i]
+                          ;
+
+
+                        currentFigure.css('background-image', 'url(' + currentData.images[0].image + ')');
+                        currentRow.find('.title').html(currentData.title);
+
+                        if (currentData.place != null ) {
+                            currentRow.find('.venue').html(currentData.place.title);
+                        }
+
+                        if (currentData.dates[0]) {
+                            var dateStart = new Date(currentData.dates[0].start_date);
+
+                            currentRow.find('.start_date').html(dateStart.toLocaleString("ru", options));
+                            currentRow.find('.start_time').html(currentData.dates[0].start_time.slice(0, -3));
+
+                            if (currentData.dates[0].end_date != null) {
+
+                                var dateStop = new Date(currentData.dates[0].end_date);
+                                currentRow.find('.stop_date').html(' - ' + dateStop.toLocaleString("ru", options));
+                                if (currentData.dates[0].end_time != null) {
+                                    currentRow.find('.stop_time').html(currentData.dates[0].end_time.slice(0, -3));
+                                }
+                            }
+                        }
+
+                        if (currentData.price != null) {
+                            if ( currentData.price == '' && currentData.is_free ) {
+                                currentRow.find('.price').html('Бесплатно');
+                            } else {
+                                currentRow.find('.price').html(currentData.price);
+                            }
+                        }
+                    }
+
+                    $('.windows8').hide();
+                    $('.events_item').eq(0).addClass('active');
+                    $('.widget_block').show();
+
+                } catch (err) {
+                    $('.windows8').addClass('error');
+
+                    console.log(err.message + '<br>' + err.stack);
+                    console.log(JSON.parse(data));
+                }
+
+                var cubeSides = [
+                    'front',
+                    'back',
+                    'right',
+                    'left',
+                    'top',
+                    'bottom'
+                ]
+
+                var _classPrefix = 'show-';
+                var i = 1;
+                var ii = 1;
+                var timerId = setTimeout(function tick() {
+
+                    if (i < cubeSides.length) {
+                        $('#cube').removeClass();
+                        $('#cube').addClass(_classPrefix + cubeSides[i++]);
+                        $('.events_item.active').removeClass('active');
+                        $('.events_item').eq(ii++).addClass('active');
+                    } else {
+                        $('#cube').removeClass();
+                        $('#cube').addClass(_classPrefix + cubeSides[0])
+                        $('.events_item.active').removeClass('active');
+                        $('.events_item').eq(0).addClass('active');
+                        i = 1;
+                        ii=1;
+                    }
+
+                    timerId = setTimeout(tick, 60000 / cubeSides.length);
+
+                }, 2000);
+
+
+            },
+            complete: function() {
+
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('.windows8').addClass('error');
+                //$('.placeholder').html(jqXHR + '<br>' + textStatus + '<br>' + errorThrown)
+            }
+        });
+
+    })
+</script>
+<div class="placeholder">
+    <div class="events_item">
+        <div class="title"></div>
+        <div class="col">
+            <i class="material-icons">place</i><div class="venue"></div>
+        </div>
+        <div class="col col_second">
+            <i class="material-icons">access_time</i>
+            <span class="start_date"></span>
+            <span class="start_time"></span>
+            <div class="end">
+                <span class="stop_date"></span>
+                <span class="stop_time"></span>
+            </div>
+        </div>
+        <div class="col">
+            <i class="material-icons">euro_symbol</i>
+            <span class="price"></span>
+        </div>
+    </div>
+    <div class="events_item">
+        <div class="title"></div>
+        <div class="col">
+            <i class="material-icons">place</i><div class="venue"></div>
+        </div>
+        <div class="col col_second">
+            <i class="material-icons">access_time</i>
+            <span class="start_date"></span>
+            <span class="start_time"></span>
+            <div class="end">
+                <span class="stop_date"></span>
+                <span class="stop_time"></span>
+            </div>
+        </div>
+        <div class="col">
+            <i class="material-icons">euro_symbol</i>
+            <span class="price"></span>
+        </div>
+    </div>
+    <div class="events_item">
+        <div class="title"></div>
+        <div class="col">
+            <i class="material-icons">place</i><div class="venue"></div>
+        </div>
+        <div class="col col_second">
+            <i class="material-icons">access_time</i>
+            <span class="start_date"></span>
+            <span class="start_time"></span>
+            <div class="end">
+                <span class="stop_date"></span>
+                <span class="stop_time"></span>
+            </div>
+        </div>
+        <div class="col">
+            <i class="material-icons">euro_symbol</i>
+            <span class="price"></span>
+        </div>
+    </div>
+    <div class="events_item">
+        <div class="title"></div>
+        <div class="col">
+            <i class="material-icons">place</i><div class="venue"></div>
+        </div>
+        <div class="col col_second">
+            <i class="material-icons">access_time</i>
+            <span class="start_date"></span>
+            <span class="start_time"></span>
+            <div class="end">
+                <span class="stop_date"></span>
+                <span class="stop_time"></span>
+            </div>
+        </div>
+        <div class="col">
+            <i class="material-icons">euro_symbol</i>
+            <span class="price"></span>
+        </div>
+    </div>
+    <div class="events_item">
+        <div class="title"></div>
+        <div class="col">
+            <i class="material-icons">place</i><div class="venue"></div>
+        </div>
+        <div class="col col_second">
+            <i class="material-icons">access_time</i>
+            <span class="start_date"></span>
+            <span class="start_time"></span>
+            <div class="end">
+                <span class="stop_date"></span>
+                <span class="stop_time"></span>
+            </div>
+        </div>
+        <div class="col">
+            <i class="material-icons">euro_symbol</i>
+            <span class="price"></span>
+        </div>
+    </div>
+    <div class="events_item">
+        <div class="title"></div>
+        <div class="col">
+            <i class="material-icons">place</i><div class="venue"></div>
+        </div>
+        <div class="col col_second">
+            <i class="material-icons">access_time</i>
+            <span class="start_date"></span>
+            <span class="start_time"></span>
+            <div class="end">
+                <span class="stop_date"></span>
+                <span class="stop_time"></span>
+            </div>
+        </div>
+        <div class="col">
+            <i class="material-icons">euro_symbol</i>
+            <span class="price"></span>
+        </div>
+    </div>
+    <div class="widget_block">
+        <section class="container">
+          <div id="cube" class="show-front">
+            <figure class="front"></figure>
+            <figure class="back"></figure>
+            <figure class="right"></figure>
+            <figure class="left"></figure>
+            <figure class="top"></figure>
+            <figure class="bottom"></figure>
+          </div>
+        </section>
+    </div>
+    <div class="windows8">
+        <div class="wBall" id="wBall_1">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_2">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_3">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_4">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_5">
+            <div class="wInnerBall"></div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+    .container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      perspective: 1000px;
+      margin: 10px auto;
+    }
+
+    #cube {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+    }
+
+    #cube figure {
+        margin: 0;
+        width: calc( 100% - 4px);
+        height: calc( 100% - 4px);
+        display: block;
+        position: absolute;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: auto 100%;
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -o-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+    #cube .front  { transform: rotateY(   0deg ); }
+    #cube .back   { transform: rotateX( 180deg ); }
+    #cube .right  { transform: rotateY(  90deg ); }
+    #cube .left   { transform: rotateY( -90deg ); }
+    #cube .top    { transform: rotateX(  90deg ); }
+    #cube .bottom { transform: rotateX( -90deg ); }
+
+    #cube .front  { transform: rotateY(   0deg ) translateZ( 73px ); }
+    #cube .back   { transform: rotateX( 180deg ) translateZ( 73px ); }
+    #cube .right  { transform: rotateY(  90deg ) translateZ( 73px ); }
+    #cube .left   { transform: rotateY( -90deg ) translateZ( 73px ); }
+    #cube .top    { transform: rotateX(  90deg ) translateZ( 73px ); }
+    #cube .bottom { transform: rotateX( -90deg ) translateZ( 73px ); }
+
+    #cube.show-front  { transform: translateZ( -73px ) rotateY(    0deg ); }
+    #cube.show-back   { transform: translateZ( -73px ) rotateX( -180deg ); }
+    #cube.show-right  { transform: translateZ( -73px ) rotateY(  -90deg ); }
+    #cube.show-left   { transform: translateZ( -73px ) rotateY(   90deg ); }
+    #cube.show-top    { transform: translateZ( -73px ) rotateX(  -90deg ); }
+    #cube.show-bottom { transform: translateZ( -73px ) rotateX(   90deg ); }
+
+    #cube { transition: transform 2s; }
+
+</style>
+<style type="text/css">
+        .windows8 {
+            position: relative;
+            width: 78px;
+            height:78px;
+            margin:auto;
+            display: block;
+            left: 50%;
+            margin-left: -37px;
+            top: 50%;
+            margin-top: -37px;
+        }
+
+        .windows8 .wBall {
+            position: absolute;
+            width: 74px;
+            height: 74px;
+            opacity: 0;
+            transform: rotate(225deg);
+                -o-transform: rotate(225deg);
+                -ms-transform: rotate(225deg);
+                -webkit-transform: rotate(225deg);
+                -moz-transform: rotate(225deg);
+            animation: orbit 6.96s infinite;
+                -o-animation: orbit 6.96s infinite;
+                -ms-animation: orbit 6.96s infinite;
+                -webkit-animation: orbit 6.96s infinite;
+                -moz-animation: orbit 6.96s infinite;
+        }
+
+        .windows8.error .wBall .wInnerBall {
+            background: red;
+        }
+
+        .windows8 .wBall .wInnerBall{
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgb(255,255,255);
+            left:0px;
+            top:0px;
+            border-radius: 10px;
+        }
+
+        .windows8 #wBall_1 {
+            animation-delay: 1.52s;
+                -o-animation-delay: 1.52s;
+                -ms-animation-delay: 1.52s;
+                -webkit-animation-delay: 1.52s;
+                -moz-animation-delay: 1.52s;
+        }
+
+        .windows8 #wBall_2 {
+            animation-delay: 0.3s;
+                -o-animation-delay: 0.3s;
+                -ms-animation-delay: 0.3s;
+                -webkit-animation-delay: 0.3s;
+                -moz-animation-delay: 0.3s;
+        }
+
+        .windows8 #wBall_3 {
+            animation-delay: 0.61s;
+                -o-animation-delay: 0.61s;
+                -ms-animation-delay: 0.61s;
+                -webkit-animation-delay: 0.61s;
+                -moz-animation-delay: 0.61s;
+        }
+
+        .windows8 #wBall_4 {
+            animation-delay: 0.91s;
+                -o-animation-delay: 0.91s;
+                -ms-animation-delay: 0.91s;
+                -webkit-animation-delay: 0.91s;
+                -moz-animation-delay: 0.91s;
+        }
+
+        .windows8 #wBall_5 {
+            animation-delay: 1.22s;
+                -o-animation-delay: 1.22s;
+                -ms-animation-delay: 1.22s;
+                -webkit-animation-delay: 1.22s;
+                -moz-animation-delay: 1.22s;
+        }
+
+        @keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                transform: rotate(180deg);
+                animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                transform: rotate(300deg);
+                animation-timing-function: linear;
+                origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                transform:rotate(410deg);
+                animation-timing-function: ease-in-out;
+                origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                transform: rotate(645deg);
+                animation-timing-function: linear;
+                origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                transform: rotate(770deg);
+                animation-timing-function: ease-out;
+                origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                transform: rotate(900deg);
+                animation-timing-function: ease-out;
+                origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                transform: rotate(900deg);
+            }
+        }
+
+        @-o-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -o-transform: rotate(180deg);
+                -o-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -o-transform: rotate(300deg);
+                -o-animation-timing-function: linear;
+                -o-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -o-transform:rotate(410deg);
+                -o-animation-timing-function: ease-in-out;
+                -o-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -o-transform: rotate(645deg);
+                -o-animation-timing-function: linear;
+                -o-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -o-transform: rotate(770deg);
+                -o-animation-timing-function: ease-out;
+                -o-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -o-transform: rotate(900deg);
+                -o-animation-timing-function: ease-out;
+                -o-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -o-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -o-transform: rotate(900deg);
+            }
+        }
+
+        @-ms-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -ms-transform: rotate(180deg);
+                -ms-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -ms-transform: rotate(300deg);
+                -ms-animation-timing-function: linear;
+                -ms-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -ms-transform:rotate(410deg);
+                -ms-animation-timing-function: ease-in-out;
+                -ms-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -ms-transform: rotate(645deg);
+                -ms-animation-timing-function: linear;
+                -ms-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -ms-transform: rotate(770deg);
+                -ms-animation-timing-function: ease-out;
+                -ms-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -ms-transform: rotate(900deg);
+                -ms-animation-timing-function: ease-out;
+                -ms-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -ms-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -ms-transform: rotate(900deg);
+            }
+        }
+
+        @-webkit-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -webkit-transform: rotate(180deg);
+                -webkit-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -webkit-transform: rotate(300deg);
+                -webkit-animation-timing-function: linear;
+                -webkit-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -webkit-transform:rotate(410deg);
+                -webkit-animation-timing-function: ease-in-out;
+                -webkit-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -webkit-transform: rotate(645deg);
+                -webkit-animation-timing-function: linear;
+                -webkit-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -webkit-transform: rotate(770deg);
+                -webkit-animation-timing-function: ease-out;
+                -webkit-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -webkit-transform: rotate(900deg);
+                -webkit-animation-timing-function: ease-out;
+                -webkit-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -webkit-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -webkit-transform: rotate(900deg);
+            }
+        }
+
+        @-moz-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -moz-transform: rotate(180deg);
+                -moz-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -moz-transform: rotate(300deg);
+                -moz-animation-timing-function: linear;
+                -moz-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -moz-transform:rotate(410deg);
+                -moz-animation-timing-function: ease-in-out;
+                -moz-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -moz-transform: rotate(645deg);
+                -moz-animation-timing-function: linear;
+                -moz-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -moz-transform: rotate(770deg);
+                -moz-animation-timing-function: ease-out;
+                -moz-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -moz-transform: rotate(900deg);
+                -moz-animation-timing-function: ease-out;
+                -moz-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -moz-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -moz-transform: rotate(900deg);
+            }
+        }
+</style>
+</body>
+</html>

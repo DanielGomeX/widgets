@@ -134,7 +134,7 @@
               ;
 
             $.ajax({
-                url: 'https://js.dooh.xyz/buisness_news/server/index.php',
+                url: 'https://js.dooh.xyz/rbc_news/server/index.php',
                 beforeSend: function() {
                     d = new Date();
                     startTime = d.getTime();
@@ -151,7 +151,7 @@
                         $('.title').html(response.news[0].title);
                         $('.date').html(response.news[0].pubDate);
 
-                        $('.logo').append('<img src="http://s.rbk.ru/v7_top_static/common/common-7.1.17/styles/blocks/topline/images/logo.svg">');
+                        $('.logo').append('<img src="https://s.rbk.ru/v7_top_static/common/common-7.1.17/styles/blocks/topline/images/logo.svg">');
 
                         var description = response.news[0].description;
                         console.log(description.length)
@@ -179,9 +179,10 @@
                         console.log('Ошибка ' + e.name + ":" + e.message + "\n" + e.stack);
                     }
                 },
-                error: function(jqXHR, textStatus) {
+                error: function(jqXHR, textStatus, errorThrown) {
                     $('.preloader').addClass('error');
                     console.log(textStatus);
+                    console.log(errorThrown);
                 },
                 complete: function() {
                     d = new Date();
