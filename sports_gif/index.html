@@ -17,17 +17,17 @@
         }
 
         .placeholder {
-            width: 1440px;
-            height: 270px;
+            width: 480px;
+            height: 360px;
             background-color: black;
             overflow: hidden;
             font-family: 'Oswald', sans-serif;
             color: #dadada;
             position: absolute;
             top: 50%;
-            margin-top: -135px;
+            margin-top: -180px;
             left: 50%;
-            margin-left: -720px;
+            margin-left: -240px;
         }
 
         .preloader {
@@ -53,66 +53,21 @@
         .widget_block {
             display: none;
             font-size: 0;
+            height: 100%;
         }
 
-        .col {
-            display: inline-block;
-            vertical-align: top;
-            font-size: 20px;
-            box-sizing: border-box;
-        }
-
-        .right_col {
-            width: 81%;
-            overflow: hidden;
-        }
-
-        .left_col {
-            width: 19%;
-            padding: 30px;
-            font-size: 65px;
-        }
-
-        .rate {
-        }
-
-        .symbol {
-            margin-right: 15px;
-        }
-
-        .right_col_inner {
-            width: calc(285px * 12);
-            display: inline-block;
-            vertical-align: middle;
-            position: relative;
+        .gif_block {
+            position: absolute;
+            top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
         }
 
-        .news_block {
-            display: inline-block;
-            vertical-align: top;
-            width: 270px;
-            margin-top: 38px;
-            padding-right: 25px;
+        .gif_block img {
+            width: 100%;
+            height: 100%;
         }
-
-        .title {
-            font-size: 28px;
-            font-weight: 300;
-            line-height: 34px;
-            max-height: calc(34px * 4);
-            min-height:  calc(34px * 4);
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .publish {
-            font-size: 22px;
-            color: #909090;
-            font-weight: 200;
-        }
-
-
     </style>
 </head>
 <body>
@@ -123,54 +78,135 @@
               , startTime
               ;
 
+            var arrayNBA = [
+                '3o7bu7Oc3sAqgPiH4Y',
+                'l0IygvIi3bCiekXkY',
+                '3o7bu7sO6zWCG1V81q',
+                'xUPGcxSqdLqjcayTm0',
+                'xUPGczy0WYDrALW08M',
+                'l0Iy1e9Tr9VQbAhAQ',
+                '3og0IRkUbPPQaE98e4',
+                '3og0IJNa4LfVBltalW',
+                '3o7bu2VBGYFkGsTXEs',
+                'xUPGcqkXg2p5sM8XNS',
+                '3og0Ivr5cUkEEXoXxC',
+                '3o7btR81fuzQhJ6oDK',
+                'xUA7b8TtTtDudewuyc',
+                'xUA7baL7HTVWVazvFK',
+                'xUA7aUmIbPGhNwClvW',
+                'xUPGcwFR48cfLqk24w',
+                'xUPGch1foOPWJPCcH6',
+                'xUPGcdPqqmRWUM7bgI',
+                'xUPGcjPkMN5wpWrDKo',
+            ]
+
+            var arrayNHL = [
+                'xUA7bfC57E1Ehluvbq',
+                'xUA7b2DbGguACbv6wM',
+                'xUA7aTtIVLuY5wbxTy',
+                '3ohzdPkzYgLB2FnTnW',
+                'xUPGcB9WwVph9VL1pS',
+                '3ohzdPcsm1pyLClvry',
+                'l0Iy14knH1nNCACxa',
+                '3o7btSARDxTM8KMuDS',
+                '3oKIPA5urgElo8RPO0',
+                '3o84UatMAydpIAD4DS',
+                'xTiN0gzrjjgjiitRTy',
+                '3o84UgOx7lzFxW8lDW',
+                '3o84TWvKAbwcQtdvYk',
+                '3o84TQJ4ZAgt8NbvHy',
+                'd3LEQS6GDas1ElP2',
+                'xTiN0PFx6zhGqiuLq8',
+                'xTiN0NaLs6XmLQyjXq',
+                '3o6YgnqgiR21Yxsqf6',
+                '26gssIRhqxX8x4whO',
+            ]
+
+            var arrayUSAFootbal = [
+                'bH1zaCXNT7eNi',
+                'l0HlFxTQfmvAqvxeM',
+                'MsfDHqHnyacxy',
+                '3o7TKx1W2DJjoVqlUs',
+                'l0Ex47BWhZ7bsaKcg',
+                'l0MYIPOQo5DvfQ1X2',
+                '3o7TKrblHUaF9vO4Le',
+                '3o7TKWljIM0WisT22Q',
+                'd1E22sFqxyaVAzlK',
+                'l4JyTQftWCGy73Oj6',
+                '3o7TKrguV9dh11IIx2',
+                '3o7TKOUyNwGFMlmTWU',
+                '26ybvvfVqdmJ6U5AQ',
+                'l0MYvELmYKNcKs7Sg',
+                '3o7TKQdjtOhr2zollC',
+                'MVWhanDMXS7HW',
+                'd3mmNq3WgPZNsbv2',
+                '3oz8xNrYk4BkErDRSw',
+                '4RmniOSH9Tc3u',
+            ]
+
+            var resArr = [
+                arrayNBA.join(','),
+                arrayNHL.join(','),
+                arrayUSAFootbal.join(',')
+            ]
+
+            function randomInteger(min, max) {
+                var rand = min - 0.5 + Math.random() * (max - min + 1)
+                rand = Math.round(rand);
+
+                return rand;
+            }
+
+            var str = resArr[randomInteger(0,2)];
+
             $.ajax({
-                url: 'http://api.giphy.com/v1/gifs/search?q=funny+cat&api_key=dc6zaTOxFJmzC',
+                url: 'http://api.giphy.com/v1/gifs?api_key=dc6zaTOxFJmzC&ids=' + str,
                 beforeSend: function() {
                     d = new Date();
                     startTime = d.getTime();
                 },
                 success: function(data){
                     try {
-                        console.log(JSON.parse(data));
+                        console.log(data);
 
-                        var response = JSON.parse(data);
+                        var gifBlock = $('.gif_block')
+                        gifBlock.find('img').attr('src', data.data[5].images.original.url);
 
+                        for (var i=0; data.data.length > i; i++) {
+                            if (i > 5) {
 
-                        $('.USD').html(response.rate.USD);
-                        $('.EUR').html(response.rate.EUR);
-
-                        var $newsBlock = $('.news_block');
-                        var countNews = 40;
-
-                        $('.right_col_inner').css('width', 289 * countNews + 'px')
-                        $newsBlock.find('.title').html(response.news[0].title);
-                        $newsBlock.find('.publish').html(response.news[0].pubDate);
-
-                        for (var i =0; response.news.length > i; i++) {
-                            if (i > 0 && i <= countNews - 1) {
-                                var $clone = $newsBlock.clone();
-                                $clone.find('.title').html(response.news[i].title);
-                                $clone.find('.publish').html(response.news[i].pubDate);
-                                $clone.appendTo('.right_col_inner');
+                                var clone = gifBlock.clone(true);
+                                clone.appendTo('.widget_block').attr('data-ind', i).find('img').attr('src', data.data[i].images.original.url);
                             }
                         }
-                        var it = 0;
-                        var left = parseInt($('.right_col_inner').css('left'));
+
+
+                        var i = 0;
+                        $('.gif_block').css('opacity', 0);
+                        $('.gif_block').eq(0).css('opacity', 1);
 
                         var timerId = setTimeout(function tick() {
 
-                            if (it <= countNews / 4) {
-                                console.log(left);
-                                $('.right_col_inner').animate({
-                                    left: left - (295 * 4) +'px'
-                                }, 500);
-                                left = left - (295 * 4);
-                                it++;
+                            if ( i < $('.gif_block').length) {
+
+                                $('.gif_block').eq(i).animate({
+                                    opacity: 0
+                                }, 200);
+                                $('.gif_block').eq(i++).animate({
+                                    opacity: 1
+                                }, 200);
+                            } else {
+                                $('.gif_block').css('opacity', 0);
+                                $('.gif_block').eq(0).animate({
+                                    opacity: 1
+                                }, 200);
+                                i = 0;
                             }
 
-
-                            timerId = setTimeout(tick, 60000 / (countNews / 4));
-                        }, 60000 / (countNews / 4));
+                            timerId = setTimeout(tick, 2000);
+                        }, 2000);
+                        $('.widget_block').show();
+                        $('.preloader').hide();
 
                     } catch (e) {
                         $('.preloader').addClass('error');
@@ -183,11 +219,8 @@
                 },
                 complete: function() {
                     d = new Date();
-                    //var queryTime =  d.getTime() - startTime;
                     console.log('Query execution time', (d.getTime() - startTime) * 0.001);
 
-                    $('.widget_block').show();
-                    //$('.preloader').hide();
 
 
                 }
@@ -196,18 +229,8 @@
     </script>
     <div class="placeholder">
         <div class="widget_block">
-            <div class="left_col col">
-                <div class="rate usd_rate"><span class="symbol">$</span><span class="USD"></span></div>
-                <div class="rate eur_rate"><span class="symbol">€</span><span class="EUR"></span></div>
-            </div>
-            <div class="right_col col">
-                <div class="right_col_inner">
-                    <div class="news_block">
-                        <div class="title">В Сибири преподавателя уволили после показа студентам фильма о Медведеве</div>
-                        <div class="publish">22 Mar 2017 16:05</div>
-                    </div>
-                </div>
-                <div class="fake"></div>
+            <div class="gif_block">
+                <img src="">
             </div>
         </div>
         <div class="preloader">
