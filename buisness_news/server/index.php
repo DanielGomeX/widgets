@@ -21,11 +21,22 @@
 
         $date = new DateTime($value->pubDate);
 
+        /*echo '<pre>';
+        var_dump($value);
+        echo '</pre>';*/
+
+        if ($value->description == "" and array_key_exists('enclosure', $value) == FALSE) {
+            //echo $key . array_key_exists('enclosure', $value) . '</br>';
+
+            continue;
+        }
+
         $response['news'][] = array(
             'title' => (string) $value->title,
             'description' => (string) $value->description,
             'author' => (string) $value->author,
-            'pubDate' => (string) $date->format('d M H:i')
+            'pubDate' => (string) $date->format('d M H:i'),
+            'image' => (string) $value->enclosure['url']
         );
 
     }
@@ -38,7 +49,7 @@
         $response['rate'][str_replace("/RUB", "", $value->Name)] = round($value->Rate, 2);
     }
 
-    //$response['rate'] = json_decode($rate);
+    $response['original'] = json_decode(json_encode($news));
 
     echo json_encode($response);
 

@@ -13,7 +13,7 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #dadada;
+            background-color: black;
         }
 
         .placeholder {
@@ -28,6 +28,7 @@
             margin-top: -135px;
             left: 50%;
             margin-left: -720px;
+            border: 1px solid #eee;
         }
 
         .preloader {
@@ -53,65 +54,75 @@
         .widget_block {
             display: none;
             font-size: 0;
+            height: 100%;
         }
 
         .col {
-            display: inline-block;
-            vertical-align: top;
-            font-size: 20px;
+            float: left;
+            height: 100%;
+            font-size: 25px;
             box-sizing: border-box;
         }
 
-        .right_col {
-            width: 81%;
-            overflow: hidden;
+        .col_img img {
+            max-height: 100%;
         }
 
-        .left_col {
-            width: 19%;
-            padding: 30px;
+        .col_img {
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            background: linear-gradient(to bottom, rgba(0,0,0, 0.8), rgba(255,255,255, 0));
+            width: 100%;
+            height: 80px;
+            padding-left: 20px;
+        }
+
+        .col_rate {
             font-size: 65px;
+            padding: 30px 20px;
         }
 
-        .rate {
+        .right_col {
+            padding: 0 20px;
+            max-width: 760px;
         }
 
         .symbol {
             margin-right: 15px;
         }
 
-        .right_col_inner {
-            width: calc(285px * 12);
-            display: inline-block;
-            vertical-align: middle;
-            position: relative;
-            left: 0;
-        }
-
-        .news_block {
-            display: inline-block;
-            vertical-align: top;
-            width: 270px;
-            margin-top: 38px;
-            padding-right: 25px;
-        }
-
         .title {
-            font-size: 28px;
+            font-size: 40px;
             font-weight: 300;
-            line-height: 34px;
-            max-height: calc(34px * 4);
-            min-height:  calc(34px * 4);
+            line-height: 45px;
+            min-height: 90px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
-        .publish {
-            font-size: 22px;
-            color: #909090;
+        .description {
+            min-height: 90px;
+            font-size: 30px;
+            line-height: 34px;
+            max-height:102px;
+            overflow: hidden;
+            font-weight: 300;
+            color: #a2a2a2;
+        }
+
+        .date_author {
+            color: #a2a2a2;
+            margin-top: 15px;
+            font-size: 25px;
             font-weight: 200;
         }
 
+        .author {
+            margin-right: 25px;
+        }
 
     </style>
 </head>
@@ -124,7 +135,7 @@
               ;
 
             $.ajax({
-                url: '//localhost/widgets_git/buisness_news/server/index.php',
+                url: '//widgets/buisness_news/server/index.php',
                 beforeSend: function() {
                     d = new Date();
                     startTime = d.getTime();
@@ -135,42 +146,34 @@
 
                         var response = JSON.parse(data);
 
-
                         $('.USD').html(response.rate.USD);
                         $('.EUR').html(response.rate.EUR);
 
-                        var $newsBlock = $('.news_block');
-                        var countNews = 40;
+                        $('.title').html(response.news[0].title);
+                        $('.date').html(response.news[0].pubDate);
 
-                        $('.right_col_inner').css('width', 289 * countNews + 'px')
-                        $newsBlock.find('.title').html(response.news[0].title);
-                        $newsBlock.find('.publish').html(response.news[0].pubDate);
+                        $('.logo').append('<img src="http://s.rbk.ru/v7_top_static/common/common-7.1.17/styles/blocks/topline/images/logo.svg">');
 
-                        for (var i =0; response.news.length > i; i++) {
-                            if (i > 0 && i <= countNews - 1) {
-                                var $clone = $newsBlock.clone();
-                                $clone.find('.title').html(response.news[i].title);
-                                $clone.find('.publish').html(response.news[i].pubDate);
-                                $clone.appendTo('.right_col_inner');
-                            }
+                        var description = response.news[0].description;
+                        console.log(description.length)
+                        if (description.length > 160) {
+                            description = description.slice(0, 160) + ' ...';
+                            console.log(description)
                         }
-                        var it = 0;
-                        var left = parseInt($('.right_col_inner').css('left'));
 
-                        var timerId = setTimeout(function tick() {
+                        $('.description').html(description);
 
-                            if (it <= countNews / 4) {
-                                console.log(left);
-                                $('.right_col_inner').animate({
-                                    left: left - (295 * 4) +'px'
-                                }, 500);
-                                left = left - (295 * 4);
-                                it++;
-                            }
+                        if (response.news[0].author != "" ) {
+                            var author = '<span class="author">'+ response.news[0].author +'</span>';
+                            $(author).insertBefore('.date');
+                        }
 
+                        if (response.news[0].image != "") {
+                            $('.col_img').append('<img src="'+ response.news[0].image +'">')
+                        }
 
-                            timerId = setTimeout(tick, 60000 / (countNews / 4));
-                        }, 60000 / (countNews / 4));
+                        $('.widget_block').show();
+                        $('.preloader').hide();
 
                     } catch (e) {
                         $('.preloader').addClass('error');
@@ -183,31 +186,24 @@
                 },
                 complete: function() {
                     d = new Date();
-                    //var queryTime =  d.getTime() - startTime;
                     console.log('Query execution time', (d.getTime() - startTime) * 0.001);
-
-                    $('.widget_block').show();
-                    //$('.preloader').hide();
-
-
                 }
             });
         })
     </script>
     <div class="placeholder">
         <div class="widget_block">
-            <div class="left_col col">
+            <div class="col col_rate">
                 <div class="rate usd_rate"><span class="symbol">$</span><span class="USD"></span></div>
                 <div class="rate eur_rate"><span class="symbol">€</span><span class="EUR"></span></div>
             </div>
+            <div class="col col_img">
+                <div class="logo"></div>
+            </div>
             <div class="right_col col">
-                <div class="right_col_inner">
-                    <div class="news_block">
-                        <div class="title">В Сибири преподавателя уволили после показа студентам фильма о Медведеве</div>
-                        <div class="publish">22 Mar 2017 16:05</div>
-                    </div>
-                </div>
-                <div class="fake"></div>
+                <div class="title"></div>
+                <div class="description"></div>
+                <div class="date_author"><span class="date"></span></div>
             </div>
         </div>
         <div class="preloader">
