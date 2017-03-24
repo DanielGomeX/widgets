@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aliexpress</title>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <script  src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/jscr/widget_aliexpress/lightslider.js"></script>
+    <style type="text/css" class="lightSlider">
+        .lSSlideOuter {
+            overflow: hidden;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none
+        }
+        .lightSlider:before, .lightSlider:after {
+            content: " ";
+            display: table;
+        }
+        .lightSlider {
+            overflow: hidden;
+            margin: 0;
+        }
+        .lSSlideWrapper {
+            max-width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .lSSlideWrapper > .lightSlider:after {
+            clear: both;
+        }
+        .lSSlideWrapper .lSSlide {
+            -webkit-transform: translate(0px, 0px);
+            -ms-transform: translate(0px, 0px);
+            transform: translate(0px, 0px);
+            -webkit-transition: all 1s;
+            -webkit-transition-property: -webkit-transform,height;
+            -moz-transition-property: -moz-transform,height;
+            transition-property: transform,height;
+            -webkit-transition-duration: inherit !important;
+            transition-duration: inherit !important;
+            -webkit-transition-timing-function: inherit !important;
+            transition-timing-function: inherit !important;
+        }
+        .lSSlideWrapper .lSFade {
+            position: relative;
+        }
+        .lSSlideWrapper .lSFade > * {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            z-index: 9;
+            margin-right: 0;
+            width: 100%;
+        }
+        .lSSlideWrapper.usingCss .lSFade > * {
+            opacity: 0;
+            -webkit-transition-delay: 0s;
+            transition-delay: 0s;
+            -webkit-transition-duration: inherit !important;
+            transition-duration: inherit !important;
+            -webkit-transition-property: opacity;
+            transition-property: opacity;
+            -webkit-transition-timing-function: inherit !important;
+            transition-timing-function: inherit !important;
+        }
+        .lSSlideWrapper .lSFade > *.active {
+            z-index: 10;
+        }
+        .lSSlideWrapper.usingCss .lSFade > *.active {
+            opacity: 1;
+        }
+        /** /!!! End of core css Should not edit !!!/**/
+
+        /* Pager */
+        .lSSlideOuter .lSPager.lSpg {
+            margin: 10px 0 0;
+            padding: 0;
+            text-align: center;
+        }
+        .lSSlideOuter .lSPager.lSpg > li {
+            cursor: pointer;
+            display: inline-block;
+            padding: 0 5px;
+        }
+        .lSSlideOuter .lSPager.lSpg > li a {
+            background-color: #222222;
+            border-radius: 30px;
+            display: inline-block;
+            height: 8px;
+            overflow: hidden;
+            text-indent: -999em;
+            width: 8px;
+            position: relative;
+            z-index: 99;
+            -webkit-transition: all 0.5s linear 0s;
+            transition: all 0.5s linear 0s;
+        }
+        .lSSlideOuter .lSPager.lSpg > li:hover a, .lSSlideOuter .lSPager.lSpg > li.active a {
+            background-color: #428bca;
+        }
+        .lSSlideOuter .media {
+            opacity: 0.8;
+        }
+        .lSSlideOuter .media.active {
+            opacity: 1;
+        }
+        /* End of pager */
+
+        /** Gallery */
+        .lSSlideOuter .lSPager.lSGallery {
+            list-style: none outside none;
+            padding-left: 0;
+            margin: 0;
+            overflow: hidden;
+            transform: translate3d(0px, 0px, 0px);
+            -moz-transform: translate3d(0px, 0px, 0px);
+            -ms-transform: translate3d(0px, 0px, 0px);
+            -webkit-transform: translate3d(0px, 0px, 0px);
+            -o-transform: translate3d(0px, 0px, 0px);
+            -webkit-transition-property: -webkit-transform;
+            -moz-transition-property: -moz-transform;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .lSSlideOuter .lSPager.lSGallery li {
+            overflow: hidden;
+            -webkit-transition: border-radius 0.12s linear 0s 0.35s linear 0s;
+            transition: border-radius 0.12s linear 0s 0.35s linear 0s;
+        }
+        .lSSlideOuter .lSPager.lSGallery li.active, .lSSlideOuter .lSPager.lSGallery li:hover {
+            border-radius: 5px;
+        }
+        .lSSlideOuter .lSPager.lSGallery img {
+            display: block;
+            height: auto;
+            max-width: 100%;
+        }
+        .lSSlideOuter .lSPager.lSGallery:before, .lSSlideOuter .lSPager.lSGallery:after {
+            content: " ";
+            display: table;
+        }
+        .lSSlideOuter .lSPager.lSGallery:after {
+            clear: both;
+        }
+        /* End of Gallery*/
+
+        /* slider actions */
+        .lSAction > a {
+            width: 32px;
+            display: block;
+            top: 50%;
+            height: 32px;
+            background-image: url('../img/controls.png');
+            cursor: pointer;
+            position: absolute;
+            z-index: 99;
+            margin-top: -16px;
+            opacity: 0.5;
+            -webkit-transition: opacity 0.35s linear 0s;
+            transition: opacity 0.35s linear 0s;
+        }
+        .lSAction > a:hover {
+            opacity: 1;
+        }
+        .lSAction > .lSPrev {
+            background-position: 0 0;
+            left: 10px;
+        }
+        .lSAction > .lSNext {
+            background-position: -32px 0;
+            right: 10px;
+        }
+        .lSAction > a.disabled {
+            pointer-events: none;
+        }
+        .cS-hidden {
+            height: 1px;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            overflow: hidden;
+        }
+
+
+        /* vertical */
+        .lSSlideOuter.vertical {
+            position: relative;
+        }
+        .lSSlideOuter.vertical.noPager {
+            padding-right: 0px !important;
+        }
+        .lSSlideOuter.vertical .lSGallery {
+            position: absolute !important;
+            right: 0;
+            top: 0;
+        }
+        .lSSlideOuter.vertical .lightSlider > * {
+            width: 100% !important;
+            max-width: none !important;
+        }
+
+        /* vertical controlls */
+        .lSSlideOuter.vertical .lSAction > a {
+            left: 50%;
+            margin-left: -14px;
+            margin-top: 0;
+        }
+        .lSSlideOuter.vertical .lSAction > .lSNext {
+            background-position: 31px -31px;
+            bottom: 10px;
+            top: auto;
+        }
+        .lSSlideOuter.vertical .lSAction > .lSPrev {
+            background-position: 0 -31px;
+            bottom: auto;
+            top: 10px;
+        }
+        /* vertical */
+
+
+        /* Rtl */
+        .lSSlideOuter.lSrtl {
+            direction: rtl;
+        }
+        .lSSlideOuter .lightSlider, .lSSlideOuter .lSPager {
+            padding-left: 0;
+            list-style: none outside none;
+        }
+        .lSSlideOuter.lSrtl .lightSlider, .lSSlideOuter.lSrtl .lSPager {
+            padding-right: 0;
+        }
+        .lSSlideOuter .lightSlider > *,  .lSSlideOuter .lSGallery li {
+            float: left;
+        }
+        .lSSlideOuter.lSrtl .lightSlider > *,  .lSSlideOuter.lSrtl .lSGallery li {
+            float: right !important;
+        }
+        /* Rtl */
+
+        @-webkit-keyframes rightEnd {
+            0% {
+                left: 0;
+            }
+
+            50% {
+                left: -15px;
+            }
+
+            100% {
+                left: 0;
+            }
+        }
+        @keyframes rightEnd {
+            0% {
+                left: 0;
+            }
+
+            50% {
+                left: -15px;
+            }
+
+            100% {
+                left: 0;
+            }
+        }
+        @-webkit-keyframes topEnd {
+            0% {
+                top: 0;
+            }
+
+            50% {
+                top: -15px;
+            }
+
+            100% {
+                top: 0;
+            }
+        }
+        @keyframes topEnd {
+            0% {
+                top: 0;
+            }
+
+            50% {
+                top: -15px;
+            }
+
+            100% {
+                top: 0;
+            }
+        }
+        @-webkit-keyframes leftEnd {
+            0% {
+                left: 0;
+            }
+
+            50% {
+                left: 15px;
+            }
+
+            100% {
+                left: 0;
+            }
+        }
+        @keyframes leftEnd {
+            0% {
+                left: 0;
+            }
+
+            50% {
+                left: 15px;
+            }
+
+            100% {
+                left: 0;
+            }
+        }
+        @-webkit-keyframes bottomEnd {
+            0% {
+                bottom: 0;
+            }
+
+            50% {
+                bottom: -15px;
+            }
+
+            100% {
+                bottom: 0;
+            }
+        }
+        @keyframes bottomEnd {
+            0% {
+                bottom: 0;
+            }
+
+            50% {
+                bottom: -15px;
+            }
+
+            100% {
+                bottom: 0;
+            }
+        }
+        .lSSlideOuter .rightEnd {
+            -webkit-animation: rightEnd 0.3s;
+            animation: rightEnd 0.3s;
+            position: relative;
+        }
+        .lSSlideOuter .leftEnd {
+            -webkit-animation: leftEnd 0.3s;
+            animation: leftEnd 0.3s;
+            position: relative;
+        }
+        .lSSlideOuter.vertical .rightEnd {
+            -webkit-animation: topEnd 0.3s;
+            animation: topEnd 0.3s;
+            position: relative;
+        }
+        .lSSlideOuter.vertical .leftEnd {
+            -webkit-animation: bottomEnd 0.3s;
+            animation: bottomEnd 0.3s;
+            position: relative;
+        }
+        .lSSlideOuter.lSrtl .rightEnd {
+            -webkit-animation: leftEnd 0.3s;
+            animation: leftEnd 0.3s;
+            position: relative;
+        }
+        .lSSlideOuter.lSrtl .leftEnd {
+            -webkit-animation: rightEnd 0.3s;
+            animation: rightEnd 0.3s;
+            position: relative;
+        }
+        /*/  GRab cursor */
+        .lightSlider.lsGrab > * {
+          cursor: -webkit-grab;
+          cursor: -moz-grab;
+          cursor: -o-grab;
+          cursor: -ms-grab;
+          cursor: grab;
+        }
+        .lightSlider.lsGrabbing > * {
+          cursor: move;
+          cursor: -webkit-grabbing;
+          cursor: -moz-grabbing;
+          cursor: -o-grabbing;
+          cursor: -ms-grabbing;
+          cursor: grabbing;
+        }
+    </style>
+    <style type="text/css" class="prelodaer" >
+        .windows8 {
+            position: relative;
+            width: 74px;
+            height:74px;
+            margin:auto;
+        }
+
+        .windows8 .wBall {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            opacity: 0;
+            transform: rotate(225deg);
+                -o-transform: rotate(225deg);
+                -ms-transform: rotate(225deg);
+                -webkit-transform: rotate(225deg);
+                -moz-transform: rotate(225deg);
+            animation: orbit 6.96s infinite;
+                -o-animation: orbit 6.96s infinite;
+                -ms-animation: orbit 6.96s infinite;
+                -webkit-animation: orbit 6.96s infinite;
+                -moz-animation: orbit 6.96s infinite;
+        }
+
+        .windows8 .wBall .wInnerBall{
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            background: rgba(255,255,255,0.98);
+            left:0px;
+            top:0px;
+            border-radius: 9px;
+        }
+
+        .windows8 #wBall_1 {
+            animation-delay: 1.52s;
+                -o-animation-delay: 1.52s;
+                -ms-animation-delay: 1.52s;
+                -webkit-animation-delay: 1.52s;
+                -moz-animation-delay: 1.52s;
+        }
+
+        .windows8 #wBall_2 {
+            animation-delay: 0.3s;
+                -o-animation-delay: 0.3s;
+                -ms-animation-delay: 0.3s;
+                -webkit-animation-delay: 0.3s;
+                -moz-animation-delay: 0.3s;
+        }
+
+        .windows8 #wBall_3 {
+            animation-delay: 0.61s;
+                -o-animation-delay: 0.61s;
+                -ms-animation-delay: 0.61s;
+                -webkit-animation-delay: 0.61s;
+                -moz-animation-delay: 0.61s;
+        }
+
+        .windows8 #wBall_4 {
+            animation-delay: 0.91s;
+                -o-animation-delay: 0.91s;
+                -ms-animation-delay: 0.91s;
+                -webkit-animation-delay: 0.91s;
+                -moz-animation-delay: 0.91s;
+        }
+
+        .windows8 #wBall_5 {
+            animation-delay: 1.22s;
+                -o-animation-delay: 1.22s;
+                -ms-animation-delay: 1.22s;
+                -webkit-animation-delay: 1.22s;
+                -moz-animation-delay: 1.22s;
+        }
+
+
+
+        @keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                transform: rotate(180deg);
+                animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                transform: rotate(300deg);
+                animation-timing-function: linear;
+                origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                transform:rotate(410deg);
+                animation-timing-function: ease-in-out;
+                origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                transform: rotate(645deg);
+                animation-timing-function: linear;
+                origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                transform: rotate(770deg);
+                animation-timing-function: ease-out;
+                origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                transform: rotate(900deg);
+                animation-timing-function: ease-out;
+                origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                transform: rotate(900deg);
+            }
+        }
+
+        @-o-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -o-transform: rotate(180deg);
+                -o-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -o-transform: rotate(300deg);
+                -o-animation-timing-function: linear;
+                -o-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -o-transform:rotate(410deg);
+                -o-animation-timing-function: ease-in-out;
+                -o-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -o-transform: rotate(645deg);
+                -o-animation-timing-function: linear;
+                -o-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -o-transform: rotate(770deg);
+                -o-animation-timing-function: ease-out;
+                -o-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -o-transform: rotate(900deg);
+                -o-animation-timing-function: ease-out;
+                -o-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -o-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -o-transform: rotate(900deg);
+            }
+        }
+
+        @-ms-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -ms-transform: rotate(180deg);
+                -ms-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -ms-transform: rotate(300deg);
+                -ms-animation-timing-function: linear;
+                -ms-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -ms-transform:rotate(410deg);
+                -ms-animation-timing-function: ease-in-out;
+                -ms-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -ms-transform: rotate(645deg);
+                -ms-animation-timing-function: linear;
+                -ms-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -ms-transform: rotate(770deg);
+                -ms-animation-timing-function: ease-out;
+                -ms-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -ms-transform: rotate(900deg);
+                -ms-animation-timing-function: ease-out;
+                -ms-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -ms-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -ms-transform: rotate(900deg);
+            }
+        }
+
+        @-webkit-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -webkit-transform: rotate(180deg);
+                -webkit-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -webkit-transform: rotate(300deg);
+                -webkit-animation-timing-function: linear;
+                -webkit-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -webkit-transform:rotate(410deg);
+                -webkit-animation-timing-function: ease-in-out;
+                -webkit-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -webkit-transform: rotate(645deg);
+                -webkit-animation-timing-function: linear;
+                -webkit-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -webkit-transform: rotate(770deg);
+                -webkit-animation-timing-function: ease-out;
+                -webkit-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -webkit-transform: rotate(900deg);
+                -webkit-animation-timing-function: ease-out;
+                -webkit-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -webkit-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -webkit-transform: rotate(900deg);
+            }
+        }
+
+        @-moz-keyframes orbit {
+            0% {
+                opacity: 1;
+                z-index:99;
+                -moz-transform: rotate(180deg);
+                -moz-animation-timing-function: ease-out;
+            }
+
+            7% {
+                opacity: 1;
+                -moz-transform: rotate(300deg);
+                -moz-animation-timing-function: linear;
+                -moz-origin:0%;
+            }
+
+            30% {
+                opacity: 1;
+                -moz-transform:rotate(410deg);
+                -moz-animation-timing-function: ease-in-out;
+                -moz-origin:7%;
+            }
+
+            39% {
+                opacity: 1;
+                -moz-transform: rotate(645deg);
+                -moz-animation-timing-function: linear;
+                -moz-origin:30%;
+            }
+
+            70% {
+                opacity: 1;
+                -moz-transform: rotate(770deg);
+                -moz-animation-timing-function: ease-out;
+                -moz-origin:39%;
+            }
+
+            75% {
+                opacity: 1;
+                -moz-transform: rotate(900deg);
+                -moz-animation-timing-function: ease-out;
+                -moz-origin:70%;
+            }
+
+            76% {
+            opacity: 0;
+                -moz-transform:rotate(900deg);
+            }
+
+            100% {
+            opacity: 0;
+                -moz-transform: rotate(900deg);
+            }
+        }
+    </style>
+    <style type="text/css" class="main_styles">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 480px;
+            height: 360px;
+            position: relative;
+        }
+
+        .placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            font-size: 100%;
+            overflow: hidden;
+            font-family: 'Oswald', sans-serif;
+            color: #fff;
+        }
+
+        .preloader {
+            top: 50%;
+            margin-top: -37px;
+        }
+
+        .preloader.error .wBall .wInnerBall {
+            background: red;
+        }
+
+        .widget_block {
+
+        }
+
+
+        /*.item {
+           position: absolute;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: black;
+        }*/
+
+
+        .item_title {
+            font-size: 25px;
+            font-weight: 400;
+            line-height: 30px;
+            height: 75px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid;
+            padding: 15px 0;
+            margin: 0 15px;
+        }
+
+        .item img {
+            max-width: 90%;
+        }
+
+        .item_row {
+            font-size: 0;
+            padding: 15px 0;
+            margin: 0 15px;
+        }
+
+        .item_col {
+            width: 50%;
+            font-size: 25px;
+            display: inline-block;
+            vertical-align: top;
+            position: relative;
+        }
+
+        .item_col:last-child {
+            padding-top: 40px;
+        }
+
+        .price {
+            display: inline-block;
+            text-align: center;
+            font-size: 65px;
+            font-weight: 400;
+            transform: rotate(0deg) scale(0);
+            -webkit-transform: rotate(0deg) scale(0);
+            -moz-transform: rotate(0deg) scale(0);
+            -o-transform: rotate(0deg) scale(0);
+            -ms-transform: rotate(0deg) scale(0);
+        }
+
+        .price.show {
+            transform: rotate(360deg) scale(1);
+            -webkit-transform: rotate(360deg) scale(1);
+            -moz-transform: rotate(360deg) scale(1);
+            -o-transform: rotate(360deg) scale(1);
+            -ms-transform: rotate(360deg) scale(1);
+            transition:All 0.5s ease;
+            -webkit-transition:All 0.5s ease;
+            -moz-transition:All 0.5s ease;
+            -o-transition:All 0.5s ease;
+        }
+
+        .currency {
+            display: inline-block;
+            position: relative;
+            left: 150px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            var slider;
+            $.ajax({
+                url: 'https://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listHotProducts/78491?language=ru&categoryId=509',
+                beforeSend: function(jqXHR) {
+                    $('.widget_block').hide();
+                },
+                success: function(data) {
+                    var response = data.result.products;
+                    console.log(response);
+
+                    for (var i = 0; response.length > i;i++) {
+                        var currentItem = $('.item').eq(i)
+                          , currentResponse = response[i]
+                          ;
+
+                        if (currentResponse.productTitle.length > 75) {
+                            currentResponse.productTitle = currentResponse.productTitle.slice(0, 75) + '...';
+                        }
+
+                        currentItem.find('.item_title').html(currentResponse.productTitle);
+                        currentItem.find('img').attr('src', currentResponse.imageUrl);
+                        currentItem.find('.price').html(currentResponse.salePrice.slice(4));
+                    }
+
+                },
+                complete: function() {
+                    $('.widget_block').show();
+                    $('.preloader').hide();
+
+                    slider = $("#lightSlider").lightSlider({
+                        item: 1,
+                        auto: true,
+                        controls: false,
+                        pause: 6000,
+                        onSliderLoad: function (el) {
+                            var activeSlide = el.find('.item.active')
+                            activeSlide.find('.price').addClass('show');
+
+                            animateCurrency(activeSlide);
+                        },
+                        onAfterSlide: function (el) {
+                            var activeSlide = el.find('.item.active');
+                            $('.item').find('.price').removeClass('show');
+                            activeSlide.find('.price').addClass('show');
+
+                            animateCurrency(activeSlide);
+                        },
+                    });
+
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $('.preloader').addClass('error');
+                }
+            });
+
+            $('html').keypress(function(eventObject){
+                console.log('Вы ввели символ с клавиатуры. Его код равен ' + eventObject.which);
+
+                if ( eventObject.which == 115) {
+                    console.log('play');
+                    slider.play();
+                } else if (eventObject.which == 112) {
+                    console.log('pause');
+                    slider.pause();
+                }
+
+            });
+
+            function animateCurrency(activeEl) {
+                setTimeout(function(){
+                    activeEl.find('.currency').animate({
+                        left: '-5px'
+                    }, 200, function() {
+                        $(this).animate({
+                            left: '0'
+                        }, 300)
+                    })
+                },500)
+
+            }
+        })
+    </script>
+</head>
+<body>
+   <div class="placeholder">
+        <ul class="widget_block" id="lightSlider">
+            <li class="item">
+                <div class="item_title"></div>
+                <div class="item_row">
+                    <div class="item_col">
+                        <img src="">
+                    </div>
+                    <div class="item_col">
+                        <div class="price"></div>
+                        <div class="currency">$</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="item_title"></div>
+                <div class="item_row">
+                    <div class="item_col">
+                        <img src="">
+                    </div>
+                    <div class="item_col">
+                        <div class="price"></div>
+                        <div class="currency">$</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="item_title"></div>
+                <div class="item_row">
+                    <div class="item_col">
+                        <img src="">
+                    </div>
+                    <div class="item_col">
+                        <div class="price"></div>
+                        <div class="currency">$</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="item_title"></div>
+                <div class="item_row">
+                    <div class="item_col">
+                        <img src="">
+                    </div>
+                    <div class="item_col">
+                        <div class="price"></div>
+                        <div class="currency">$</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="item_title"></div>
+                <div class="item_row">
+                    <div class="item_col">
+                        <img src="">
+                    </div>
+                    <div class="item_col">
+                        <div class="price"></div>
+                        <div class="currency">$</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="item_title"></div>
+                <div class="item_row">
+                    <div class="item_col">
+                        <img src="">
+                    </div>
+                    <div class="item_col">
+                        <div class="price"></div>
+                        <div class="currency">$</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="item_title"></div>
+                <div class="item_row">
+                    <div class="item_col">
+                        <img src="">
+                    </div>
+                    <div class="item_col">
+                        <div class="price"></div>
+                        <div class="currency">$</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="item_title"></div>
+                <div class="item_row">
+                    <div class="item_col">
+                        <img src="">
+                    </div>
+                    <div class="item_col">
+                        <div class="price"></div>
+                        <div class="currency">$</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="item_title"></div>
+                <div class="item_row">
+                    <div class="item_col">
+                        <img src="">
+                    </div>
+                    <div class="item_col">
+                        <div class="price"></div>
+                        <div class="currency">$</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="item_title"></div>
+                <div class="item_row">
+                    <div class="item_col">
+                        <img src="">
+                    </div>
+                    <div class="item_col">
+                        <div class="price"></div>
+                        <div class="currency">$</div>
+                    </div>
+                </div>
+            </li>
+        </div>
+        <div class="windows8 preloader">
+            <div class="wBall" id="wBall_1">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_2">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_3">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_4">
+                <div class="wInnerBall"></div>
+            </div>
+            <div class="wBall" id="wBall_5">
+                <div class="wInnerBall"></div>
+            </div>
+        </div>
+   </div>
+<body>
+</html>

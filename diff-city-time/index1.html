@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>widget-diff-city-time</title>
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="http://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <script type="text/javascript" src="http://storage.googleapis.com/jscr/widget_diff-city-time/jquery.thooClock.js"></script>
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            font-size: 0;
+            overflow: hidden;
+            font-family: 'Oswald', sans-serif;
+            color: #fff;
+        }
+
+        .col {
+            display: inline-block;
+            vertical-align: top;
+            width: 48%;
+            font-size: 20px;
+        }
+
+        .col.diff_col {
+            display: none;
+        }
+
+        .row {
+            height: 186px;
+        }
+
+        .row:nth-child(odd) {
+            margin-left: -20px;
+        }
+
+        .block {
+            display: inline-block;
+            text-align: center;
+        }
+
+        .right-align {
+            text-align: right;
+        }
+
+        .current_city {
+            text-align: center;
+            font-size: 80px;
+            margin-top: 20px;
+        }
+
+        .diff_city {
+            font-size: 40px;
+        }
+
+        .currentClock {
+            text-align: center;
+            padding-top: 35px;
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var $placeholder = $('.placeholder')
+          , $diffClock = $('.diffClock')
+          ;
+
+        cityNames = [
+            'London',
+            'Tokyo',
+            'New_York'
+        ]
+
+        var dialColor = '#fff'
+          , minuteHandColor = '#fff'
+          , hourHandColor = '#fff'
+          ;
+
+        $('.currentClock').thooClock({
+            dialColor: dialColor,
+            minuteHandColor: minuteHandColor,
+            hourHandColor: hourHandColor,
+            size: 400
+        });
+
+        $.ajax({
+            url: 'http://api.timezonedb.com/v2/list-time-zone?key=4RDQE6J2NR27&format=json',
+            success: function(data){
+                console.log(data);
+                var zones = {};
+                for (var i=0;data.zones.length > i;i++) {
+                    for (a=0; cityNames.length>a;a++) {
+                        if (data.zones[i].zoneName.split('/')[1].indexOf(cityNames[a]) != -1) {
+                            var date = new Date();
+                            zones[data.zones[i].zoneName.split('/')[1]] = data.zones[i].gmtOffset * 1000 / 3600000;
+                            zones[a] = {
+                                'city': data.zones[i].zoneName.split('/')[1],
+                                'gmtOffset': data.zones[i].gmtOffset * 1000 / 3600000
+                            }
+                        }
+                    }
+                }
+
+                var currentZone = new Date();
+                var cZ = +(currentZone.getTimezoneOffset() / 60);
+
+                $diffClock.each(function(index) {
+
+                    var offset = +(zones[index].gmtOffset + cZ);
+
+                    if (offset >= 0 ) {
+                        offset = '+' + offset;
+                    } else {
+                        offset = String(offset);
+                    }
+
+                    $(this).thooClock({
+                        dialColor: dialColor,
+                        minuteHandColor: minuteHandColor,
+                        hourHandColor: hourHandColor,
+                        size: 260,
+                        hourCorrection: String(offset)
+                    });
+                })
+
+                $('.diff_col').css('display', 'inline-block');
+            }
+        });
+
+    })
+</script>
+<div class="placeholder">
+    <div class="col">
+        <div class="col_inner">
+            <div class="current_city">Moscow</div>
+            <div class="currentClock"></div>
+        </div>
+    </div>
+    <div class="col diff_col">
+        <div class="col_inner">
+            <div class="row">
+                <div class="block">
+                    <div class="diff_city">London</div>
+                    <div class="diffClock"></div>
+                </div>
+            </div>
+            <div class="row right-align">
+                <div class="block ">
+                    <div class="diff_city">Tokio</div>
+                    <div class="diffClock"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="block">
+                    <div class="diff_city">New York</div>
+                    <div class="diffClock"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

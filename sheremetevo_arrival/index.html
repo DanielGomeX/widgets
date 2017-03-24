@@ -31,8 +31,11 @@
         }
 
         .preloader {
+            position: absolute;
             width: 100%;
             height: 100%;
+            top: 0;
+            left: 0;
         }
 
         .preloader.error .cssload-inner {
@@ -129,7 +132,7 @@
 
             var responseCount = 0;
             $.ajax({
-                url: 'https://js.dooh.xyz/sheremetevo_arrival/index.php',
+                url: 'https://js.dooh.xyz/sheremetevo_arrival/server/index.php',
                 beforeSend: function() {
                     d = new Date();
                     start_time = d.getTime();
@@ -197,8 +200,8 @@
                     var it = 1;
 
                     var timerId = setTimeout(function tick() {
-                        if (it != responseCount) {
-                            $('.terminal.active').fadeOut(200).removeClass('active');
+                        if (it >= 1 && it <= responseCount) {
+                            $('.terminal.active').fadeOut(200).removeClass('active').css('left', '40%');
 
                             $('.terminal').eq(it).animate({
                                 left: '10px'
@@ -208,6 +211,17 @@
                             }, 300);
 
                             it++;
+                        } else {
+                            $('.terminal').show();
+                            $('.terminal').eq(0).animate({
+                                left: '10px'
+                            }, 300).addClass('active');
+
+                            $('.widget_block_inner').css('left', '100%').animate({
+                                left: 0
+                            }, 300)
+
+                            it = 1;
                         }
                         timerId = setTimeout(tick, delay);
                     }, delay);
