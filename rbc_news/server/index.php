@@ -1,9 +1,9 @@
 <?php
     //echo phpinfo();
-    $domain = $_SERVER['HTTP_ORIGIN'];
+    /*$domain = $_SERVER['HTTP_ORIGIN'];
     $queryString = $_SERVER['QUERY_STRING'];
 
-    header("Access-Control-Allow-Origin:" . $domain );
+    header("Access-Control-Allow-Origin:" . $domain );*/
 
     date_default_timezone_set('Europe/Moscow');
 
@@ -20,19 +20,22 @@
     foreach ($news->channel->item as $key => $value) {
 
         $date = new DateTime($value->pubDate);
+        //echo array_key_exists('enclosure', $value);
 
-        if ($value->description == "" and array_key_exists('enclosure', $value) == FALSE) {
+        if ($value->description == "" && array_key_exists('enclosure', $value) == "") {
 
             continue;
-        }
+        } else {
 
-        $response['news'][] = array(
-            'title' => (string) $value->title,
-            'description' => (string) $value->description,
-            'author' => (string) $value->author,
-            'pubDate' => (string) $date->format('d M H:i'),
-            'image' => (string) $value->enclosure['url']
-        );
+            $response['news'][] = array(
+                'title' => (string) $value->title,
+                'description' => (string) $value->description,
+                'author' => (string) $value->author,
+                'pubDate' => (string) $date->format('d M H:i'),
+                'image' => (string) $value->enclosure['url'],
+                'is_img' => array_key_exists('enclosure', $value)
+            );
+        }
 
     }
 

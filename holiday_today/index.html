@@ -67,7 +67,7 @@
     /* eslint no-console: 0 */
         $(document).ready(function () {
             $.ajax({
-                url: 'https://js.dooh.xyz/holiday_today/index.php',
+                url: 'https://js.dooh.xyz/holiday_today/server/index.php',
                 beforeSend: function() {
 
                 },
@@ -146,13 +146,15 @@
                         }, 6000);
 
 
-                    } catch (err) {
+                        $('.preloader').hide();
+                        $('.widget_block').show();
 
+                    } catch (err) {
+                        console.log(err);
                     }
                 },
                 complete: function() {
-                    $('.preloader').hide();
-                    $('.widget_block').show();
+
 
 
                 }

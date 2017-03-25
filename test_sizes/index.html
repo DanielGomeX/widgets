@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TEST sizes</title>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <script  src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/jscr/widget_aliexpress/lightslider.js"></script>
+    
+    <style type="text/css" class="main_styles">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .placeholder {
+            width: 480px;
+            height: 360px;
+            background-color: black;
+            font-size: 100%;
+            overflow: hidden;
+            font-family: 'Oswald', sans-serif;
+            color: #fff;
+        }
+
+        .preloader {
+            top: 50%;
+            margin-top: -37px;
+        }
+
+        .preloader.error .wBall .wInnerBall {
+            background: red;
+        }
+
+        .widget_block {
+
+        }
+
+
+        /*.item {
+           position: absolute;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: black;
+        }*/
+
+
+        
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('.placeholder').append('<div style="font-size:35px">Body: width='+ $('body').width() + '</br>height: '+ $('body').height() +'</div>');
+            $('.placeholder').append('<div style="font-size:35px">Placeholder: width='+ $('.placeholder').width() + '</br>height: '+ $('.placeholder').height() +'</div>');
+            $('.placeholder').append('<div style="font-size:35px">Window: width='+ document.documentElement.clientWidth + '</br>height: '+ document.documentElement.clientHeight +'</div>');
+
+        })
+    </script>
+</head>
+<body>
+   <div class="placeholder">
+        
+   </div>
+<body>
+</html>
