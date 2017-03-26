@@ -120,6 +120,11 @@
             -o-transition:All 2s ease;
 
         }
+
+        .price {
+            display: inline-block;
+            max-width: 240px;
+        }
     </style>
 </head>
 <body>
@@ -170,7 +175,7 @@
             },
             success: function(data){
                 var response = JSON.parse(data);
-                console.log(JSON.parse(data));
+                //console.log(JSON.parse(data));
 
                 try {
                     for (var i = 0; response.result.results.length > i; i++) {

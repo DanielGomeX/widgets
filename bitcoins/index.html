@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Новости</title>
+    <title>Расписание самолетов</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -11,28 +11,37 @@
         body {
             margin: 0;
             padding: 0;
-            width: 1440px;
-            height: 270px;
-            background-color: black;
+            width: 480px;
+            height: 360px;
+            background-color: #dadada;
+            background: url(https://js.dooh.xyz/bitcoins/pattern.png);
         }
 
         .placeholder {
-            width: 1440px;
-            height: 270px;
-            background-color: black;
+            width: 100%;
+            height: 100%;
+            /*background-color: #dadada;*/
             overflow: hidden;
             font-family: 'Oswald', sans-serif;
-            color: #dadada;
+            color: #585858;
+            border: 4px solid #16BCC9;
+            box-sizing: border-box;
             /*position: absolute;
             top: 50%;
-            margin-top: -135px;
+            margin-top: -180px;
             left: 50%;
-            margin-left: -720px;*/
+            margin-left: -240px;*/
         }
 
         .preloader {
             width: 100%;
             height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .preloader .cssload-inner {
+            border-color: #16BCC9 !important;
         }
 
         .preloader.error .cssload-inner {
@@ -52,160 +61,114 @@
 
         .widget_block {
             display: none;
-            font-size: 0;
-            height: 100%;
         }
 
-        .col {
-            float: left;
-            height: 100%;
-            font-size: 25px;
-            box-sizing: border-box;
+        .header {
+            padding: 15px;
         }
 
-        .col_img img {
-            max-height: 100%;
+        .header img {
+            display: inline-block;
+            vertical-align: middle;
+            width: 45px;
         }
 
-        .col_img {
-            position: relative;
+        .logo_text {
+            color: #fff;
+            font-size: 35px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
         }
 
-        .logo {
-            position: absolute;
-            background: linear-gradient(to bottom, rgba(0,0,0, 0.8), rgba(255,255,255, 0));
-            width: 100%;
-            height: 80px;
-            padding-left: 20px;
+        .io {
+            display: inline-block;
+            margin-left: 5px;
+            color: #16BCC9;
         }
 
-        .col_rate {
-            font-size: 65px;
-            padding: 30px 20px;
+        .content {
+            color: #fff;
+            text-align: right;
+            font-size: 55px;
+            margin-top: 60px;
+            padding-right: 20px;
         }
-
-        .right_col {
-            padding: 0 20px;
-            max-width: 760px;
-        }
-
-        .symbol {
-            margin-right: 15px;
-        }
-
+        
         .title {
-            font-size: 40px;
+            text-transform: uppercase;
             font-weight: 300;
-            line-height: 45px;
-            min-height: 90px;
-            overflow: hidden;
-            margin-bottom: 10px;
+            font-size: 35px;
         }
 
-        .description {
-            min-height: 90px;
-            font-size: 30px;
-            line-height: 34px;
-            max-height:102px;
-            overflow: hidden;
-            font-weight: 300;
-            color: #a2a2a2;
-        }
+         .symbol {
+            color: #16BCC9;
+            display: inline-block;
+            margin-right: 10px;
+         }
 
-        .date_author {
-            color: #a2a2a2;
-            margin-top: 15px;
-            font-size: 25px;
-            font-weight: 200;
-        }
-
-        .author {
-            margin-right: 25px;
+        .number {
+            letter-spacing: 3px;
         }
 
     </style>
 </head>
 <body>
     <script type="text/javascript">
-        /* eslint no-console: 0 */
         $(document).ready(function() {
 
-            var d
-              , startTime
-              ;
-
+            var responseCount = 0;
             $.ajax({
-                url: 'https://js.dooh.xyz/rbc_news/server/index.php',
+                url: 'https://cex.io/api/tickers/USD/EUR/RUB/BTC',
                 beforeSend: function() {
                     d = new Date();
-                    startTime = d.getTime();
+                    start_time = d.getTime();
                 },
                 success: function(data){
                     try {
-                        console.log('rbc_news - data',JSON.parse(data));
+                        //var response = JSON.parse(data);
+                        console.log(data.data);
 
-                        var response = JSON.parse(data);
-
-                        $('.USD').html(response.rate.USD);
-                        $('.EUR').html(response.rate.EUR);
-
-                        $('.title').html(response.news[0].title);
-                        $('.date').html(response.news[0].pubDate);
-
-                        $('.logo').append('<img src="https://s.rbk.ru/v7_top_static/common/common-7.1.17/styles/blocks/topline/images/logo.svg">');
-
-                        var description = response.news[0].description;
-
-                        if (description.length > 160) {
-                            description = description.slice(0, 160) + ' ...';
-                        }
-
-                        $('.description').html(description);
-
-                        if (response.news[0].author != "" ) {
-                            var author = '<span class="author">'+ response.news[0].author +'</span>';
-                            $(author).insertBefore('.date');
-                        }
-
-                        if (response.news[0].image != "" && response.news[0].image.indexOf('https://www.youtube') < 0) {
-
-                            $('.col_img').append('<img src="'+ response.news[0].image +'">')
-                        } else {
-                            $('.col_img').hide();
+                        for (var i =0; data.data.length > i;i++) {
+                            if (data.data[i].pair == 'BTC:USD') {
+                                $('.usd').html(data.data[i].last)
+                            }
+                            if (data.data[i].pair == 'BTC:EUR') {
+                                $('.eur').html(data.data[i].last)
+                            } 
                         }
 
                         $('.widget_block').show();
                         $('.preloader').hide();
-
                     } catch (e) {
                         $('.preloader').addClass('error');
-                        console.log('rbc_news - Ошибка ' + e.name + ":" + e.message + "\n" + e.stack);
+                        console.log('Ошибка ' + e.name + ":" + e.message + "\n" + e.stack);
                     }
                 },
-                error: function(jqXHR, textStatus) {
+                error: function(jqXHR, textStatus, errorThrown) {
                     $('.preloader').addClass('error');
-                    console.log('rbc_news - ',textStatus);
+                    console.log(textStatus);
                 },
                 complete: function() {
                     d = new Date();
-                    console.log('rbc_news - Query execution time', (d.getTime() - startTime) * 0.001);
+                    var queryTime =  d.getTime() - start_time;
+                    console.log('Query execution time', (d.getTime() - start_time) * 0.001);
+
+                        
                 }
             });
         })
     </script>
     <div class="placeholder">
         <div class="widget_block">
-            <div class="col col_rate">
-                <div class="rate usd_rate"><span class="symbol">$</span><span class="USD"></span></div>
-                <div class="rate eur_rate"><span class="symbol">€</span><span class="EUR"></span></div>
+            <div class="header">
+                <img src="https://cex.io/img/_homepage/logo.svg">
+                <span class="logo_text">CEX <i>.</i><span class="io">IO</span></span>
             </div>
-            <div class="col col_img">
-                <div class="logo"></div>
-            </div>
-            <div class="right_col col">
-                <div class="title"></div>
-                <div class="description"></div>
-                <div class="date_author"><span class="date"></span></div>
+            <div class="content">
+                <div class="title">1 bitcoin</div>
+                <div class="bitcoin"><span class="symbol">$</span><span class="number usd"></span></div>
+                <div class="bitcoin"><span class="symbol">€</span><span class="number eur"></span></div>
             </div>
         </div>
         <div class="preloader">
@@ -246,7 +209,6 @@
                 -ms-border-radius: 50%;
                 -webkit-border-radius: 50%;
                 -moz-border-radius: 50%;
-            border-color: #fff;
         }
 
         .cssload-inner.cssload-one {
@@ -257,7 +219,7 @@
                 -ms-animation: cssload-rotate-one 1.15s linear infinite;
                 -webkit-animation: cssload-rotate-one 1.15s linear infinite;
                 -moz-animation: cssload-rotate-one 1.15s linear infinite;
-            border-bottom: 3px solid #fff;
+            border-bottom: 3px solid rgb(0,0,0);
         }
 
         .cssload-inner.cssload-two {
@@ -268,7 +230,7 @@
                 -ms-animation: cssload-rotate-two 1.15s linear infinite;
                 -webkit-animation: cssload-rotate-two 1.15s linear infinite;
                 -moz-animation: cssload-rotate-two 1.15s linear infinite;
-            border-right: 3px solid #fff;
+            border-right: 3px solid rgb(0,0,0);
         }
 
         .cssload-inner.cssload-three {
@@ -279,7 +241,7 @@
                 -ms-animation: cssload-rotate-three 1.15s linear infinite;
                 -webkit-animation: cssload-rotate-three 1.15s linear infinite;
                 -moz-animation: cssload-rotate-three 1.15s linear infinite;
-            border-top: 3px solid #fff;
+            border-top: 3px solid rgb(0,0,0);
         }
 
 

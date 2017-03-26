@@ -1,9 +1,9 @@
 <?php
     //echo phpinfo();
-    /*$domain = $_SERVER['HTTP_ORIGIN'];
+    $domain = $_SERVER['HTTP_ORIGIN'];
     $queryString = $_SERVER['QUERY_STRING'];
 
-    header("Access-Control-Allow-Origin:" . $domain );*/
+    header("Access-Control-Allow-Origin:" . $domain );
 
     date_default_timezone_set('Europe/Moscow');
 
@@ -32,7 +32,7 @@
                 'description' => (string) $value->description,
                 'author' => (string) $value->author,
                 'pubDate' => (string) $date->format('d M H:i'),
-                'image' => (string) $value->enclosure['url'],
+                'image' => (string) str_replace('http://', 'https://' , $value->enclosure['url']),
                 'is_img' => array_key_exists('enclosure', $value)
             );
         }
