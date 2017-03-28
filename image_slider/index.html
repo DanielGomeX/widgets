@@ -6,9 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://js.dooh.xyz/image_slider/themes/1/js-image-slider.css" rel="stylesheet" type="text/css" />
-    <script src="https://js.dooh.xyz/image_slider/themes/1/js-image-slider.js" type="text/javascript"></script>
-    <link href="https://js.dooh.xyz/image_slider/generic.css" rel="stylesheet" type="text/css" />
+
     <style type="text/css">
         html,
         body {
@@ -24,7 +22,7 @@
             width: 480px;
             height: 360px;
             background-color: #dadada;
-            overflow: hidden;
+            /*overflow: hidden;*/
             font-family: 'Oswald', sans-serif;
             color: #585858;
             /*position: absolute;
@@ -76,20 +74,66 @@
             height: 100%;
         }
 
+        #slider img {
+            width: 480px;
+            height: 360px;
+        }
+
         .widget_block #slider .navBulletsWrapper {
             display: none;
+        }
+
+        .subSlider {
+            position: absolute;
+            top:0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            font-size: 0;
         }
 
 
     </style>
 </head>
 <body>
-    <script type="text/javascript">
+    <script type="text/javascript" id="ajax">
         $(document).ready(function() {
 
 
+            function createSubBlock(placeholder) {
+
+                var squareSize = 10;
+
+                var outerWidth = parseInt($('#sliderFrame').width())
+                  , outerHeight = parseInt($('#sliderFrame').height())
+                  , squreSize =  {'width': outerWidth/10, 'height': outerHeight/10 }
+                  ;
+
+                var squareCount = (outerWidth/10) * (outerHeight/10)
+                var squareArr = [];
+                for (var i =0; 10*10 > i;i++ ) {
+
+                    var newSquare = $('<span class="square square_'+ i +'"></span>');
+                    placeholder.append(newSquare);
+
+                    newSquare.css({
+                        'width': squreSize.width,
+                        'height': squreSize.height,
+                        'position': 'relative',
+                        'display': 'inline-block'
+                    })
+
+                    newSquare.css({
+                        'background': 'url(http://placekitten.com/480/360)',
+                        'background-position': '-'+newSquare.position().left + 'px ' +  '-' + newSquare.position().top + 'px '
+                    })
+
+                }
+            }
+
             $.ajax({
-                url: 'https://pixabay.com/api/?key=4871213-36a18f29bf8f668c8b9f03803&image_type=photo&pretty=true&category=travel&min_width=480&min_height=360',
+                url: 'https://pixabay.com/api/?key=4871213-36a18f29bf8f668c8b9f03803&image_type=photo&pretty=true&category=travel&min_width=480&min_height=360&orientation=horizontal',
                 beforeSend: function() {
                     d = new Date();
                     start_time = d.getTime();
@@ -106,7 +150,7 @@
                             $('#slider').append('<img src="' + imageUrl + '">');
                         }
 
-
+                        createSubBlock($('.subSlider'));
                     } catch (e) {
                         $('.preloader').addClass('error');
                         console.log('Ошибка ' + e.name + ":" + e.message + "\n" + e.stack);
@@ -128,8 +172,10 @@
         <div class="widget_block">
             <div id="sliderFrame">
                 <div id="slider"></div>
+                <div class="subSlider"></div>
             </div>
         </div>
+        <div class="img"><img src="http://placekitten.com/480/360"></div>
         <div class="preloader">
             <div class="cssload-loader">
                 <div class="cssload-inner cssload-one"></div>
@@ -344,4 +390,5 @@
             }
         }
     </style>
+    <!--<script src="https://js.dooh.xyz/image_slider/themes/1/js-image-slider.js" type="text/javascript"></script>-->
 </html>

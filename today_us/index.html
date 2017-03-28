@@ -226,13 +226,15 @@
                         $('.preloader').hide();
                         $('.widget_block').show();
                     } catch (err) {
+                        console.log('holiday_us try error - ', err)
                         $('.preloader').addClass('error');
                     }
                 },
                 complete: function() {
 
                 },
-                error: function() {
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('today_us ajax error - ', jqXHR + ' ' + textStatus + ' ' + errorThrown)
                     $('.preloader').addClass('error');
                 }
             });
