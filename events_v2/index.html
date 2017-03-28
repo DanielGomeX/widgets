@@ -175,7 +175,7 @@
             },
             success: function(data){
                 var response = JSON.parse(data);
-                //console.log(JSON.parse(data));
+                console.log('evens_v2 - data - ', JSON.parse(data));
 
                 try {
                     for (var i = 0; response.result.results.length > i; i++) {
@@ -197,7 +197,10 @@
                             var dateStart = new Date(currentData.dates[0].start_date);
 
                             currentRow.find('.start_date').html(dateStart.toLocaleString("ru", options));
-                            currentRow.find('.start_time').html(currentData.dates[0].start_time.slice(0, -3));
+
+                            if (currentData.dates[0].start_time != null) {
+                                currentRow.find('.start_time').html(currentData.dates[0].start_time.slice(0, -3));
+                            }
 
                             if (currentData.dates[0].end_date != null) {
 
@@ -218,6 +221,38 @@
                         }
                     }
 
+                    var cubeSides = [
+                        'front',
+                        'back',
+                        'right',
+                        'left',
+                        'top',
+                        'bottom'
+                    ]
+
+                    var _classPrefix = 'show-';
+                    var i = 1;
+                    var ii = 1;
+                    var timerId = setTimeout(function tick() {
+
+                        if (i < cubeSides.length) {
+                            $('#cube').removeClass();
+                            $('#cube').addClass(_classPrefix + cubeSides[i++]);
+                            $('.events_item.active').removeClass('active');
+                            $('.events_item').eq(ii++).addClass('active');
+                        } else {
+                            $('#cube').removeClass();
+                            $('#cube').addClass(_classPrefix + cubeSides[0])
+                            $('.events_item.active').removeClass('active');
+                            $('.events_item').eq(0).addClass('active');
+                            i = 1;
+                            ii=1;
+                        }
+
+                        timerId = setTimeout(tick, 60000 / cubeSides.length);
+
+                    }, 2000);
+
                     $('.windows8').hide();
                     $('.events_item').eq(0).addClass('active');
                     $('.widget_block').show();
@@ -228,40 +263,6 @@
                     console.log(err.message + '<br>' + err.stack);
                     console.log(JSON.parse(data));
                 }
-
-                var cubeSides = [
-                    'front',
-                    'back',
-                    'right',
-                    'left',
-                    'top',
-                    'bottom'
-                ]
-
-                var _classPrefix = 'show-';
-                var i = 1;
-                var ii = 1;
-                var timerId = setTimeout(function tick() {
-
-                    if (i < cubeSides.length) {
-                        $('#cube').removeClass();
-                        $('#cube').addClass(_classPrefix + cubeSides[i++]);
-                        $('.events_item.active').removeClass('active');
-                        $('.events_item').eq(ii++).addClass('active');
-                    } else {
-                        $('#cube').removeClass();
-                        $('#cube').addClass(_classPrefix + cubeSides[0])
-                        $('.events_item.active').removeClass('active');
-                        $('.events_item').eq(0).addClass('active');
-                        i = 1;
-                        ii=1;
-                    }
-
-                    timerId = setTimeout(tick, 60000 / cubeSides.length);
-
-                }, 2000);
-
-
             },
             complete: function() {
 
