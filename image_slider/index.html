@@ -22,7 +22,7 @@
             width: 480px;
             height: 360px;
             background-color: #dadada;
-            /*overflow: hidden;*/
+            overflow: hidden;
             font-family: 'Oswald', sans-serif;
             color: #585858;
             /*position: absolute;
@@ -77,6 +77,10 @@
         #slider img {
             width: 480px;
             height: 360px;
+            position: absolute;
+            top:0;
+            left: 0;
+            opacity: 0;
         }
 
         .widget_block #slider .navBulletsWrapper {
@@ -93,26 +97,41 @@
             font-size: 0;
         }
 
+        .square {
+            opacity: 0;
+            box-shadow: 0px 0px 0px rgba(255,255,255, 0.6);
+            transition:box-shadow 0.5s ease;
+            -webkit-transition:box-shadow 0.5s ease;
+            -moz-transition:box-shadow 0.5s ease;
+            -o-transition:box-shadow 0.5s ease;
+        }
+
+        .square.open {
+            box-shadow: 0px 0px 15px rgba(255,255,255, 0.6);
+            transition:All 1s ease;
+            -webkit-transition:All 1s ease;
+            -moz-transition:All 1s ease;
+            -o-transition:All 1s ease;
+        }
 
     </style>
 </head>
 <body>
     <script type="text/javascript" id="ajax">
         $(document).ready(function() {
+            /* eslint no-console:0 */
 
-
-            function createSubBlock(placeholder) {
-
-                var squareSize = 10;
+            function createSubBlock(placeholder, imgUrl) {
+                clearSubBlock(placeholder);
+                var squareSize = 5;
 
                 var outerWidth = parseInt($('#sliderFrame').width())
                   , outerHeight = parseInt($('#sliderFrame').height())
-                  , squreSize =  {'width': outerWidth/10, 'height': outerHeight/10 }
+                  , squreSize =  {'width': outerWidth/squareSize, 'height': outerHeight/squareSize }
                   ;
 
-                var squareCount = (outerWidth/10) * (outerHeight/10)
-                var squareArr = [];
-                for (var i =0; 10*10 > i;i++ ) {
+
+                for (var i =0; Math.pow(squareSize,2) > i;i++ ) {
 
                     var newSquare = $('<span class="square square_'+ i +'"></span>');
                     placeholder.append(newSquare);
@@ -124,12 +143,63 @@
                         'display': 'inline-block'
                     })
 
+
+
                     newSquare.css({
-                        'background': 'url(http://placekitten.com/480/360)',
-                        'background-position': '-'+newSquare.position().left + 'px ' +  '-' + newSquare.position().top + 'px '
+                        'background': 'url('+ imgUrl +')',
+                        //'background-size': squreSize.width + 'px ' +  squreSize.height + 'px',
+                        'background-position': '-'+newSquare.position().left + 'px ' +  '-' + newSquare.position().top + 'px ',
+                        'background-size': outerWidth + 'px ' + outerHeight + 'px'
                     })
 
                 }
+            }
+
+            function clearSubBlock(placeholder) {
+                placeholder.empty();
+            }
+
+            function generateArrayRandomNumber (min, max) {
+                var totalNumbers        = max - min + 1,
+                    arrayTotalNumbers   = [],
+                    arrayRandomNumbers  = [],
+                    tempRandomNumber;
+
+                while (totalNumbers--) {
+                    arrayTotalNumbers.push(totalNumbers + min);
+                }
+
+                while (arrayTotalNumbers.length) {
+                    tempRandomNumber = Math.round(Math.random() * (arrayTotalNumbers.length - 1));
+                    arrayRandomNumbers.push(arrayTotalNumbers[tempRandomNumber]);
+                    arrayTotalNumbers.splice(tempRandomNumber, 1);
+                }
+
+                return arrayRandomNumbers;
+            }
+
+
+            function animateSubBlock(placeholder, countBlock, imgIndex) {
+                var subBlockItem = placeholder.find('.square');
+                var randomArr = generateArrayRandomNumber(0, countBlock);
+
+                var i = 1;
+                var interval = setInterval(function() {
+                    if (i < randomArr.length ) {
+                        subBlockItem.eq(randomArr[i]).addClass('open').animate({
+                            opacity: 1,
+                            'box-shadow': '0px 0px 15px rgba(255,255,255, 0.6)'
+                        },50)
+                        i++;
+                    } else {
+                        subBlockItem.removeClass('open');
+                        $('#slider').find('img').eq(imgIndex).css('opacity', 1);
+                        clearInterval(interval);
+                        //clearSubBlock($('.subSlider'));
+                    }
+
+                }, 50)
+
             }
 
             $.ajax({
@@ -150,7 +220,23 @@
                             $('#slider').append('<img src="' + imageUrl + '">');
                         }
 
-                        createSubBlock($('.subSlider'));
+                        $('#slider').find('img').eq(0).css('opacity', 1);
+
+                        var i = 1;
+                        var timerId = setTimeout(function tick() {
+                            if (i < data.hits.length) {
+                                createSubBlock($('.subSlider'), $('#slider').find('img').eq(i).attr('src'));
+                                animateSubBlock($('.subSlider'), 25, i);
+                                console.log(i);
+                                i++;
+                            } else {
+                                $('#slider').find('img').css('opacity', 0)
+                                $('#slider').find('img').eq(0).css('opacity', 1);
+                                i = 1;
+                            }
+                            timerId = setTimeout(tick, 6000);
+                        }, 6000);
+
                     } catch (e) {
                         $('.preloader').addClass('error');
                         console.log('Ошибка ' + e.name + ":" + e.message + "\n" + e.stack);
@@ -175,7 +261,6 @@
                 <div class="subSlider"></div>
             </div>
         </div>
-        <div class="img"><img src="http://placekitten.com/480/360"></div>
         <div class="preloader">
             <div class="cssload-loader">
                 <div class="cssload-inner cssload-one"></div>
