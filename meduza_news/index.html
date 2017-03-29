@@ -57,7 +57,18 @@
             position: relative;
         }
 
-        
+        .widget_block:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(to bottom, black, rgba(255,255,255, 0));
+            z-index: 9
+        }
+
+
     </style>
 </head>
 <body>
@@ -70,7 +81,7 @@
               ;
 
             $.ajax({
-                url: 'http://localhost/widgets_git/meduza_news/server/index.php',
+                url: 'http://widgets/meduza_news/server/index.php',
                 beforeSend: function() {
                     d = new Date();
                     startTime = d.getTime();
@@ -84,15 +95,15 @@
                         //$('#intro').html(response[0].title);
                         $('.titlecontent').html(response[0].description);
                         //$('.image').attr('src', response[0].image);
-                        //
+
                         for (var i=1;response.length >i;i++) {
                             //$('.titlecontent').append('<p class="p">' + response[i].description+ '</p>')
                         }
-                        
+
                         $('.widget_block').show();
                         $('.preloader').hide();
 
-                        
+
 
                     } catch (e) {
                         $('.preloader').addClass('error');

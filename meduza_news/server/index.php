@@ -1,9 +1,9 @@
 <?php
     //echo phpinfo();
-    /*$domain = $_SERVER['HTTP_ORIGIN'];
+    $domain = $_SERVER['HTTP_ORIGIN'];
     $queryString = $_SERVER['QUERY_STRING'];
 
-    header("Access-Control-Allow-Origin:" . $domain );*/
+    header("Access-Control-Allow-Origin:" . $domain );
 
     date_default_timezone_set('Europe/Moscow');
 
@@ -28,12 +28,12 @@
             'title' => (string) $value->title,
             'description' => (string) $value->description,
             'pubDate' => (string) $value->pubDate,
-            'image' => (string) $value->enclosure['url'] 
+            'image' => (string) $value->enclosure['url']
         );
 
     }
 
-    
+
 
     echo json_encode($response);
 
