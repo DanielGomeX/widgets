@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Earth today</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 480px;
+            height: 360px;
+            background-color: #dadada;
+        }
+
+        .placeholder {
+            width: 480px;
+            height: 360px;
+            background-color: #dadada;
+            overflow: hidden;
+            font-family: 'Oswald', sans-serif;
+            color: #585858;
+            /*position: absolute;
+            top: 50%;
+            margin-top: -180px;
+            left: 50%;
+            margin-left: -240px;*/
+        }
+
+        .preloader {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .preloader.error .cssload-inner {
+            border-color: red;
+        }
+
+        .cssload-loader {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .fake {
+            height: 100%;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .widget_block {
+            display: none;
+            background: #000000;
+            text-align: center;
+        }
+
+        .image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: auto;
+            max-height: 360px;
+            opacity: 0;
+        }
+
+        .image.show {
+            opacity: 1;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            /* eslint no-console: 0 */
+            var d
+              , startTime
+              ;
+
+
+
+            var url = 'https://api.nasa.gov/EPIC/api/natural/date/2017-03-29?api_key=8Sa8QU64PM0D82nzpPf7kyl2V2D9i8NtOXPoexmG';
+
+            $.ajax(url, {
+                success : function(iDataArr, stat, xhr) {
+                    // do something with the list
+                    console.log(iDataArr)
+
+                    for (var i = 0; iDataArr.length > i; i++) {
+                        console.log(iDataArr[i].image)
+                        $('.widget_block').append('<img class="image" src="https://api.nasa.gov/EPIC/archive/natural/2017/03/29/png/'+ iDataArr[i].image +'.png?api_key=8Sa8QU64PM0D82nzpPf7kyl2V2D9i8NtOXPoexmG">')
+                    }
+
+                    var i = 0;
+                    function animate() {
+                        $('.image').eq(i).animate({
+                            opacity: 1
+                        },50, function() {
+                            i++;
+                            animate();
+                        })
+                    }
+
+                    animate();
+
+                    $('.preloader').hide();
+                    $('.widget_block').show();
+                }
+            });
+        })
+    </script>
+    <div class="placeholder">
+        <div class="widget_block">
+
+        </div>
+        <div class="preloader">
+            <div class="cssload-loader">
+                <div class="cssload-inner cssload-one"></div>
+                <div class="cssload-inner cssload-two"></div>
+                <div class="cssload-inner cssload-three"></div>
+            </div>
+            <div class="fake"></div>
+        </div>
+    </div>
+</body>
+ <style type="text/css" id="preloder">
+        .cssload-loader {
+            position: relative;
+            left: calc(50% - 31px);
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+                -o-border-radius: 50%;
+                -ms-border-radius: 50%;
+                -webkit-border-radius: 50%;
+                -moz-border-radius: 50%;
+            perspective: 780px;
+        }
+
+        .cssload-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+                -o-box-sizing: border-box;
+                -ms-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+            border-radius: 50%;
+                -o-border-radius: 50%;
+                -ms-border-radius: 50%;
+                -webkit-border-radius: 50%;
+                -moz-border-radius: 50%;
+        }
+
+        .cssload-inner.cssload-one {
+            left: 0%;
+            top: 0%;
+            animation: cssload-rotate-one 1.15s linear infinite;
+                -o-animation: cssload-rotate-one 1.15s linear infinite;
+                -ms-animation: cssload-rotate-one 1.15s linear infinite;
+                -webkit-animation: cssload-rotate-one 1.15s linear infinite;
+                -moz-animation: cssload-rotate-one 1.15s linear infinite;
+            border-bottom: 3px solid rgb(0,0,0);
+        }
+
+        .cssload-inner.cssload-two {
+            right: 0%;
+            top: 0%;
+            animation: cssload-rotate-two 1.15s linear infinite;
+                -o-animation: cssload-rotate-two 1.15s linear infinite;
+                -ms-animation: cssload-rotate-two 1.15s linear infinite;
+                -webkit-animation: cssload-rotate-two 1.15s linear infinite;
+                -moz-animation: cssload-rotate-two 1.15s linear infinite;
+            border-right: 3px solid rgb(0,0,0);
+        }
+
+        .cssload-inner.cssload-three {
+            right: 0%;
+            bottom: 0%;
+            animation: cssload-rotate-three 1.15s linear infinite;
+                -o-animation: cssload-rotate-three 1.15s linear infinite;
+                -ms-animation: cssload-rotate-three 1.15s linear infinite;
+                -webkit-animation: cssload-rotate-three 1.15s linear infinite;
+                -moz-animation: cssload-rotate-three 1.15s linear infinite;
+            border-top: 3px solid rgb(0,0,0);
+        }
+
+
+
+
+
+
+
+        @keyframes cssload-rotate-one {
+            0% {
+                transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-o-keyframes cssload-rotate-one {
+            0% {
+                -o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-ms-keyframes cssload-rotate-one {
+            0% {
+                -ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-webkit-keyframes cssload-rotate-one {
+            0% {
+                -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-moz-keyframes cssload-rotate-one {
+            0% {
+                -moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @keyframes cssload-rotate-two {
+            0% {
+                transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-o-keyframes cssload-rotate-two {
+            0% {
+                -o-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -o-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-ms-keyframes cssload-rotate-two {
+            0% {
+                -ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-webkit-keyframes cssload-rotate-two {
+            0% {
+                -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-moz-keyframes cssload-rotate-two {
+            0% {
+                -moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @keyframes cssload-rotate-three {
+            0% {
+                transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-o-keyframes cssload-rotate-three {
+            0% {
+                -o-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -o-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-ms-keyframes cssload-rotate-three {
+            0% {
+                -ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-webkit-keyframes cssload-rotate-three {
+            0% {
+                -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-moz-keyframes cssload-rotate-three {
+            0% {
+                -moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+    </style>
+</html>
