@@ -6,6 +6,8 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="jquery.arctext.js"></script>
     <style type="text/css">
         html,
         body {
@@ -23,11 +25,9 @@
             overflow: hidden;
             font-family: 'Oswald', sans-serif;
             color: #585858;
-            /*position: absolute;
-            top: 50%;
-            margin-top: -180px;
-            left: 50%;
-            margin-left: -240px;*/
+            position: relative;
+            background-image: url(http://imagecolony.com/wp-content/uploads/2016/08/Galaxy-Wallpapers.jpeg);
+            background-size: 100%;
         }
 
         .preloader {
@@ -36,6 +36,10 @@
             height: 100%;
             top: 0;
             left: 0;
+        }
+
+        .preloader .cssload-inner {
+            border-color: #fff;
         }
 
         .preloader.error .cssload-inner {
@@ -55,24 +59,72 @@
 
         .widget_block {
             display: none;
-            background: #000000;
+            width: 100%;
+            height: 100%;
             text-align: center;
+            position: relative;
         }
 
         .image {
             position: absolute;
             top: 0;
-            left: 0;
+            left: 50%;
+            margin-left: -180px;
             width: auto;
             max-height: 360px;
             opacity: 0;
+            z-index: 1;
+            -webkit-clip-path: circle(50% at 50% 51%);
+            clip-path: circle(39% at 51% 50%);
         }
 
         .image.show {
             opacity: 1;
         }
 
+        .text-block {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            margin-left: -160px;
+            margin-top: -160px;
+            transform: rotate(0deg);
+            font-size: 35px;
+        }
 
+        .text-block.rotate {
+            transform: rotate(720deg);
+            transition:All 2s ease;
+            -webkit-transition:All 2s ease;
+            -moz-transition:All 2s ease;
+            -o-transition:All 2s ease;
+        }
+
+        .text-block.rotate .size{
+            transform: scale(1);
+            transition:All 2s ease;
+            -webkit-transition:All 2s ease;
+            -moz-transition:All 2s ease;
+            -o-transition:All 2s ease;
+        }
+
+        .size {
+            transform: scale(0);
+            display: inline-block;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            margin-left: -134px;
+            color: #dadada;
+            text-shadow: 1px 1px #fff;
+            transition:All 2s ease;
+            -webkit-transition:All 2s ease;
+            -moz-transition:All 2s ease;
+            -o-transition:All 2s ease;
+        }
 
 
     </style>
@@ -85,31 +137,59 @@
               , startTime
               ;
 
-
-
-            var url = 'https://api.nasa.gov/EPIC/api/natural/date/2017-03-29?api_key=8Sa8QU64PM0D82nzpPf7kyl2V2D9i8NtOXPoexmG';
+            var url = 'https://epic.gsfc.nasa.gov/api/natural';
 
             $.ajax(url, {
                 success : function(iDataArr, stat, xhr) {
-                    // do something with the list
                     console.log(iDataArr)
 
-                    for (var i = 0; iDataArr.length > i; i++) {
-                        console.log(iDataArr[i].image)
-                        $('.widget_block').append('<img class="image" src="https://api.nasa.gov/EPIC/archive/natural/2017/03/29/png/'+ iDataArr[i].image +'.png?api_key=8Sa8QU64PM0D82nzpPf7kyl2V2D9i8NtOXPoexmG">')
+                    var date = iDataArr[0].date.slice(0,10).replace('-', '/').replace('-', '/');
+
+                    for (var it = 0; iDataArr.length > it; it++) {
+
+                        $('.widget_block').append('<img class="image" src="https://api.nasa.gov/EPIC/archive/natural/'+ date +'/png/'+ iDataArr[it].image +'.png?api_key=8Sa8QU64PM0D82nzpPf7kyl2V2D9i8NtOXPoexmG">');
+
                     }
 
+                    //$('.widget_block').css('background-image', 'url(https://api.nasa.gov/EPIC/archive/natural/'+ date +'/png/'+ iDataArr[iDataArr.length -1 ].image +'.png?api_key=8Sa8QU64PM0D82nzpPf7kyl2V2D9i8NtOXPoexmG)');
+
+                    $('.image').eq(0).addClass('show');
+
                     var i = 0;
+                    var delay = 250;
+                    var z =1;
+
                     function animate() {
-                        $('.image').eq(i).animate({
-                            opacity: 1
-                        },50, function() {
-                            i++;
+
+                        if ( i < iDataArr.length) {
+
+                            $('.image').eq(i).animate({
+                                opacity: 1,
+                                'z-index': z++
+                            },delay, function() {
+                                i++;
+                                $(this).prev().css('opacity', 0);
+                                animate();
+                            })
+                        } else {
+                            i = 0;
                             animate();
-                        })
+                        }
                     }
 
                     animate();
+                    $('.size').css('margin-left', - parseInt(($('.size').outerWidth()/2)));
+
+                    $('.size').arctext({radius: 200, dir: 1});
+
+
+                    setTimeout(function() {
+                        $('.text-block').addClass('rotate');
+
+                        setTimeout(function() {
+                            $('.text-block').removeClass('rotate');
+                        }, 5000)
+                    }, 1500)
 
                     $('.preloader').hide();
                     $('.widget_block').show();
@@ -118,8 +198,9 @@
         })
     </script>
     <div class="placeholder">
-        <div class="widget_block">
-
+        <div class="widget_block"></div>
+        <div class="text-block">
+            <div class="size">Диаметр - 12742 км.</div>
         </div>
         <div class="preloader">
             <div class="cssload-loader">
