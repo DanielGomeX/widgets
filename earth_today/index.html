@@ -27,7 +27,7 @@
             color: #585858;
             position: relative;
             background-image: url(bg.jpeg);
-            background-size: 100%;
+            background-size: cover;
         }
 
         .preloader {
@@ -69,7 +69,7 @@
 
         .widget_block.min {
             opacity: 1;
-            transform: scale(0.25) translate(115px, -15px);
+            transform: scale(0.25) translate(215px, 0);
             transition:All 1s ease;
             -webkit-transition:All 1s ease;
             -moz-transition:All 1s ease;
@@ -108,12 +108,15 @@
             opacity: 0;
             position: absolute;
             left: 25px;
+            padding-right: 25px;
+            bottom: 15px;
             color: #dadada;
             text-shadow: 1px 1px #fff;
             transition:All 1.5s ease;
             -webkit-transition:All 1.5s ease;
             -moz-transition:All 1.5s ease;
             -o-transition:All 1.5s ease;
+            z-index: 999;
         }
 
         .widget_title {
@@ -134,7 +137,7 @@
             position: absolute;
             top: 50%;
             margin-top: -200px;
-            left: -60%;
+            left: -200px;
             height: 400px;
             width: 400px;
             transform: rotateX(70deg);
@@ -156,17 +159,27 @@
             transform-style: preserve-3d;
         }
 
+        .planeta.rotate {
+            transform: rotateX(-70deg);
+            transition:All 1.5s ease;
+            -webkit-transition:All 1.5s ease;
+            -moz-transition:All 1.5s ease;
+            -o-transition:All 1.5s ease;
+
+        }
+
         .planeta-sun {
             position: absolute;
+            position: absolute;
             top: 50%;
-            margin-top: -75px;
-            left: 60%;
-            margin-left: -20px;
-            width: 150px;
-            height: 150px;
+            margin-top: -32px;
+            left: 50%;
+            margin-left: -32px;
+            width: 75px;
+            height: 75px;
             background: url(sunny-icon-96.png) center no-repeat;
             background-size: 80px;
-            transform: rotateX(-80deg);
+            /*transform: rotateX(-80deg);*/
 
         }
 
@@ -180,7 +193,7 @@
             height: 25px;
             background: url(QsMercury.png) center no-repeat;
             background-size: 100%;
-            transform: rotateX(-80deg);
+            /*transform: rotateX(-80deg);*/
             border-radius: 50%;
             overflow: hidden;
 
@@ -196,7 +209,7 @@
             height: 25px;
             background: url(venus.gif) center no-repeat;
             background-size: 100%;
-            transform: rotateX(-80deg);
+            /*transform: rotateX(-80deg);*/
             border-radius: 50%;
             overflow: hidden;
 
@@ -212,28 +225,28 @@
             height: 25px;
             background: url(mars.gif) center no-repeat;
             background-size: 100%;
-            transform: rotateX(-80deg);
+           /*transform: rotateX(-80deg);*/
             border-radius: 50%;
             overflow: hidden;
 
         }
 
         .orbita.mercurii {
-            transform:   scale(1);
+            transform:   scale(0.7);
         }
 
 
         .orbita.venera {
-            transform:  scale(1.3);
+            transform:  scale(1.1);
         }
 
 
         .orbita.earth {
-            transform:  scale(1.8);
+            transform:  scale(1.5);
         }
 
         .orbita.mars {
-            transform:  scale(2.3);
+            transform:  scale(1.9);
         }
 
         @keyframes orbit {
@@ -254,8 +267,30 @@
             100% {
                 opacity: 1;
                 transform: scale(1) rotateZ(-1080deg) rotateX(70deg);
-                left: -60%;
+                left: -200px;
             }
+        }
+
+        @keyframes planets {
+            0% {
+                transform: rotateX(0);
+            }
+
+
+            100% {
+                transform: rotateX(-70deg);
+            }
+        }
+
+        @keyframes planeta-sun {
+            0% {
+                position: absolute;
+                top: 50%;
+                margin-top: -35px;
+                left: 60%;
+                margin-left: -65px;
+            }
+
         }
 
         .content {
@@ -270,7 +305,7 @@
             position: absolute;
             bottom: 0;
             height: 250px;
-            background: linear-gradient(to top, rgba(0,0,0, 0.8), rgba(255,255,255, 0));
+            background: linear-gradient(to top, rgba(29, 11, 33, 0.8), rgba(255,255,255, 0));
         }
 
 
@@ -304,8 +339,6 @@
                     var delay = 250;
                     var z =1;
 
-                    flag = true;
-
                     function animate() {
 
                         if ( i < iDataArr.length) {
@@ -332,6 +365,13 @@
                         })
                     }, 1500)
 
+                    setTimeout(function() {
+
+                        $('.planeta').each(function() {
+                            $(this).addClass('rotate');
+                        })
+                    }, 6500)
+
                     setTimeout(function(){
                         $('.widget_block').fadeIn(400).addClass('min');
                         animate();
@@ -342,23 +382,25 @@
                         $('.content i.before').animate({'opacity': 1}, 200)
                     }, 7500)
 
-                    var i = 0;
-                    setTimeout(function(){
-                        var timerId = setTimeout(function tick() {
+                    var sch = 0;
 
-                            $('.descr').eq(i).animate({
+                    var timerId = setTimeout(function tick() {
+                        console.log(sch);
+
+                        if (sch < $('.descr').length){
+                            $('.descr').eq(sch - 1).animate({'opacity': 0}, 200);
+
+                            $('.descr').eq(sch).animate({
                                 'opacity': 1
-                            }, 300, function() {
-                                setTimeout(function() {
-                                    $(this).css('opacity', 0);
-                                },3000)
+                            }, 300)
+                            sch++;
 
-                                i++;
-                            })
+                        } else {
+                            sch = 0;
+                        }
 
-                            timerId = setTimeout(tick, 2000);
-                        }, 2000);
-                    }, 8500)
+                        timerId = setTimeout(tick, 6000);
+                    }, 8000);
 
 
 
@@ -388,10 +430,14 @@
                 </div>
             </div>
             <div class="text-block">
-                <div class="size descr">Диаметр - 12742 км.</div>
-                <div class="materic descr">Количество материков - 6</div>
-                <div class="area descr">Площадь мирового океана - 362 млн. км²</div>
-                <div class="size descr">Диаметр - 12742 км.</div>
+                <div class="descr">3 планета от солнца</div>
+                <div class="descr">Диаметр - 12742 км.</div>
+                <div class="descr">Образовалась - 4,5 миллиарда лет назад</div>
+                <div class="descr">Количество материков - 6</div>
+                <div class="descr">365 дней - полный путь Земли вокруг Солнца</div>
+                <div class="descr">Площадь мирового океана - 362 млн. км²</div>
+                <div class="descr">Самая высокая точка Земли - гора Эверест</div>
+                <div class="descr">Самая глубокая точка Земли - Марьянская впадина</div>
             </div>
             <i class="before"></i>
         </div>
