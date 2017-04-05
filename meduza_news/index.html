@@ -80,7 +80,6 @@
             text-align: center;
             overflow: hidden;
             transform-origin: 50% 100%;
-            /*transform: perspective(300px) rotateX(25deg);*/
         }
 
         .descriptions:after {
@@ -97,9 +96,6 @@
         .descriptionscontent {
             position: absolute;
             bottom: -1000%;
-            /*top: 100%;*/
-
-            /*animation: scroll 100s linear 4s infinite;*/
         }
 
         @keyframes scroll {
@@ -171,7 +167,7 @@
               ;
 
             $.ajax({
-                url: 'http://widgets/meduza_news/server/index.php',
+                url: 'https://js.dooh.xyz/meduza_news/server/index.php',
                 beforeSend: function() {
                     d = new Date();
                     startTime = d.getTime();
@@ -247,16 +243,16 @@
 
                     } catch (e) {
                         $('.preloader').addClass('error');
-                        console.log('rbc_news - Ошибка ' + e.name + ":" + e.message + "\n" + e.stack);
+                        console.log('meduza_news - Ошибка ' + e.name + ":" + e.message + "\n" + e.stack);
                     }
                 },
                 error: function(jqXHR, textStatus) {
                     $('.preloader').addClass('error');
-                    console.log('rbc_news - ',textStatus);
+                    console.log('meduza_news - ',textStatus);
                 },
                 complete: function() {
                     d = new Date();
-                    console.log('rbc_news - Query execution time', (d.getTime() - startTime) * 0.001);
+                    console.log('meduza_news - Query execution time', (d.getTime() - startTime) * 0.001);
                 }
             });
         })

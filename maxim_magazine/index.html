@@ -22,7 +22,7 @@
             /*font-family: 'Oswald', sans-serif;*/
             font-family: 'Playfair Display', serif;
             color: #fff;
-            background: url(bg.jpg) center no-repeat;
+            background: url(https://js.dooh.xyz/maxim_magazine/bg.jpg) center no-repeat;
         }
 
         .widget_block {
@@ -117,7 +117,7 @@
 
             var curentDate = date.toLocaleString("ru", options)
             $.ajax({
-                url: 'http://widgets/maxim_magazine/server/index.php',
+                url: 'https://js.dooh.xyz/maxim_magazine/server/index.php',
                 beforeSend: function() {
 
                 },
@@ -163,9 +163,6 @@
                                 }, 200);
                                 it = 0;
                             }
-
-                            console.log(it);
-
 
                             timerId = setTimeout(tick, 8000);
                         }, 8000);

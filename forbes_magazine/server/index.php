@@ -8,8 +8,15 @@
     date_default_timezone_set('Europe/Moscow');
 
     $response = array();
+    $url = 'http://www.forbes.ru/newrss.xml';
 
-    $news = simplexml_load_file('http://www.forbes.ru/newrss.xml', null, LIBXML_NOCDATA);
+    $data = file_get_contents($url);
+
+    $news = simplexml_load_string($data, null, LIBXML_NOCDATA);
+
+    
+
+    //echo $data;
 
     foreach ($news->channel->item as $key => $value) {
         $date = new DateTime($value->pubDate);

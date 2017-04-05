@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Наша планета</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 480px;
+            height: 360px;
+            background-color: #dadada;
+        }
+
+        .placeholder {
+            width: 480px;
+            height: 360px;
+            background-color: #dadada;
+            overflow: hidden;
+            font-family: 'Oswald', sans-serif;
+            color: #585858;
+            position: relative;
+            background-image: url(https://js.dooh.xyz/our_planet/bg.jpeg);
+            background-size: cover;
+        }
+
+        .preloader {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .preloader .cssload-inner {
+            border-color: #fff;
+        }
+
+        .preloader.error .cssload-inner {
+            border-color: red;
+        }
+
+        .cssload-loader {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .fake {
+            height: 100%;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .widget_block {
+            display: none;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            position: relative;
+            transform: scale(1);
+            opacity: 0;
+        }
+
+        .widget_block.min {
+            opacity: 1;
+            transform: scale(0.25) translate(215px, 0);
+            transition:All 1s ease;
+            -webkit-transition:All 1s ease;
+            -moz-transition:All 1s ease;
+            -o-transition:All 1s ease;
+            z-index: 999;
+        }
+
+        .image {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin-left: -180px;
+            width: auto;
+            max-height: 360px;
+            opacity: 0;
+            z-index: 1;
+            -webkit-clip-path: circle(50% at 50% 51%);
+            clip-path: circle(39% at 51% 50%);
+        }
+
+        .image.show {
+            opacity: 1;
+        }
+
+        .text-block {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            font-size: 35px;
+            line-height: 35px;
+            height: 105px;
+        }
+
+        .descr {
+            opacity: 0;
+            position: absolute;
+            left: 25px;
+            padding-right: 25px;
+            bottom: 15px;
+            color: #dadada;
+            text-shadow: 1px 1px #fff;
+            transition:All 1.5s ease;
+            -webkit-transition:All 1.5s ease;
+            -moz-transition:All 1.5s ease;
+            -o-transition:All 1.5s ease;
+            z-index: 999;
+        }
+
+        .widget_title {
+            position: absolute;
+            top: -40px;
+            width: 100%;
+            color: #fff;
+            opacity: 0.8;
+            padding: 0 10px;
+            line-height: 40px;
+            font-size: 35px;
+            text-align: right;
+            box-sizing: border-box;
+        }
+
+        .planets {
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            margin-top: -200px;
+            left: -200px;
+            height: 400px;
+            width: 400px;
+            transform: rotateX(70deg);
+            transform-style: preserve-3d;
+            transition-timing-function: ease-in-out;
+        }
+
+
+        .orbita {
+            position: absolute;
+            top: 50%;
+            margin-top: -200px;
+            left: 50%;
+            margin-left: -200px;
+            border-radius: 50%;
+            border: 1px solid #fff;
+            width: 400px;
+            height: 400px;
+            transform-style: preserve-3d;
+        }
+
+        .planeta.rotate {
+            transform: rotateX(-70deg);
+            transition:All 1.5s ease;
+            -webkit-transition:All 1.5s ease;
+            -moz-transition:All 1.5s ease;
+            -o-transition:All 1.5s ease;
+
+        }
+
+        .planeta-sun {
+            position: absolute;
+            position: absolute;
+            top: 50%;
+            margin-top: -32px;
+            left: 50%;
+            margin-left: -32px;
+            width: 75px;
+            height: 75px;
+            background: url(https://js.dooh.xyz/our_planet/sunny-icon-96.png) center no-repeat;
+            background-size: 80px;
+            /*transform: rotateX(-80deg);*/
+
+        }
+
+        .planeta-mercurii {
+            position: absolute;
+            top: 50%;
+            margin-top: -12px;
+            right: 0;
+            margin-right: -14px;
+            width: 25px;
+            height: 25px;
+            background: url(https://js.dooh.xyz/our_planet/QsMercury.png) center no-repeat;
+            background-size: 100%;
+            /*transform: rotateX(-80deg);*/
+            border-radius: 50%;
+            overflow: hidden;
+
+        }
+
+        .planeta-venera {
+            position: absolute;
+            top: 50%;
+            margin-top: -12px;
+            right: 0;
+            margin-right: -13px;
+            width: 25px;
+            height: 25px;
+            background: url(https://js.dooh.xyz/our_planet/venus.gif) center no-repeat;
+            background-size: 100%;
+            /*transform: rotateX(-80deg);*/
+            border-radius: 50%;
+            overflow: hidden;
+
+        }
+
+        .planeta-mars {
+            position: absolute;
+            top: 50%;
+            margin-top: -12px;
+            right: 0;
+            margin-right: -13px;
+            width: 25px;
+            height: 25px;
+            background: url(https://js.dooh.xyz/our_planet/mars.gif) center no-repeat;
+            background-size: 100%;
+           /*transform: rotateX(-80deg);*/
+            border-radius: 50%;
+            overflow: hidden;
+
+        }
+
+        .orbita.mercurii {
+            transform:   scale(0.7);
+        }
+
+
+        .orbita.venera {
+            transform:  scale(1.1);
+        }
+
+
+        .orbita.earth {
+            transform:  scale(1.5);
+        }
+
+        .orbita.mars {
+            transform:  scale(1.9);
+        }
+
+        @keyframes orbit {
+            0% {
+                opacity: 1;
+                transform: scale(0.3) rotateZ(0);
+                left: 50%;
+                margin-left: -200px;
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(0.3) rotateZ(-720deg);
+                left: 50%;
+                margin-left: -200px;
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) rotateZ(-1080deg) rotateX(70deg);
+                left: -200px;
+            }
+        }
+
+        @keyframes planets {
+            0% {
+                transform: rotateX(0);
+            }
+
+
+            100% {
+                transform: rotateX(-70deg);
+            }
+        }
+
+        @keyframes planeta-sun {
+            0% {
+                position: absolute;
+                top: 50%;
+                margin-top: -35px;
+                left: 60%;
+                margin-left: -65px;
+            }
+
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+        }
+
+        .content i.before {
+            opacity: 0;
+            display: block;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            height: 250px;
+            background: linear-gradient(to top, rgba(29, 11, 33, 0.8), rgba(255,255,255, 0));
+        }
+
+
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                /* eslint no-console: 0 */
+                var d
+                  , startTime
+                  ;
+
+                var url = 'https://epic.gsfc.nasa.gov/api/natural';
+
+                $.ajax(url, {
+                success : function(iDataArr, stat, xhr) {
+                    console.log('our_planet datd - ', iDataArr)
+
+                    var date = iDataArr[0].date.slice(0,10).replace('-', '/').replace('-', '/');
+
+                    for (var it = 0; iDataArr.length > it; it++) {
+
+                        $('.widget_block').append('<img class="image" src="https://api.nasa.gov/EPIC/archive/natural/'+ date +'/png/'+ iDataArr[it].image +'.png?api_key=8Sa8QU64PM0D82nzpPf7kyl2V2D9i8NtOXPoexmG">');
+
+                    }
+
+                    $('.image').eq(0).addClass('show');
+
+                    var i = 0;
+                    var delay = 250;
+                    var z =1;
+
+                    function animate() {
+
+                        if ( i < iDataArr.length) {
+
+                            $('.image').eq(i).animate({
+                                opacity: 1,
+                                'z-index': z++
+                            },delay, function() {
+                                i++;
+                                $(this).prev().css('opacity', 0);
+                                animate();
+                            })
+                        } else {
+                            i = 0;
+                            animate();
+                        }
+                    }
+
+                    setTimeout(function() {
+                        $('.planets').css({
+                            'animation-name': 'orbit',
+                            'animation-duration': '5s',
+                            'opacity': 1
+                        })
+                    }, 1500)
+
+                    setTimeout(function() {
+
+                        $('.planeta').each(function() {
+                            $(this).addClass('rotate');
+                        })
+                    }, 6500)
+
+                    setTimeout(function(){
+                        $('.widget_block').fadeIn(400).addClass('min');
+                        animate();
+                        $('.widget_title').animate({'top': 0}, 400)
+                    }, 7000)
+
+                    setTimeout(function(){
+                        $('.content i.before').animate({'opacity': 1}, 200)
+                    }, 7500)
+
+                    var sch = 0;
+
+                    var timerId = setTimeout(function tick() {
+
+                        if (sch < $('.descr').length){
+                            $('.descr').eq(sch - 1).animate({'opacity': 0}, 200);
+
+                            $('.descr').eq(sch).animate({
+                                'opacity': 1
+                            }, 300)
+                            sch++;
+
+                        } else {
+                            sch = 0;
+                        }
+
+                        timerId = setTimeout(tick, 6000);
+                    }, 8000);
+
+
+
+                    $('.preloader').hide();
+                }
+            });
+        })
+    </script>
+    <div class="placeholder">
+        <div class="content">
+            <div class="widget_title">Наша планета</div>
+            <div class="widget_block"></div>
+            <div class="planets">
+                <div class="planeta planeta-sun"></div>
+                <div class="orbita mercurii">
+                    <div class="planeta planeta-mercurii"></div>
+                </div>
+                <div class="orbita venera">
+
+                    <div class="planeta planeta-venera"></div>
+                </div>
+                <div class="orbita earth">
+                    <div class="planeta planeta-earth"></div>
+                </div>
+                <div class="orbita mars">
+                    <div class="planeta planeta-mars"></div>
+                </div>
+            </div>
+            <div class="text-block">
+                <div class="descr">3 планета от солнца</div>
+                <div class="descr">Диаметр - 12742 км.</div>
+                <div class="descr">Образовалась - 4,5 миллиарда лет назад</div>
+                <div class="descr">Количество материков - 6</div>
+                <div class="descr">365 дней - полный путь Земли вокруг Солнца</div>
+                <div class="descr">Площадь мирового океана - 362 млн. км²</div>
+                <div class="descr">Самая высокая точка Земли - гора Эверест</div>
+                <div class="descr">Самая глубокая точка Земли - Марьянская впадина</div>
+            </div>
+            <i class="before"></i>
+        </div>
+        <div class="preloader">
+            <div class="cssload-loader">
+                <div class="cssload-inner cssload-one"></div>
+                <div class="cssload-inner cssload-two"></div>
+                <div class="cssload-inner cssload-three"></div>
+            </div>
+            <div class="fake"></div>
+        </div>
+    </div>
+</body>
+ <style type="text/css" id="preloder">
+        .cssload-loader {
+            position: relative;
+            left: calc(50% - 31px);
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+                -o-border-radius: 50%;
+                -ms-border-radius: 50%;
+                -webkit-border-radius: 50%;
+                -moz-border-radius: 50%;
+            perspective: 780px;
+        }
+
+        .cssload-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+                -o-box-sizing: border-box;
+                -ms-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+            border-radius: 50%;
+                -o-border-radius: 50%;
+                -ms-border-radius: 50%;
+                -webkit-border-radius: 50%;
+                -moz-border-radius: 50%;
+        }
+
+        .cssload-inner.cssload-one {
+            left: 0%;
+            top: 0%;
+            animation: cssload-rotate-one 1.15s linear infinite;
+                -o-animation: cssload-rotate-one 1.15s linear infinite;
+                -ms-animation: cssload-rotate-one 1.15s linear infinite;
+                -webkit-animation: cssload-rotate-one 1.15s linear infinite;
+                -moz-animation: cssload-rotate-one 1.15s linear infinite;
+            border-bottom: 3px solid rgb(0,0,0);
+        }
+
+        .cssload-inner.cssload-two {
+            right: 0%;
+            top: 0%;
+            animation: cssload-rotate-two 1.15s linear infinite;
+                -o-animation: cssload-rotate-two 1.15s linear infinite;
+                -ms-animation: cssload-rotate-two 1.15s linear infinite;
+                -webkit-animation: cssload-rotate-two 1.15s linear infinite;
+                -moz-animation: cssload-rotate-two 1.15s linear infinite;
+            border-right: 3px solid rgb(0,0,0);
+        }
+
+        .cssload-inner.cssload-three {
+            right: 0%;
+            bottom: 0%;
+            animation: cssload-rotate-three 1.15s linear infinite;
+                -o-animation: cssload-rotate-three 1.15s linear infinite;
+                -ms-animation: cssload-rotate-three 1.15s linear infinite;
+                -webkit-animation: cssload-rotate-three 1.15s linear infinite;
+                -moz-animation: cssload-rotate-three 1.15s linear infinite;
+            border-top: 3px solid rgb(0,0,0);
+        }
+
+
+
+
+
+
+
+        @keyframes cssload-rotate-one {
+            0% {
+                transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-o-keyframes cssload-rotate-one {
+            0% {
+                -o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-ms-keyframes cssload-rotate-one {
+            0% {
+                -ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-webkit-keyframes cssload-rotate-one {
+            0% {
+                -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-moz-keyframes cssload-rotate-one {
+            0% {
+                -moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @keyframes cssload-rotate-two {
+            0% {
+                transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-o-keyframes cssload-rotate-two {
+            0% {
+                -o-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -o-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-ms-keyframes cssload-rotate-two {
+            0% {
+                -ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-webkit-keyframes cssload-rotate-two {
+            0% {
+                -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-moz-keyframes cssload-rotate-two {
+            0% {
+                -moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @keyframes cssload-rotate-three {
+            0% {
+                transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-o-keyframes cssload-rotate-three {
+            0% {
+                -o-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -o-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-ms-keyframes cssload-rotate-three {
+            0% {
+                -ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-webkit-keyframes cssload-rotate-three {
+            0% {
+                -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-moz-keyframes cssload-rotate-three {
+            0% {
+                -moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+    </style>
+</html>
