@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Сбербанк банкоматы</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 480px;
+            height: 360px;
+            background-color: black;
+        }
+
+        .placeholder {
+            width: 480px;
+            height: 360px;
+            overflow: hidden;
+            font-family: 'Oswald', sans-serif;
+            color: #dadada;
+            box-sizing: border-box;
+        }
+
+        .preloader {
+            width: 100%;
+            height: 100%;
+        }
+
+        .preloader.error .cssload-inner {
+            border-color: red;
+        }
+
+        .cssload-loader {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .fake {
+            height: 100%;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .widget_block {
+            position: relative;
+            display: none;
+            height: 100%;
+            color: #000;
+        }
+
+        .map {
+            width: 480px;
+            height: 360px;
+        }
+
+        .placeholder .ymaps-2-1-50-map-copyrights-promo iframe{
+            display: none;
+        }
+
+        .placeholder .ymaps-2-1-50-islets_serp-popup,
+        .placeholder .ymaps-2-1-50-controls__control_toolbar {
+            display: none;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+        /* eslint no-console: 0 */
+        /* eslint no-undef: 0 */
+        $(document).ready(function() {
+
+
+            var d
+              , startTime
+              ;
+
+
+            var myMap;
+            var myCoords = [55.658829, 37.5412943];
+            var objCoords = [];
+
+            ymaps.ready(function(){
+                myMap = new ymaps.Map("map", {
+                    center: myCoords,
+                    zoom: 14,
+                    controls: []
+                });
+
+                myGeoObject = new ymaps.Placemark(myCoords, {}, {
+                    iconLayout: 'default#image',
+                    iconImageHref: 'here_icon.png',
+                    iconImageSize: [30, 30],
+                    iconImageOffset: [-3, -42]
+                });
+
+                myMap.geoObjects.add(myGeoObject);
+
+                var searchControl = new ymaps.control.SearchControl({
+                    options: {provider: 'yandex#search'}
+                });
+                myMap.controls.add(searchControl);
+
+
+                var myCircle = new ymaps.Circle([myCoords, 1500], null, {draggable: false});
+                myCircle.options.set({opacity: 0});
+
+                myMap.geoObjects.add(myCircle);
+                searchControl.search('Сбербанк').then(function() {
+
+                    var geoObjectsArray = searchControl.getResultsArray();
+
+                    if (geoObjectsArray.length) {
+                        searchControl.events.add('load', function () {
+                            geoObjectsArray = searchControl.getResultsArray();
+                            for (var i = 0; geoObjectsArray.length > i;i++) {
+                                geoObjectsArray[i].options.set({
+                                    'iconLayout': 'default#image',
+                                    'iconImageHref': 'sb_icon.png',
+                                    'iconImageSize': [30, 30]
+                                })
+                            }
+
+                            objects = ymaps.geoQuery(geoObjectsArray);
+
+
+                            var objectsInsideCircle = objects.searchInside(myCircle);
+                            objectsInsideCircle.each(function(pm){
+                                objCoords.push(pm.geometry.getCoordinates());
+                            })
+
+                            multiRoute = new ymaps.multiRouter.MultiRoute({
+                                referencePoints: [
+                                    myCoords,
+                                    objCoords[0]
+                                ],
+                                params: {
+                                    //Тип маршрутизации - пешеходная маршрутизация.
+                                    routingMode: 'pedestrian'
+                                }
+                            }, {
+                                // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
+                                boundsAutoApply: true
+                            });
+                            myMap.geoObjects.add(multiRoute);
+                            /*ymaps.route([myCoords, objCoords[0]], {
+                                multiRoute: true,
+                                routingMode: 'pedestrian'
+                            }).done(
+                                function (route) {
+                                    route.getPaths().options.set({
+                                        strokeColor: '36AF28',
+                                        opacity: 0.9
+                                    })
+                                    //route.options.set(multiRoute, true);
+                                    //route.options.set('routingMode', 'pedestrian');
+
+                                    myMap.geoObjects.add(route);
+                                },
+                                function (error) {
+                                    console.log('Возникла ошибка: ' + error.message + 'it=' + it);
+                                }
+                            );*/
+
+
+                        })
+
+                        for (var i = 0; geoObjectsArray.length > i;i++) {
+                            geoObjectsArray[i].options.set({
+                                'iconLayout': 'default#image',
+                                'iconImageHref': 'sb_icon.png',
+                                'iconImageSize': [30, 30]
+                            })
+                        }
+                    }
+
+                })
+
+
+                setTimeout(function(){
+                    myMap.setCenter(myCoords, 14);
+                    $('.widget_block').show();
+                    $('.preloader').hide();
+                }, 1000)
+
+                /*var myGeocoder = ymaps.geocode(myCoords, "Сбербанк");
+                myGeocoder.then(
+                    function (res) {
+
+                        var nearest = res.geoObjects;
+                        nearest.options.set({
+                            'iconLayout': 'default#image',
+                            'iconImageHref': 'sb_icon.png',
+                            'iconImageSize': [30, 30]
+                        })
+                        nearest.properties.set('iconContent', 'Sberbank');
+
+                        myMap.geoObjects.add(res.geoObjects);
+
+                        var i = 0;
+                        nearest.each(function(){
+                            var coords = nearest.get(i++).geometry.getCoordinates();
+                            objCoords.push(coords);
+                        })
+
+                        var it = 0;
+                        var interval = 4000;
+                        setInterval(function() {
+
+                            if (it < objCoords.length) {
+
+                                ymaps.route([myCoords, objCoords[it]]).then(
+                                    function (route) {
+                                        route.getPaths().options.set({
+                                            strokeColor: '36AF28',
+                                            opacity: 0.9
+                                        })
+
+                                        myMap.setBounds(myMap.geoObjects.getBounds(res.geoObjects.get(1), res.geoObjects.get(2)));
+
+                                        myMap.geoObjects.add(route);
+                                        setTimeout(function(){
+                                            myMap.geoObjects.remove(route);
+                                        }, interval - 500)
+
+                                        console.log(route.getLength());
+                                    },
+                                    function (error) {
+                                        console.log('Возникла ошибка: ' + error.message + 'it=' + it);
+                                    }
+                                );
+                                it++;
+
+                            } else {
+
+                                it = 0;
+
+                            }
+
+                        }, interval)
+
+                    },
+                    function (err) {
+                        console.log(err)
+                    }
+                );*/
+
+
+
+            });
+
+            //Удалить!!!
+
+        })
+    </script>
+    <div class="placeholder">
+        <div class="widget_block">
+           <div id="map" style="width:480px; height:360px"></div>
+        </div>
+        <div class="preloader">
+            <div class="cssload-loader">
+                <div class="cssload-inner cssload-one"></div>
+                <div class="cssload-inner cssload-two"></div>
+                <div class="cssload-inner cssload-three"></div>
+            </div>
+            <div class="fake"></div>
+        </div>
+    </div>
+</body>
+ <style type="text/css" id="preloder">
+        .cssload-loader {
+            position: relative;
+            left: calc(50% - 31px);
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+                -o-border-radius: 50%;
+                -ms-border-radius: 50%;
+                -webkit-border-radius: 50%;
+                -moz-border-radius: 50%;
+            perspective: 780px;
+        }
+
+        .cssload-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+                -o-box-sizing: border-box;
+                -ms-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+            border-radius: 50%;
+                -o-border-radius: 50%;
+                -ms-border-radius: 50%;
+                -webkit-border-radius: 50%;
+                -moz-border-radius: 50%;
+            border-color: #fff;
+        }
+
+        .cssload-inner.cssload-one {
+            left: 0%;
+            top: 0%;
+            animation: cssload-rotate-one 1.15s linear infinite;
+                -o-animation: cssload-rotate-one 1.15s linear infinite;
+                -ms-animation: cssload-rotate-one 1.15s linear infinite;
+                -webkit-animation: cssload-rotate-one 1.15s linear infinite;
+                -moz-animation: cssload-rotate-one 1.15s linear infinite;
+            border-bottom: 3px solid #fff;
+        }
+
+        .cssload-inner.cssload-two {
+            right: 0%;
+            top: 0%;
+            animation: cssload-rotate-two 1.15s linear infinite;
+                -o-animation: cssload-rotate-two 1.15s linear infinite;
+                -ms-animation: cssload-rotate-two 1.15s linear infinite;
+                -webkit-animation: cssload-rotate-two 1.15s linear infinite;
+                -moz-animation: cssload-rotate-two 1.15s linear infinite;
+            border-right: 3px solid #fff;
+        }
+
+        .cssload-inner.cssload-three {
+            right: 0%;
+            bottom: 0%;
+            animation: cssload-rotate-three 1.15s linear infinite;
+                -o-animation: cssload-rotate-three 1.15s linear infinite;
+                -ms-animation: cssload-rotate-three 1.15s linear infinite;
+                -webkit-animation: cssload-rotate-three 1.15s linear infinite;
+                -moz-animation: cssload-rotate-three 1.15s linear infinite;
+            border-top: 3px solid #fff;
+        }
+
+
+
+
+
+
+
+        @keyframes cssload-rotate-one {
+            0% {
+                transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-o-keyframes cssload-rotate-one {
+            0% {
+                -o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-ms-keyframes cssload-rotate-one {
+            0% {
+                -ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-webkit-keyframes cssload-rotate-one {
+            0% {
+                -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @-moz-keyframes cssload-rotate-one {
+            0% {
+                -moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                -moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+
+        @keyframes cssload-rotate-two {
+            0% {
+                transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-o-keyframes cssload-rotate-two {
+            0% {
+                -o-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -o-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-ms-keyframes cssload-rotate-two {
+            0% {
+                -ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-webkit-keyframes cssload-rotate-two {
+            0% {
+                -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @-moz-keyframes cssload-rotate-two {
+            0% {
+                -moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                -moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+
+        @keyframes cssload-rotate-three {
+            0% {
+                transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-o-keyframes cssload-rotate-three {
+            0% {
+                -o-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -o-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-ms-keyframes cssload-rotate-three {
+            0% {
+                -ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-webkit-keyframes cssload-rotate-three {
+            0% {
+                -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+
+        @-moz-keyframes cssload-rotate-three {
+            0% {
+                -moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                -moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+    </style>
+</html>

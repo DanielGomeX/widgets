@@ -4,30 +4,28 @@
     $queryString = $_SERVER['QUERY_STRING'];
 
     header("Access-Control-Allow-Origin:" . $domain );*/
-
-    date_default_timezone_set('Europe/Moscow');
+    header('Content-Type: text/html; charset=utf-8');
 
     $response = array();
-    $url = 'http://www.forbes.ru/newrss.xml';
+    $valueArr = array();
+
+    $url = 'http://www.oann.com/category/top-news/feed/';
 
     $data = file_get_contents($url);
 
     $news = simplexml_load_string($data, null, LIBXML_NOCDATA);
 
-    
-
-    //echo $data;
 
     foreach ($news->channel->item as $key => $value) {
         $date = new DateTime($value->pubDate);
 
-        $response[] = array(
-            'title' => (string) $value->title,
-            'description' => (string) strip_tags($value->description),
-            'pubDate' => (string) $date->format('d M H:i'),
-            'image' => (string) $value->enclosure['url']
-        );
+        foreach ($value as $name => $val) {
 
+            $valueArr[$name] = (string) strip_tags ($val);
+
+        }
+
+        array_push($response , $valueArr);
     }
 
 
