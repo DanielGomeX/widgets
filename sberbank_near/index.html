@@ -48,7 +48,6 @@
 
         .widget_block {
             position: relative;
-            display: none;
             height: 100%;
             color: #000;
         }
@@ -67,8 +66,38 @@
             display: none;
         }
 
+        .placeholder .ymaps-2-1-50-image {
+            z-index: 9;
+        }
 
+        .main_block {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(255,255,255, 1);
+            color: #000;
+            width: 100%;
+            height: 100%;
+            z-index: 8;
+        }
 
+        .main_block_title {
+            text-align: center;
+            font-size: 40px;
+            line-height: 40px;
+            margin-top: 20px;
+            font-weight: bold;
+            z-index: 99;
+        }
+
+        .main_block_count {
+            text-align: center;
+            font-size: 80px;
+            line-height: 140px;
+            font-weight: bold;
+            color: #50C634;
+            min-height: 140px;
+        }
 
     </style>
 </head>
@@ -78,47 +107,62 @@
         /* eslint no-undef: 0 */
         $(document).ready(function() {
 
-
-            var d
-              , startTime
-              ;
-
-
             var myMap;
-            var myCoords = [55.658829, 37.5412943];
-            var objCoords = [];
+            var myCoords = [55.6600771, 37.53923529999997];
+            var objCoords = new Array();
+            var info = {};
 
             ymaps.ready(function(){
+                $('.main_block').css('background-color', 'rgba(255,255,255, 0.8)');
+
                 myMap = new ymaps.Map("map", {
                     center: myCoords,
                     zoom: 14,
                     controls: []
                 });
-
+                //--Add 'here' point
                 myGeoObject = new ymaps.Placemark(myCoords, {}, {
                     iconLayout: 'default#image',
                     iconImageHref: 'here_icon.png',
                     iconImageSize: [30, 30],
                     iconImageOffset: [-3, -42]
                 });
-
                 myMap.geoObjects.add(myGeoObject);
+                //--
 
+                //--Add search contolller
                 var searchControl = new ymaps.control.SearchControl({
                     options: {provider: 'yandex#search'}
                 });
+
                 myMap.controls.add(searchControl);
+                //--
 
-
+                //--Add search circle
                 var myCircle = new ymaps.Circle([myCoords, 1500], null, {draggable: false});
                 myCircle.options.set({opacity: 0});
 
                 myMap.geoObjects.add(myCircle);
+                //--
+
+                var myGeocoder = ymaps.geocode("Москва");
+                myGeocoder.then(
+                    function (res) {
+                        map.geoObjects.add(res.geoObjects);
+                        // Выведем в консоль данные, полученные в результате геокодирования объекта.
+                        console.log(result.geoObjects.get(0).properties.get('metaDataProperty').getAll());
+                    },
+                    function (err) {
+                        // обработка ошибки
+                    }
+                );
+
                 searchControl.search('Сбербанк').then(function() {
 
                     var geoObjectsArray = searchControl.getResultsArray();
 
                     if (geoObjectsArray.length) {
+
                         searchControl.events.add('load', function () {
                             geoObjectsArray = searchControl.getResultsArray();
                             for (var i = 0; geoObjectsArray.length > i;i++) {
@@ -131,44 +175,44 @@
 
                             objects = ymaps.geoQuery(geoObjectsArray);
 
-
                             var objectsInsideCircle = objects.searchInside(myCircle);
+                            length = 0;
+                            $('.main_block_count').html(length++);
                             objectsInsideCircle.each(function(pm){
                                 objCoords.push(pm.geometry.getCoordinates());
+                                $('.main_block_count').html(length++);
+
+                                console.log(pm.properties.getAll());
                             })
 
-                            multiRoute = new ymaps.multiRouter.MultiRoute({
-                                referencePoints: [
-                                    myCoords,
-                                    objCoords[0]
-                                ],
-                                params: {
-                                    //Тип маршрутизации - пешеходная маршрутизация.
-                                    routingMode: 'pedestrian'
-                                }
-                            }, {
-                                // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
-                                boundsAutoApply: true
-                            });
-                            myMap.geoObjects.add(multiRoute);
-                            /*ymaps.route([myCoords, objCoords[0]], {
-                                multiRoute: true,
-                                routingMode: 'pedestrian'
-                            }).done(
-                                function (route) {
-                                    route.getPaths().options.set({
-                                        strokeColor: '36AF28',
-                                        opacity: 0.9
-                                    })
-                                    //route.options.set(multiRoute, true);
-                                    //route.options.set('routingMode', 'pedestrian');
+                            info.countRoute = length;
 
-                                    myMap.geoObjects.add(route);
-                                },
-                                function (error) {
-                                    console.log('Возникла ошибка: ' + error.message + 'it=' + it);
-                                }
-                            );*/
+                            setTimeout(function() {
+                                $('.main_block').fadeOut(300);
+                            }, 2500)
+
+                            /*setTimeout(function() {
+                                ymaps.route([myCoords, objCoords[0]], {
+                                    multiRoute: true,
+                                    routingMode: 'pedestrian'
+                                }).done(
+                                    function (route) {
+
+                                        route.options.set({wayPointVisible: false,boundsAutoApply: true});
+
+                                        myMap.geoObjects.add(route);
+                                        var routes = route.getRoutes();
+
+                                        console.log(routes.get(0).properties.get("duration"));
+                                        console.log(routes.get(0).properties.get("distance"));
+
+                                    },
+                                    function (error) {
+                                        console.log('Возникла ошибка: ' + error.message + 'it=' + it);
+                                    }
+                                );
+                            }, 3500)*/
+
 
 
                         })
@@ -181,302 +225,84 @@
                             })
                         }
                     }
-
                 })
 
 
                 setTimeout(function(){
-                    myMap.setCenter(myCoords, 14);
-                    $('.widget_block').show();
-                    $('.preloader').hide();
-                }, 1000)
-
-                /*var myGeocoder = ymaps.geocode(myCoords, "Сбербанк");
-                myGeocoder.then(
-                    function (res) {
-
-                        var nearest = res.geoObjects;
-                        nearest.options.set({
-                            'iconLayout': 'default#image',
-                            'iconImageHref': 'sb_icon.png',
-                            'iconImageSize': [30, 30]
-                        })
-                        nearest.properties.set('iconContent', 'Sberbank');
-
-                        myMap.geoObjects.add(res.geoObjects);
-
-                        var i = 0;
-                        nearest.each(function(){
-                            var coords = nearest.get(i++).geometry.getCoordinates();
-                            objCoords.push(coords);
-                        })
-
-                        var it = 0;
-                        var interval = 4000;
-                        setInterval(function() {
-
-                            if (it < objCoords.length) {
-
-                                ymaps.route([myCoords, objCoords[it]]).then(
-                                    function (route) {
-                                        route.getPaths().options.set({
-                                            strokeColor: '36AF28',
-                                            opacity: 0.9
-                                        })
-
-                                        myMap.setBounds(myMap.geoObjects.getBounds(res.geoObjects.get(1), res.geoObjects.get(2)));
-
-                                        myMap.geoObjects.add(route);
-                                        setTimeout(function(){
-                                            myMap.geoObjects.remove(route);
-                                        }, interval - 500)
-
-                                        console.log(route.getLength());
-                                    },
-                                    function (error) {
-                                        console.log('Возникла ошибка: ' + error.message + 'it=' + it);
-                                    }
-                                );
-                                it++;
-
-                            } else {
-
-                                it = 0;
-
-                            }
-
-                        }, interval)
-
-                    },
-                    function (err) {
-                        console.log(err)
-                    }
-                );*/
-
-
-
+                    myMap.setCenter(myCoords, 13);
+                    $('.main_block_count').html(info.countRoute);
+                    //$('.widget_block').show();
+                    //$('.preloader').hide();
+                }, 1500)
             });
 
-            //Удалить!!!
 
         })
     </script>
     <div class="placeholder">
         <div class="widget_block">
            <div id="map" style="width:480px; height:360px"></div>
+           <div class="main_block">
+               <div class="main_block_title">
+                    <span>В радиусе 1500 м.<br>найдено</span>
+                    <div class="main_block_count"></div>
+                    <span>банкоматов Сбербанк</span>
+               </div>
+               <div class="preloader">
+                    <div class="round round_one"></div>
+                    <div class="round round_two"></div>
+                    <div class="round round_three"></div>
+                </div>
+           </div>
         </div>
-        <div class="preloader">
-            <div class="cssload-loader">
-                <div class="cssload-inner cssload-one"></div>
-                <div class="cssload-inner cssload-two"></div>
-                <div class="cssload-inner cssload-three"></div>
-            </div>
-            <div class="fake"></div>
-        </div>
+
     </div>
 </body>
- <style type="text/css" id="preloder">
-        .cssload-loader {
-            position: relative;
-            left: calc(50% - 31px);
-            width: 62px;
-            height: 62px;
-            border-radius: 50%;
-                -o-border-radius: 50%;
-                -ms-border-radius: 50%;
-                -webkit-border-radius: 50%;
-                -moz-border-radius: 50%;
-            perspective: 780px;
-        }
-
-        .cssload-inner {
+    <style type="text/css" id="preloder">
+        .preloader {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            box-sizing: border-box;
-                -o-box-sizing: border-box;
-                -ms-box-sizing: border-box;
-                -webkit-box-sizing: border-box;
-                -moz-box-sizing: border-box;
+            text-align: center;
+        }
+
+        .round {
+            position: absolute;
+            top: 50%;
+            margin-top: -1px;
+            left: 50%;
+            margin-left: -1px;
+            width: 1px;
+            height: 1px;
+            border: 1px solid #50C634;
             border-radius: 50%;
-                -o-border-radius: 50%;
-                -ms-border-radius: 50%;
-                -webkit-border-radius: 50%;
-                -moz-border-radius: 50%;
-            border-color: #fff;
+            animation-name: round_one;
+            animation-timing-function: ease;
+            animation-iteration-count: infinite;
+            animation-duration: 3s;
         }
 
-        .cssload-inner.cssload-one {
-            left: 0%;
-            top: 0%;
-            animation: cssload-rotate-one 1.15s linear infinite;
-                -o-animation: cssload-rotate-one 1.15s linear infinite;
-                -ms-animation: cssload-rotate-one 1.15s linear infinite;
-                -webkit-animation: cssload-rotate-one 1.15s linear infinite;
-                -moz-animation: cssload-rotate-one 1.15s linear infinite;
-            border-bottom: 3px solid #fff;
+        .round_one {
+            animation-delay: 0s;
         }
 
-        .cssload-inner.cssload-two {
-            right: 0%;
-            top: 0%;
-            animation: cssload-rotate-two 1.15s linear infinite;
-                -o-animation: cssload-rotate-two 1.15s linear infinite;
-                -ms-animation: cssload-rotate-two 1.15s linear infinite;
-                -webkit-animation: cssload-rotate-two 1.15s linear infinite;
-                -moz-animation: cssload-rotate-two 1.15s linear infinite;
-            border-right: 3px solid #fff;
+        .round_two {
+            animation-delay: 0.8s;
         }
 
-        .cssload-inner.cssload-three {
-            right: 0%;
-            bottom: 0%;
-            animation: cssload-rotate-three 1.15s linear infinite;
-                -o-animation: cssload-rotate-three 1.15s linear infinite;
-                -ms-animation: cssload-rotate-three 1.15s linear infinite;
-                -webkit-animation: cssload-rotate-three 1.15s linear infinite;
-                -moz-animation: cssload-rotate-three 1.15s linear infinite;
-            border-top: 3px solid #fff;
+        .round_three {
+            animation-delay: 1.8s;
         }
 
-
-
-
-
-
-
-        @keyframes cssload-rotate-one {
-            0% {
-                transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
-            }
-            100% {
-                transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
-            }
-        }
-
-        @-o-keyframes cssload-rotate-one {
-            0% {
-                -o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
-            }
-            100% {
-                -o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
-            }
-        }
-
-        @-ms-keyframes cssload-rotate-one {
-            0% {
-                -ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
-            }
-            100% {
-                -ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
-            }
-        }
-
-        @-webkit-keyframes cssload-rotate-one {
-            0% {
-                -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
-            }
-            100% {
-                -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
-            }
-        }
-
-        @-moz-keyframes cssload-rotate-one {
-            0% {
-                -moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
-            }
-            100% {
-                -moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
-            }
-        }
-
-        @keyframes cssload-rotate-two {
-            0% {
-                transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
-            }
-            100% {
-                transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
-            }
-        }
-
-        @-o-keyframes cssload-rotate-two {
-            0% {
-                -o-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
-            }
-            100% {
-                -o-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
-            }
-        }
-
-        @-ms-keyframes cssload-rotate-two {
-            0% {
-                -ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
-            }
-            100% {
-                -ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
-            }
-        }
-
-        @-webkit-keyframes cssload-rotate-two {
-            0% {
-                -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
-            }
-            100% {
-                -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
-            }
-        }
-
-        @-moz-keyframes cssload-rotate-two {
-            0% {
-                -moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
-            }
-            100% {
-                -moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
-            }
-        }
-
-        @keyframes cssload-rotate-three {
-            0% {
-                transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
-            }
-            100% {
-                transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
-            }
-        }
-
-        @-o-keyframes cssload-rotate-three {
-            0% {
-                -o-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
-            }
-            100% {
-                -o-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
-            }
-        }
-
-        @-ms-keyframes cssload-rotate-three {
-            0% {
-                -ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
-            }
-            100% {
-                -ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
-            }
-        }
-
-        @-webkit-keyframes cssload-rotate-three {
-            0% {
-                -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
-            }
-            100% {
-                -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
-            }
-        }
-
-        @-moz-keyframes cssload-rotate-three {
-            0% {
-                -moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
-            }
-            100% {
-                -moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+        @-webkit-keyframes round_one {
+            to {
+                width: 360px;
+                height: 360px;
+                margin-top: -180px;
+                margin-left: -180px;
+                opacity: 0.2;
             }
         }
     </style>
