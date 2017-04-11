@@ -102,6 +102,7 @@
     </style>
      <style type="text/css">
         .content_block {
+            display: none;
             position: absolute;
             top: 0;
             width: 100%;
@@ -109,7 +110,11 @@
             background: #fff;
         }
         .item {
+            display: none;
+        }
 
+        .item.new.open {
+            display: block;
         }
 
         .item_row {
@@ -297,7 +302,7 @@
             var myMap;
             var myCoords = [55.6600771, 37.53923529999997];
             var objCoords = new Array();
-            var info = {};
+            var info1 = {};
 
             ymaps.ready(function(){
                 $('.main_block').css('background-color', 'rgba(255,255,255, 0.8)');
@@ -351,33 +356,46 @@
                             objects = ymaps.geoQuery(geoObjectsArray);
 
                             var objectsInsideCircle = objects.searchInside(myCircle);
-                            length = 0;
-                            $('.main_block_count').html(length++);
-                            objectsInsideCircle.each(function(pm){
-                                objCoords.push(pm.geometry.getCoordinates());
-                                $('.main_block_count').html(length++);
 
-                                console.log(pm.properties.getAll());
+                            obgLength = 0;
+                            $('.main_block_count').html(obgLength++);
+
+                            var sortedObjects = objectsInsideCircle.sortByDistance(myGeoObject);
+
+                            sortedObjects.each(function(pm){
+                                objCoords.push(pm.geometry.getCoordinates());
+                                $('.main_block_count').html(obgLength++);
+
+                                try {
+                                    createBlock(pm.properties.getAll());
+                                } catch (err) {
+                                    console.log(err);
+                                }
                             })
 
-                            info.countRoute = length;
+                            info1.countRoute = obgLength;
 
                             setTimeout(function() {
                                 $('.main_block').fadeOut(300);
-                                animatePath();
+                                //animatePath();
                             }, 2500)
 
-                            console.log(objectsInsideCircle.getLength());
-                            var sortedObjects = objectsInsideCircle.sortByDistance(myGeoObject);
+                            //console.log(sortedObjects.getLength());
+
+
                             var i = 0;
                             var timerId = setTimeout(function tick() {
 
                                 if ( i < sortedObjects.getLength()) {
                                     var currentObject = sortedObjects.get(i);
+                                    //console.log('i=' + i + '  ' +  sortedObjects.get(i))
+                                    //console.log(currentObject.properties.getAll());
 
-                                    console.log('i=' + i + '  ' +  sortedObjects.get(i))
+                                    $('.item').eq(i).addClass('open');
+                                    $('.content_block').fadeIn(100);
 
-                                    console.log(currentObject.properties.getAll());
+                                    crateRoute(objCoords[i]);
+
 
                                     i++;
                                 } else {
@@ -427,20 +445,19 @@
 
                 setTimeout(function(){
                     myMap.setCenter(myCoords, 13);
-                    $('.main_block_count').html(info.countRoute);
-                    //$('.widget_block').show();
-                    //$('.preloader').hide();
+
                 }, 1500)
             });
 
             function animatePath() {
-                var path = $('.svg_path')
+                var item = $('.item.new.open')
+                  , path = item.find('.svg_path')
                   , line = path.find('line')
                   ;
 
                 line.attr('stroke', '#9557e5');
 
-                $('.path_here').show();
+                item.find('.path_here').show();
                 var i = 0;
                 var interval = setInterval(function() {
 
@@ -456,14 +473,55 @@
                 }, 100)
 
                 setTimeout(function() {
-                    $('.path_to').show();
+                    item.find('.path_to').show();
                 }, line.length * 100)
 
                 setTimeout(function() {
-                    $('.path_text').fadeIn(200);
+                    item.find('.path_text').fadeIn(200);
                 }, (line.length * 100) + 300)
+            }
 
+            function createBlock(prop) {
+                //console.log(prop);
 
+                var $clone = $('.item').not('.new').clone().addClass('new').appendTo(".content_block");
+                $clone.find('.title_text').html(prop.name);
+                $clone.find('.item_categories').html(prop.categories[0]);
+
+                $clone.find('.item_is-open is').removeClass('is');
+                if (prop.workingStatus.isWork) {
+                    $clone.find('.item_open').addClass('is');
+                    $clone.find('.item_open_text').addClass('is');
+                } else {
+                    $clone.find('.item_close').addClass('is');
+                    $clone.find('.item_close_text').addClass('is');
+                }
+
+                $clone.find('.item_adress').html(prop.address);
+                $clone.find('.item_phone').html(prop.phoneNumbers[0]);
+                $clone.find('.item_time').html(prop.workingTime);
+            }
+
+            function crateRoute(toCoords) {
+                ymaps.route([myCoords, toCoords], {
+                    multiRoute: true,
+                    routingMode: 'pedestrian'
+                }).done(
+                    function (route) {
+
+                        route.options.set({wayPointVisible: false,boundsAutoApply: true});
+
+                        myMap.geoObjects.add(route);
+                        var routes = route.getRoutes();
+
+                        console.log(routes.get(0).properties.get("duration"));
+                        console.log(routes.get(0).properties.get("distance"));
+
+                    },
+                    function (error) {
+                        console.log('Возникла ошибка: ' + error.message + 'it=' + it);
+                    }
+                );
             }
 
         })
@@ -495,9 +553,9 @@
                            </div>
                        </div>
                        <div class="item_is-open">
-                           <div class="item_open is"></div>
+                           <div class="item_open"></div>
                            <div class="item_close"></div>
-                           <div class="item_open_text is">открыто</div>
+                           <div class="item_open_text">открыто</div>
                            <div class="item_close_text">закрыто</div>
                        </div>
                    </div>
