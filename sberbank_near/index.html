@@ -296,6 +296,17 @@
             background: url(sb_icon.png) center no-repeat;
             background-size: 100%;
         }
+
+        .debag {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            color: #000;
+            background: #fff;
+        }
+
     </style>
 </head>
 <body>
@@ -303,11 +314,39 @@
         /* eslint no-console: 0 */
         /* eslint no-undef: 0 */
         $(document).ready(function() {
+            var myGeo
+              , myMap
+              , myCoords = []
+              , objCoords = []
+              , info1 = {}
+              ;
 
-            var myMap;
-            var myCoords = [55.6600771, 37.53923529999997];
-            var objCoords = new Array();
-            var info1 = {};
+            try {
+                myGeo = Android.getLocation();
+                var lat = myGeo.split('lat=')[1].split('&lng=')[0];
+                var lng = myGeo.split('lng=')[1].split('&acc=')[0];
+                myCoords = [lat, lng];
+
+            } catch (err) {
+                isMyGeo = false;
+                console.log('Приложение запущено не на Andoid');
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            myCoords = [position.coords.latitude, position.coords.longitude]
+                        },
+                        function(error){
+                            console.log(error);
+                            myCoords = [55.6600771, 37.53923529999997]
+                        }
+                    );
+                } else {
+                    console.log('navigator не поддерживается установи ты уже Google Chrome');
+                }
+            }
+
+            $('.debag').html('myGeo=[' + myCoords + ']<br>' + 'myCoords=[' + myCoords + ']');
 
             ymaps.ready(function(){
                 $('.main_block').css('background-color', 'rgba(255,255,255, 0.8)');
@@ -394,13 +433,8 @@
 
                     setTimeout(function() {
                         $('.main_block').fadeOut(300);
-                        //animatePath();
-
-
-
                     }, 2500)
 
-                    //console.log(sortedObjects.getLength());
 
                     var i = 1;
                     var timerId = setTimeout(function tick() {
@@ -412,9 +446,6 @@
                               , currentId = currentProp.id
                               , currentItem = $('.content_block').find('.item[obj-id='+ currentId + ']')
                               ;
-
-                            //console.log('i=' + i + '  ' +  sortedObjects.get(i))
-                            //console.log(currentObject.properties.getAll());
 
                             currentItem.addClass('open');
                             $('.content_block').fadeIn(100);
@@ -439,14 +470,11 @@
                             i++;
                         } else {
                             i = 1;
-                            //clearTimeout(timerId);
                         }
-
 
                         timerId = setTimeout(tick, 10000);
                     }, 3500);
                 })
-
 
                 setTimeout(function(){
                     myMap.setCenter(myCoords, 14);
@@ -462,8 +490,8 @@
                   ;
 
                 line.attr('stroke', '#9557e5');
-
                 item.find('.path_here').show();
+
                 var i = 0;
                 var interval = setInterval(function() {
 
@@ -492,8 +520,6 @@
             }
 
             function createBlock(prop) {
-                //console.log(prop);
-
                 var $clone = $('.item').not('.new').clone().addClass('new').attr('obj-id', prop.id).appendTo(".content_block");
 
                 $clone.find('.title_text').html(prop.name);
@@ -540,11 +566,11 @@
 
         })
     </script>
-
     <div class="placeholder">
         <div class="widget_block">
-           <div id="map" style="width:480px; height:360px"></div>
-           <div class="main_block">
+            <div class="debag"></div>
+            <div id="map" style="width:480px; height:360px"></div>
+            <div class="main_block">
                <div class="main_block_title">
                     <span>В радиусе 1500 м.<br>найдено</span>
                     <div class="main_block_count"></div>
@@ -555,8 +581,8 @@
                     <div class="round round_two"></div>
                     <div class="round round_three"></div>
                 </div>
-           </div>
-           <div class="content_block">
+            </div>
+            <div class="content_block">
                <div class="item">
                    <div class="item_row">
                        <div class="item_title">
