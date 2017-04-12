@@ -111,6 +111,11 @@
         }
         .item {
             display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         .item.new.open {
@@ -349,107 +354,108 @@
                                 geoObjectsArray[i].options.set({
                                     'iconLayout': 'default#image',
                                     'iconImageHref': 'sb_icon.png',
-                                    'iconImageSize': [30, 30]
+                                    'iconImageSize': [30, 30],
+                                    'zIndex': 99999
                                 })
                             }
-
-                            objects = ymaps.geoQuery(geoObjectsArray);
-
-                            var objectsInsideCircle = objects.searchInside(myCircle);
-
-                            obgLength = 0;
-                            $('.main_block_count').html(obgLength++);
-
-                            var sortedObjects = objectsInsideCircle.sortByDistance(myGeoObject);
-
-                            sortedObjects.each(function(pm){
-                                objCoords.push(pm.geometry.getCoordinates());
-                                $('.main_block_count').html(obgLength++);
-
-                                try {
-                                    createBlock(pm.properties.getAll());
-                                } catch (err) {
-                                    console.log(err);
-                                }
-                            })
-
-                            info1.countRoute = obgLength;
-
-                            setTimeout(function() {
-                                $('.main_block').fadeOut(300);
-                                //animatePath();
-                            }, 2500)
-
-                            //console.log(sortedObjects.getLength());
-
-
-                            var i = 0;
-                            var timerId = setTimeout(function tick() {
-
-                                if ( i < sortedObjects.getLength()) {
-                                    var currentObject = sortedObjects.get(i);
-                                    //console.log('i=' + i + '  ' +  sortedObjects.get(i))
-                                    //console.log(currentObject.properties.getAll());
-
-                                    $('.item').eq(i).addClass('open');
-                                    $('.content_block').fadeIn(100);
-
-                                    crateRoute(objCoords[i]);
-
-
-                                    i++;
-                                } else {
-                                    i = 0;
-                                }
-
-
-                                timerId = setTimeout(tick, 10000);
-                            }, 3500);
-
-                            /*setTimeout(function() {
-                                ymaps.route([myCoords, objCoords[0]], {
-                                    multiRoute: true,
-                                    routingMode: 'pedestrian'
-                                }).done(
-                                    function (route) {
-
-                                        route.options.set({wayPointVisible: false,boundsAutoApply: true});
-
-                                        myMap.geoObjects.add(route);
-                                        var routes = route.getRoutes();
-
-                                        console.log(routes.get(0).properties.get("duration"));
-                                        console.log(routes.get(0).properties.get("distance"));
-
-                                    },
-                                    function (error) {
-                                        console.log('Возникла ошибка: ' + error.message + 'it=' + it);
-                                    }
-                                );
-                            }, 3500)*/
-
-
-
                         })
 
                         for (var i = 0; geoObjectsArray.length > i;i++) {
                             geoObjectsArray[i].options.set({
                                 'iconLayout': 'default#image',
                                 'iconImageHref': 'sb_icon.png',
-                                'iconImageSize': [30, 30]
+                                'iconImageSize': [30, 30],
+                                'zIndex': 99999
                             })
                         }
                     }
+
+                    objects = ymaps.geoQuery(geoObjectsArray);
+
+                    var objectsInsideCircle = objects.searchInside(myCircle);
+
+                    obgLength = 0;
+                    $('.main_block_count').html(obgLength++);
+
+                    var sortedObjects = objectsInsideCircle.sortByDistance(myGeoObject);
+
+                    sortedObjects.each(function(pm){
+                        objCoords.push(pm.geometry.getCoordinates());
+                        $('.main_block_count').html(obgLength++);
+
+                        try {
+                            createBlock(pm.properties.getAll());
+                        } catch (err) {
+                            console.log(err);
+                        }
+                    })
+
+                    info1.countRoute = obgLength;
+
+                    setTimeout(function() {
+                        $('.main_block').fadeOut(300);
+                        //animatePath();
+
+
+
+                    }, 2500)
+
+                    //console.log(sortedObjects.getLength());
+
+                    var i = 1;
+                    var timerId = setTimeout(function tick() {
+                        console.log(i);
+                        if ( i < sortedObjects.getLength()) {
+                            $('.content_block').find('.item.open').removeClass('open');
+                            var currentObject = sortedObjects.get(i)
+                              , currentProp = currentObject.properties.getAll()
+                              , currentId = currentProp.id
+                              , currentItem = $('.content_block').find('.item[obj-id='+ currentId + ']')
+                              ;
+
+                            //console.log('i=' + i + '  ' +  sortedObjects.get(i))
+                            //console.log(currentObject.properties.getAll());
+
+                            currentItem.addClass('open');
+                            $('.content_block').fadeIn(100);
+
+                            createRoute(sortedObjects.get(i));
+
+                            $(document).on('routeCreated', function(e, data) {
+                                console.log('маршрут построен');
+                                currentItem.find('.path_text').html(data.duration.text);
+                                animatePath();
+
+                                $(document).on('pathAnimationFinished', function() {
+                                    setTimeout(function() {
+                                        $('.content_block').fadeOut(300);
+                                    }, 2000)
+                                })
+
+                                setTimeout(function() {
+                                    myMap.geoObjects.remove(data.route);
+                                }, 11000)
+                            })
+                            i++;
+                        } else {
+                            i = 1;
+                            //clearTimeout(timerId);
+                        }
+
+
+                        timerId = setTimeout(tick, 10000);
+                    }, 3500);
                 })
 
 
                 setTimeout(function(){
-                    myMap.setCenter(myCoords, 13);
+                    myMap.setCenter(myCoords, 14);
 
                 }, 1500)
             });
 
             function animatePath() {
+                console.log('анимация построения пути запущена');
                 var item = $('.item.new.open')
                   , path = item.find('.svg_path')
                   , line = path.find('line')
@@ -478,13 +484,18 @@
 
                 setTimeout(function() {
                     item.find('.path_text').fadeIn(200);
+                    console.log('анимация построения пути завершена');
+
+                    $(document).trigger('pathAnimationFinished');
+
                 }, (line.length * 100) + 300)
             }
 
             function createBlock(prop) {
                 //console.log(prop);
 
-                var $clone = $('.item').not('.new').clone().addClass('new').appendTo(".content_block");
+                var $clone = $('.item').not('.new').clone().addClass('new').attr('obj-id', prop.id).appendTo(".content_block");
+
                 $clone.find('.title_text').html(prop.name);
                 $clone.find('.item_categories').html(prop.categories[0]);
 
@@ -502,8 +513,8 @@
                 $clone.find('.item_time').html(prop.workingTime);
             }
 
-            function crateRoute(toCoords) {
-                ymaps.route([myCoords, toCoords], {
+            function createRoute(obj) {
+                ymaps.route([myCoords, obj.geometry.getCoordinates()], {
                     multiRoute: true,
                     routingMode: 'pedestrian'
                 }).done(
@@ -514,8 +525,11 @@
                         myMap.geoObjects.add(route);
                         var routes = route.getRoutes();
 
-                        console.log(routes.get(0).properties.get("duration"));
-                        console.log(routes.get(0).properties.get("distance"));
+                        $(document).trigger('routeCreated', {
+                            'duration': routes.get(0).properties.get("duration"),
+                            'distance': routes.get(0).properties.get("distance"),
+                            'route': route
+                        });
 
                     },
                     function (error) {
