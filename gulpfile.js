@@ -8,28 +8,23 @@ var gulp = require('gulp')
   , less = require('gulp-less')
   , inlinesource = require('gulp-inline-source')
   , args = require('yargs').argv
-  , fs = require('fs')
-  , paths = require('path')
-  , htmlreplace = require('gulp-html-replace')
-  , rimraf = require('gulp-rimraf')
   , replace = require('gulp-replace-task')
   ;
 
 
 var path = {
     build: {
-        src: 'test_widget/build/'
+        src: 'build/'
     },
     prod: {
-        src: 'test_widget/prod/'
+        src: 'prod/'
     },
     dev: {
-        tmp: 'test_widget/dev/tmp/',
-        src: 'test_widget/dev/',
-        html: 'test_widget/dev/index.html',
-        js: 'test_widget/dev/main.js',
-        less: 'test_widget/dev/main.less',
-        vendorCss: 'test_widget/dev/*.css'
+        src: 'dev/',
+        html: 'dev/index.html',
+        js: 'dev/main.js',
+        less: 'dev/main.less',
+        vendorCss: 'dev/*.css'
     }
 }
 
@@ -60,15 +55,27 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest(path.build.src))
 });
 
-/*gulp.task('html-repalce', function () {
-    return gulp.src(path.dev.html)
-        .pipe(htmlreplace({
-            'type':
-        }))
-});*/
+gulp.task('task', function () {
+    var task = args.task;
+    path = {
+        build: {
+            src: task + '/build/'
+        },
+        prod: {
+            src: task + '/prod/'
+        },
+        dev: {
+            src: task + '/dev/',
+            html: task + '/dev/index.html',
+            js: task + '/dev/main.js',
+            less: task + '/dev/main.less',
+            vendorCss: task + '/dev/*.css'
+        }
+    }
+    return path;
+});
 
-
-gulp.task('build', ['scripts', 'styles'], function () {
+gulp.task('build', ['task', 'scripts', 'styles'], function () {
     var env = args.env || 'dev';
     var patterns = [{match: 'type', replacement: env === 'dev' ? '_' : ''}];
     var options = {
@@ -82,64 +89,3 @@ gulp.task('build', ['scripts', 'styles'], function () {
         .pipe(gulp.dest(path.prod.src));
 
 });
-
-
-
-/*gulp.task('build', ['inline-source'], function () {
-
-    var env = args.env || 'dev';
-
-    return gulp.src(path.dev.html)
-        .pipe(htmlreplace({
-            'type': env === 'dev' ? '_' : ''
-        }))
-        .pipe(rename('tmp.html'))
-        .pipe(gulp.dest(path.dev.src))
-});
-
-gulp.task('inline-source', ['scripts', 'styles'], function () {
-
-    var options = {
-        attribute: 'inline',
-        compress: false
-    }
-
-    return gulp.src(path.dev.src + 'tmp.html')
-        .pipe(inlinesource(options))
-        .pipe(rename('index.html'))
-        .pipe(gulp.dest(path.prod.src));
-});*/
-
-/*gulp.task('inline-source', ['scripts', 'styles'], function () {
-
-    var env = args.env || 'dev';
-    var htmlPath = env === 'dev' ? path.build.src + '__main.css' : path.build.src + '_main.css'
-
-    var options = {
-        attribute: 'inline',
-        compress: false
-    }
-
-    return gulp.src(path.dev.html)
-        .pipe(htmlreplace({
-            'type': env === 'dev' ? '_' : ''
-        }))
-        .pipe(gulp.dest(path.dev.src))
-        .pipe(inlinesource(options))
-        .pipe(gulp.dest(path.prod.src));
-});*/
-
-
-gulp.task('build-prod', ['inline-source']);
-
-/*
-
-gulp.task('inline-css', ['styles'], function() {
-    return gulp.src(path.dev.html)
-        .pipe(inlineStyle('test_widget/main.css'))
-        .pipe(gulp.dest(path.prod.src));
-});
-
-gulp.task('build-prod', ['inline-source']);
-
-gulp.task('build-prod:scripts', ['inline-js']);*/
