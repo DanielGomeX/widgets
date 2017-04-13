@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>SC Player JS API</title>
+  <meta name="generator" content="TextMate http://macromates.com/">
+  <meta name="author" content="Matas Petrikas">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+</head>
+<body>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        var string = 'lat=45.86465146514&lng=37.5454654&acc=24.654651';
+
+        var lat = string.split('lat=')[1].split('&lng=')[0]
+        var lng = string.split('lng=')[1].split('&acc=')[0]
+        console.log(lat);
+        console.log(lng)
+
+    })
+</script>
+
+</body>
+</html>

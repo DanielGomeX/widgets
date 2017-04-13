@@ -96,3 +96,26 @@
                     wayPointVisible: false
                 });
                 myMap.geoObjects.add(multiRoute);*/
+
+
+                /*setTimeout(function() {
+                        ymaps.route([myCoords, objCoords[0]], {
+                            multiRoute: true,
+                            routingMode: 'pedestrian'
+                        }).done(
+                            function (route) {
+
+                                route.options.set({wayPointVisible: false,boundsAutoApply: true});
+
+                                myMap.geoObjects.add(route);
+                                var routes = route.getRoutes();
+
+                                console.log(routes.get(0).properties.get("duration"));
+                                console.log(routes.get(0).properties.get("distance"));
+
+                            },
+                            function (error) {
+                                console.log('Возникла ошибка: ' + error.message + 'it=' + it);
+                            }
+                        );
+                    }, 3500)*/
