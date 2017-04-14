@@ -1,49 +1,48 @@
 <?php
     ini_set('display_errors','on');
-    mb_internal_encoding("UTF-8");
+    header('Content-Type: text/html; charset=utf-8');
     header("Access-Control-Allow-Origin:" . "*");
 
     include('simple_html_dom.php');
 
-    $url = 'http://www.forbes.ru/rating/200-bogateishikh-biznesmenov-rossii-2016/2016#all_rating';
+    $url = 'table.html';
     $html = new simple_html_dom();
     $html->load_file($url);
     $html->save();
 
-    //echo $html;
-    $tr = $html->find('table.common_rating_list tbody tr');
-    echo '<pre>';
-    echo $html;
-    echo '</pre>';
-    $response = new stdClass;
+    $response = array();
 
-    foreach ($tr[0] as $key => $value) {
 
-        //var_dump($value);
-        echo $value;
+    $table = $html->find('.common_rating_list')->plaintext;
+
+    foreach ($html->find('tr') as $key => $value) {
+
+        //echo $value;
+        if ($key != 0) {
+            foreach ($value->find('div.foto img') as $img) {
+                $src = str_replace('100_100', '460_' , $img->src);
+            }
+
+            foreach ($value->find('a.profile_title') as $text) {
+                $name = $text->plaintext;
+            }
+
+            foreach ($value->find('p.descr') as $text) {
+                $career = $text->plaintext;
+            }
+
+            $response[] = array(
+                'place' => (string) $value->find('td', 0)->plaintext,
+                'change_place' => (string) $value->find('td', 1)->plaintext,
+                'image' => (string) $src,
+                'name' => (string) $name,
+                'career' => (string) $career,
+                'money' => (string) $value->find('td', 3)->plaintext,
+                'change_money' => (string) $value->find('td', 4)->plaintext,
+                'age' => (string) $value->find('td', 5)->plaintext,
+                'children' => (string) $value->find('td', 6)->plaintext,
+             );
+        }
     }
-
-    /*foreach ($main as $key => $value) {
-
-        foreach ($value->find('span[itemprop=text]') as $val) {
-            $response->today[$key]['text'] = str_replace('&bull; ', '', $val->plaintext);
-        }
-
-        foreach ($value->find('span.super') as $val) {
-            $response->today[$key]['year'] = $val->plaintext;
-        }
-
-    }
-
-    foreach ($event as $key => $value) {
-
-        foreach ($value->find('span.super') as $val) {
-            $response->history[$key]['year'] = $val->plaintext;
-            $val->clear();
-        }
-
-        $response->history[$key]['text'] = str_replace('&bull; ', '', $value->plaintext);
-    }*/
-
     echo json_encode($response);
 ?>

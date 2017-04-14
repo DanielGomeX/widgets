@@ -1,18 +1,203 @@
-.placeholder {
-    &__widget-block {
-        background: red;
-    }
+@accentColor: rgba(255, 0, 0, 1);
+@plusColor: green;
+@minusColor: red;
 
-    &__aa {
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 1440px;
+    height: 270px;
+    background: url('https://images.freecreatives.com/wp-content/uploads/2015/04/natural-paper-background-texture-hd-5a0b.jpg') center no-repeat;
+
+    &:before {
         content: "";
-        color: green;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255, 0.6);
+    }
+}
+
+div {
+    box-sizing: border-box;
+}
+
+.placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Oswald', sans-serif;
+    /*font-family: 'Playfair Display', serif;*/
+    color: #000;
+    border: 2px solid #000;
+    box-sizing: border-box;
+}
+
+.widget-block {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #000;
+    opacity: 0;
+    font-size: 0;
+    transition:All 0.3s ease;
+    -webkit-transition:All 0.3s ease;
+    -moz-transition:All 0.3s ease;
+    -o-transition:All 0.3s ease;
+
+    & .plus {
+        color: @plusColor;
     }
 
-    &_asd {
-        text-align: center;
+    & .minus {
+        color: @minusColor;
+    }
 
-        &__aaaad {
-            float: none;
+    &_bold {
+        font-weight: bold;
+    }
+
+    &__place-block {
+        display: inline-block;
+        vertical-align: top;
+        width: 270px;
+        text-align: center;
+        padding-top: 40px;
+        font-size: 25px;
+    }
+
+    &__forbes {
+        padding: 10px 15px 0;
+    }
+
+    &__career {
+        &__text {
+            height: 30px;
+            overflow: hidden;
         }
+    }
+
+    &__wrapper {
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: inline-block;
+        vertical-align: top;
+        width: 715px;
+        overflow: hidden;
+    }
+
+    &__title {
+        padding: 10px 0px;
+        margin: 0 10px;
+        border-bottom: 2px solid #000;
+
+        & .span {
+            display: inline-block;
+            vertical-align: baseline;
+            line-height: 35px;
+        }
+    }
+
+    &__money {
+        &__text {
+            position: relative;
+            text-decoration: underline;
+            text-decoration-color: @plusColor;
+        }
+    }
+
+    &__place {
+        display: inline-block;
+        font-size: 50px;
+        line-height: 50px;
+
+        & span {
+            font-size: 65px;
+            color: @accentColor;
+            font-weight: bold;
+            margin-left: 5px;
+            font-style: normal;
+        }
+    }
+
+    &__name {
+        display: inline-block;
+        font-weight: bold;
+        font-size: 35px;
+        margin-right: 35px;
+    }
+
+    &__age {
+        margin-right: 15px;
+    }
+    &__image {
+        position: relative;
+        width: 450px;
+        height: 100%;
+        display: inline-block;
+        vertical-align: top;
+        right: 0px;
+        z-index: 99;
+
+        &__image {
+            max-height: 100%;
+        }
+    }
+
+    &__row {
+        font-size: 20px;
+        width: 715px;
+    }
+
+    &__col {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 20px;
+
+        &_font-0 {
+            font-size: 0;
+        }
+        &__col {
+            font-size: 20px;
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+
+        }
+    }
+
+    &__subrow {
+        position: relative;
+        font-size: 0;
+        padding: 0 10px 15px;
+
+        &__col {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 25px;
+            width: 60%;
+
+            &:last-child {
+                width: 40%;
+                font-size: 20px;
+                text-align: center;
+            }
+        }
+    }
+
+    &.active {
+        opacity: 1;
+        transition:All 0.3s ease;
+        -webkit-transition:All 0.3s ease;
+        -moz-transition:All 0.3s ease;
+        -o-transition:All 0.3s ease;
     }
 }

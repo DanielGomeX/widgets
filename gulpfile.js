@@ -9,6 +9,7 @@ var gulp = require('gulp')
   , inlinesource = require('gulp-inline-source')
   , args = require('yargs').argv
   , replace = require('gulp-replace-task')
+  , watch = require('gulp-watch')
   ;
 
 
@@ -88,4 +89,10 @@ gulp.task('build', ['task', 'scripts', 'styles'], function () {
         .pipe(inlinesource(options))
         .pipe(gulp.dest(path.prod.src));
 
+});
+
+gulp.task('watch', ['task'], function(){
+    watch([path.dev.src], function(event, cb) {
+        gulp.start('build');
+    });
 });

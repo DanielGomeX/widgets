@@ -34,6 +34,7 @@
     "gulp-rimraf": "^0.2.1",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^2.1.2",
+    "gulp-watch": "^4.3.11",
     "inline-source": "^5.2.1",
     "path": "^0.12.7",
     "rimraf": "^2.6.1",
