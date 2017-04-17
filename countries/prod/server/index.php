@@ -15,6 +15,9 @@
     $htmlCurrency->load_file($urlCurrency);
     $htmlCurrency->save();
 
+    $urlLocals = 'locals.html';
+    $locals = file_get_contents($urlLocals);
+
     $myArr = json_decode(file_get_contents('info.json'));
 
     $codeArr = array();
@@ -48,13 +51,13 @@
          );
     }
 
-    foreach ($codeArr as $value) {
+    foreach ($currencyArr as $value) {
 
         foreach ($myArr as $key => $val) {
-            if ($value['ruName'] == $key) {
+            if ($value['name'] == $key) {
 
-                $myArr->$key->en_name = trim($value['enName']);
-                $myArr->$key->capital = trim($value['capital']);
+                $myArr->$key->currency = trim($value['currency']);
+                $myArr->$key->currency_code = trim($value['currency_code']);
 
             }
         }
@@ -77,7 +80,11 @@
         }
     }
 
-    echo json_encode($currencyArr);
+    //echo $locals;
+
+    $arr = explode('<br>', $locals);
+    var_dump($arr);
+    //echo json_encode($myArr);
 
     //file_put_contents('info_new.json', iconv("windows-1251", "UTF-8", json_encode($myArr)));
 
