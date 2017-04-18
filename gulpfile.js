@@ -84,9 +84,10 @@ gulp.task('task', function () {
 
 gulp.task('build', ['task', 'scripts', 'styles'], function () {
     var env = args.env || 'dev';
+    console.log('blabla ',srcPath);
     var patterns = [
         {match: 'type', replacement: env === 'dev' ? '_' : ''},
-        {match: 'src', replacement: env === 'dev' ? srcPath.srcPath : 'https://js.dooh.xyz/' + path.task + '/server/'}
+        {match: 'src', replacement: env === 'dev' ? srcPath : 'https://js.dooh.xyz/' + path.task + '/server/'}
     ];
     var options = {
         attribute: 'inline',
