@@ -10,6 +10,7 @@ var gulp = require('gulp')
   , args = require('yargs').argv
   , replace = require('gulp-replace-task')
   , watch = require('gulp-watch')
+  , prefixer = require('gulp-autoprefixer')
   ;
 
 
@@ -36,6 +37,7 @@ gulp.task('styles', function () {
     ])
     .pipe(concat('__main.less'))
     .pipe(less())
+    .pipe(prefixer())
     .on('error', console.log)
     .pipe(gulp.dest(path.build.src))
     .pipe(cleanCSS())

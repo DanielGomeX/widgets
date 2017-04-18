@@ -6,24 +6,28 @@
     include('simple_html_dom.php');
 
     $url = 'country.html';
+    $urlCurrency = 'currency.html';
+    $urlLocals = 'locals.html';
+    $urlInfoJSON = 'info.json';
+
     $html = new simple_html_dom();
     $html->load_file($url);
     $html->save();
 
-    $urlCurrency = 'currency.html';
     $htmlCurrency = new simple_html_dom();
     $htmlCurrency->load_file($urlCurrency);
     $htmlCurrency->save();
 
-    $urlLocals = 'locals.html';
-    $locals = file_get_contents($urlLocals);
-
-    $myArr = json_decode(file_get_contents('info.json'));
-
     $codeArr = array();
     $currencyArr = array();
-
     $resultArr = array();
+    $localsArr = array();
+
+    $locals = file_get_contents($urlLocals);
+    $myArr = json_decode(file_get_contents($urlInfoJSON));
+    $localsArr = explode('<br>', $locals);
+
+
 
     foreach ($html->find('tr') as $key => $value) {
 
@@ -80,12 +84,27 @@
         }
     }
 
-    //echo $locals;
+    foreach ($localsArr as $key => $value) {
+        $country = explode(' – ', $value);
+        $country1 = explode('(', $country[1]);
 
-    $arr = explode('<br>', $locals);
-    var_dump($arr);
-    //echo json_encode($myArr);
+        foreach ($myArr as $key => $val) {
+            if (trim($country[0]) == trim($key)) {
+                $myArr->$key->locals = (string) trim($country1[0]);
+            }/* else {
+                $myArr->$key->locals = '';
+            }*/
+        }
+    }
 
-    //file_put_contents('info_new.json', iconv("windows-1251", "UTF-8", json_encode($myArr)));
+    foreach ($myArr as $key => $value) {
+        $myArr->$key->ru_name = (string) $key;
+    }
+
+
+    //var_dump($localsArr);
+    echo json_encode($myArr);
+
+    file_put_contents('info_new.json', iconv('cp1251', 'utf-8', trim(json_encode($myArr))));
 
 ?>
