@@ -1,5 +1,8 @@
 /*eslint no-console: 0*/
 'use strict'
+
+var srcPath = require('./gulp_variables');
+
 var gulp = require('gulp')
   , uglify = require('gulp-uglify')
   , concat = require('gulp-concat')
@@ -73,14 +76,18 @@ gulp.task('task', function () {
             js: task + '/dev/main.js',
             less: task + '/dev/main.less',
             vendorCss: task + '/dev/*.css'
-        }
+        },
+        task: task
     }
     return path;
 });
 
 gulp.task('build', ['task', 'scripts', 'styles'], function () {
     var env = args.env || 'dev';
-    var patterns = [{match: 'type', replacement: env === 'dev' ? '_' : ''}];
+    var patterns = [
+        {match: 'type', replacement: env === 'dev' ? '_' : ''},
+        {match: 'src', replacement: env === 'dev' ? srcPath.srcPath : 'https://js.dooh.xyz/' + path.task + '/server/'}
+    ];
     var options = {
         attribute: 'inline',
         compress: false
