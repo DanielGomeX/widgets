@@ -1,10 +1,12 @@
 $(document).ready(function() {
     /* eslint no-console:0 */
-    $.ajax({
-        url: 'http://widgets/countries/prod/server/info_new.json',
-        success: function(d) {
-            console.log('country_data', d);
+    /* eslint eqeqeq: 0 */
 
+    $.ajax({
+        url: 'https://js.dooh.xyz/countries/server/index.php',
+        success: function(d) {
+            console.log('country_data', JSON.parse(d));
+            d = JSON.parse(d);
             createStructure(d['Австралия'], 'new');
             d.length = 0;
             for (var item in d) {
@@ -28,12 +30,12 @@ $(document).ready(function() {
     })
 
     function createStructure (data, type) {
-        var elem = type === 'create' ? $('.js-block[data-clone=true]').clone(true).attr('data-clone', 'false') : $('.js-block[data-clone=true]');
+        var elem = type === 'create' ? $('.js-block[data-clone=true]').clone().attr('data-clone', 'false') : $('.js-block[data-clone=true]');
 
-        elem.find('.js-flag').attr('src', data.flag);
+        elem.find('.js-flag').css('background-image', 'url(' + data.flag + ')');
         elem.find('.js-title').html(data.ru_name);
         elem.find('.js-title').closest('.block').attr('title', data.ru_name);
-        elem.find('.js-gerb').attr('src', data.gerb);
+        elem.find('.js-gerb').css('background-image', 'url(' + data.gerb + ')');
         elem.find('.js-capital').html(data.capital);
 
         if (data.locals != undefined) {
@@ -60,39 +62,45 @@ $(document).ready(function() {
     function animate(i) {
         var item = $('.js-block').eq(i);
 
+
+
         item.addClass('active');
-        item.find('.js-flag').animate({
-            'opacity': 1
-        }, 500)
+        item.find('.js-flag').css({'opacity': 1}).delay(1500).animate({
+            'width': '70px',
+            'height': '70px',
+            'top': '6px',
+            'left': getTitlePosition(item.find('.js-title'), 'left') - 80 + 'px',
+            'margin': 0
+        }, 800)
 
         setTimeout(function() {
-            item.find('.js-flag').addClass('min');
-
-        }, 1500)
+            item.find('.js-gerb').css({'opacity': 1}).delay(1500).animate({
+                'width': '70px',
+                'height': '70px',
+                'top': '6px',
+                'left': getTitlePosition(item.find('.js-title'), 'right') + 10 + 'px',
+                'margin': 0
+            }, 800)
+        }, 2000)
 
         setTimeout(function() {
-            item.find('.js-gerb').animate({
-                'opacity': 1
-            }, 500)
-        }, 1800)
-
-        setTimeout(function() {
-            item.find('.js-gerb').addClass('min');
             item.find('.block__content').addClass('active');
-        }, 3600)
-
-        /*item.find('.js-flag').addClass('min');
-        item.find('.js-gerb').addClass('min');*/
-
-        /*setTimeout(function() {
-            item.find('.block__content').addClass('active');
-        }, 1300)*/
+        }, 5000)
 
         setTimeout(function() {
             item.removeClass('active');
             animate(randomInteger(0, 88)[i + 1]);
         }, 8000)
 
+    }
+
+    function getTitlePosition($title, pos) {
+
+        if (pos === 'left') {
+            return $title.offset().left;
+        } else {
+            return $title.offset().left + parseInt($title.width());
+        }
     }
 
     function randomInteger (min, max) {

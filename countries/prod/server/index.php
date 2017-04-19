@@ -88,7 +88,9 @@
     foreach ($localsArr as $key => $value) {
         $country = explode(' – ', $value);
         $country1 = explode('(', $country[1]);
-
+        /*echo '<pre>';
+        var_dump($country1);
+        echo '</pre>';*/
         $arr[trim($country[0])] = trim($country1[0]);
     }
     $localsArr = $arr;
@@ -107,6 +109,6 @@
 
 
     echo json_encode($myArr);
-    file_put_contents('info_new.json', iconv('cp1251', 'utf-8', trim(json_encode($myArr))));
+    //file_put_contents('info_new.json', iconv('cp1251', 'utf-8', trim(json_encode($myArr))));
 
 ?>

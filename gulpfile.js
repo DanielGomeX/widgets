@@ -2,6 +2,7 @@
 'use strict'
 
 var srcPath = require('./gulp_variables');
+var sftpConnection = require('./sftp_connection');
 
 var gulp = require('gulp')
   , uglify = require('gulp-uglify')
@@ -14,6 +15,7 @@ var gulp = require('gulp')
   , replace = require('gulp-replace-task')
   , watch = require('gulp-watch')
   , prefixer = require('gulp-autoprefixer')
+  , sftp = require('gulp-sftp')
   ;
 
 var env
@@ -56,8 +58,10 @@ gulp.task('styles', function () {
 });
 
 gulp.task('scripts', function () {
-    var patterns = [{match: 'src', replacement: env === 'dev' ? srcPath : 'https://js.dooh.xyz/' + path.task + '/server/'}];
+    var src = srcPath();
 
+    //console.log(src);
+    var patterns = [{match: 'src', replacement: env === 'dev' ? srcPath() + path.prod.src + 'server' : 'https://js.dooh.xyz/' + path.task + '/server'}];
     return gulp.src([
         path.dev.js
     ])
@@ -114,4 +118,12 @@ gulp.task('watch', ['task'], function(){
     watch([path.dev.src], function(event, cb) {
         gulp.start('build');
     });
+});
+
+gulp.task('deploy', ['task'], function () {
+    var setting = sftpConnection();
+    setting.remotePath = '/home/vit/www/' + task;
+
+    return gulp.src([path.prod.src + '*', path.prod.src + '*/*'])
+        .pipe(sftp(setting));
 });

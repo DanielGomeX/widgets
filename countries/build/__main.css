@@ -171,6 +171,27 @@ div {
 .block.active {
   opacity: 1;
 }
+.block__img1 {
+  position: absolute;
+  width: 270px;
+  height: 240px;
+  top: 50%;
+  margin-top: -105px;
+  left: 50%;
+  margin-left: -135px;
+  text-align: center;
+  opacity: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.block__img1.min {
+  opacity: 1;
+  width: 70px;
+  height: 70px;
+  margin: 0;
+  top: 5px;
+}
 .block__title {
   display: block;
   text-align: center;
@@ -191,22 +212,12 @@ div {
 .block__title__gerb,
 .block__title__flag {
   opacity: 0;
-  max-width: 50px;
+  max-width: 100%;
 }
 .block__title__gerb.min,
 .block__title__flag.min {
-  -webkit-transform: scale(1) translate(0, 0);
-          transform: scale(1) translate(0, 0);
   transition: All 1s ease;
   opacity: 1;
-}
-.block__title__gerb {
-  -webkit-transform: scale(6.5) translate(-17px, 25px);
-          transform: scale(6.5) translate(-17px, 25px);
-}
-.block__title__flag {
-  -webkit-transform: scale(5.5) translate(-11px, 30px);
-          transform: scale(5.5) translate(-11px, 30px);
 }
 .block__content {
   opacity: 0;
@@ -242,7 +253,4 @@ div {
 .block__text {
   display: inline-block;
   line-height: 22px;
-}
-.block__img {
-  max-height: 40px;
 }

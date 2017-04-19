@@ -52,6 +52,29 @@ div {
         opacity: 1;
     }
 
+    &__img1 {
+        position: absolute;
+        width: 270px;
+        height: 240px;
+        top: 50%;
+        margin-top: -105px;
+        left: 50%;
+        margin-left: -135px;
+        text-align: center;
+        opacity: 0;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+
+        &.min {
+            opacity: 1;
+            width: 70px;
+            height: 70px;
+            margin: 0;
+            top: 5px;
+        }
+    }
+
     &__title {
         display: block;
         text-align: center;
@@ -74,21 +97,13 @@ div {
         &__gerb,
         &__flag {
             opacity: 0;
-            max-width: 50px;
+            max-width: 100%;
 
             &.min {
-                transform: scale(1) translate(0, 0);
+                //transform: scale(1) translate(0, 0);
                 transition:All 1s ease;
                 opacity: 1;
             }
-        }
-
-        &__gerb {
-            transform: scale(6.5) translate(-17px, 25px);
-        }
-
-        &__flag {
-            transform: scale(5.5) translate(-11px, 30px);
         }
     }
 
@@ -137,6 +152,6 @@ div {
     }
 
     &__img {
-        max-height: 40px;
+        //max-height: 40px;
     }
 }
