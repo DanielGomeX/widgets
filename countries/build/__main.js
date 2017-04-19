@@ -17,6 +17,8 @@ $(document).ready(function() {
 
             var it = 0;
             setTimeout(function() {
+                $('.preloader').hide();
+                $('.content').show();
                 animate(randomInteger(0, 88)[it]);
             }, 2000)
 

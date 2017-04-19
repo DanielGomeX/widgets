@@ -16,6 +16,10 @@ var gulp = require('gulp')
   , prefixer = require('gulp-autoprefixer')
   ;
 
+var env
+  , task
+  ;
+
 
 var path = {
     build: {
@@ -34,11 +38,14 @@ var path = {
 }
 
 gulp.task('styles', function () {
+    //var patterns = [{match: 'src', replacement: env === 'dev' ? srcPath : 'https://js.dooh.xyz/' + path.task + '/server/'}];
+
     return gulp.src([
         path.dev.vendorCss,
         path.dev.less
     ])
     .pipe(concat('__main.less'))
+    //.pipe(replace({patterns: patterns}))
     .pipe(less())
     .pipe(prefixer())
     .on('error', console.log)
@@ -49,10 +56,13 @@ gulp.task('styles', function () {
 });
 
 gulp.task('scripts', function () {
+    var patterns = [{match: 'src', replacement: env === 'dev' ? srcPath : 'https://js.dooh.xyz/' + path.task + '/server/'}];
+
     return gulp.src([
         path.dev.js
     ])
     .pipe(concat('__main.js'))
+    .pipe(replace({patterns: patterns}))
     .pipe(gulp.dest(path.build.src))
     .pipe(uglify().on('error', function(e){
         console.log(e);
@@ -62,7 +72,9 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('task', function () {
-    var task = args.task;
+    task = args.task;
+    env = args.env || 'dev';
+
     path = {
         build: {
             src: task + '/build/'
@@ -83,18 +95,15 @@ gulp.task('task', function () {
 });
 
 gulp.task('build', ['task', 'scripts', 'styles'], function () {
-    var env = args.env || 'dev';
-    console.log('blabla ',srcPath);
-    var patterns = [
-        {match: 'type', replacement: env === 'dev' ? '_' : ''},
-        {match: 'src', replacement: env === 'dev' ? srcPath : 'https://js.dooh.xyz/' + path.task + '/server/'}
-    ];
+
+
+    var patterns = [{match: 'type', replacement: env === 'dev' ? '_' : ''}];
     var options = {
         attribute: 'inline',
         compress: false
     }
 
-    return gulp.src(path.dev.html)
+    return gulp.src([path.dev.html])
         .pipe(replace({patterns: patterns}))
         .pipe(inlinesource(options))
         .pipe(gulp.dest(path.prod.src));

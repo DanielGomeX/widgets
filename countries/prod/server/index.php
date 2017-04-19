@@ -24,7 +24,7 @@
     $localsArr = array();
 
     $locals = file_get_contents($urlLocals);
-    $myArr = json_decode(file_get_contents($urlInfoJSON));
+    $myArr = json_decode(file_get_contents($urlInfoJSON), true);
     $localsArr = explode('<br>', $locals);
 
 
@@ -60,8 +60,8 @@
         foreach ($myArr as $key => $val) {
             if ($value['name'] == $key) {
 
-                $myArr->$key->currency = trim($value['currency']);
-                $myArr->$key->currency_code = trim($value['currency_code']);
+                $myArr[$key]['currency'] = trim($value['currency']);
+                $myArr[$key]['currency_code'] = trim($value['currency_code']);
 
             }
         }
@@ -74,37 +74,39 @@
         foreach ($myArr as $key => $val) {
             if ($value['ruName'] == $key) {
                 //echo $val->$key . '<br>';
-                $myArr->$key->en_name = trim($value['enName']);
-                $myArr->$key->capital = trim($value['capital']);
-                $myArr->$key->two_symbol_code = trim($value['twoCode']);
-                $myArr->$key->three_symbol_code = trim($value['threeCode']);
-                $myArr->$key->ISO_kode = trim($value['isoCode']);
-                $myArr->$key->phone_code = trim($value['phoneCode']);
+                $myArr[$key]['en_name'] = trim($value['enName']);
+                $myArr[$key]['capital'] = trim($value['capital']);
+                $myArr[$key]['two_symbol_code'] = trim($value['twoCode']);
+                $myArr[$key]['three_symbol_code'] = trim($value['threeCode']);
+                $myArr[$key]['ISO_kode'] = trim($value['isoCode']);
+                $myArr[$key]['phone_code'] = trim($value['phoneCode']);
             }
         }
     }
+    $arr = array();
 
     foreach ($localsArr as $key => $value) {
         $country = explode(' – ', $value);
         $country1 = explode('(', $country[1]);
 
-        foreach ($myArr as $key => $val) {
-            if (trim($country[0]) == trim($key)) {
-                $myArr->$key->locals = (string) trim($country1[0]);
-            }/* else {
-                $myArr->$key->locals = '';
-            }*/
+        $arr[trim($country[0])] = trim($country1[0]);
+    }
+    $localsArr = $arr;
+
+    foreach ($myArr as $key => $value) {
+        if (array_key_exists(trim($key), $localsArr)) {
+            $myArr[$key]['locals'] = (string) trim($localsArr[$key]);
+        } else {
+            $myArr[$key]['locals'] = null;
         }
     }
 
     foreach ($myArr as $key => $value) {
-        $myArr->$key->ru_name = (string) $key;
+        $myArr[$key]['ru_name'] = (string) $key;
     }
 
 
-    //var_dump($localsArr);
     echo json_encode($myArr);
-
     file_put_contents('info_new.json', iconv('cp1251', 'utf-8', trim(json_encode($myArr))));
 
 ?>

@@ -1,5 +1,7 @@
 $(document).ready(function() {
     /* eslint no-console:0 */
+    /* eslint eqeqeq: 0 */
+
     $.ajax({
         url: 'http://widgets/countries/prod/server/info_new.json',
         success: function(d) {
@@ -17,6 +19,8 @@ $(document).ready(function() {
 
             var it = 0;
             setTimeout(function() {
+                $('.preloader').hide();
+                $('.content').show();
                 animate(randomInteger(0, 88)[it]);
             }, 2000)
 
@@ -26,7 +30,7 @@ $(document).ready(function() {
     })
 
     function createStructure (data, type) {
-        var elem = type === 'create' ? $('.js-block[data-clone=true]').clone(true).attr('data-clone', 'false') : $('.js-block[data-clone=true]');
+        var elem = type === 'create' ? $('.js-block[data-clone=true]').clone().attr('data-clone', 'false') : $('.js-block[data-clone=true]');
 
         elem.find('.js-flag').attr('src', data.flag);
         elem.find('.js-title').html(data.ru_name);
@@ -78,13 +82,6 @@ $(document).ready(function() {
             item.find('.js-gerb').addClass('min');
             item.find('.block__content').addClass('active');
         }, 3600)
-
-        /*item.find('.js-flag').addClass('min');
-        item.find('.js-gerb').addClass('min');*/
-
-        /*setTimeout(function() {
-            item.find('.block__content').addClass('active');
-        }, 1300)*/
 
         setTimeout(function() {
             item.removeClass('active');
