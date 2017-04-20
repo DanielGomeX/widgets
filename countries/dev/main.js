@@ -2,6 +2,9 @@ $(document).ready(function() {
     /* eslint no-console:0 */
     /* eslint eqeqeq: 0 */
 
+    var randomArr = randomInteger(0, 87);
+    var it = 0;
+
     $.ajax({
         url: '@@src/index.php',
         success: function(d) {
@@ -17,11 +20,11 @@ $(document).ready(function() {
                 }
             }
 
-            var it = 0;
+
             setTimeout(function() {
                 $('.preloader').hide();
                 $('.content').show();
-                animate(randomInteger(0, 88)[it]);
+                animate(randomArr[it]);
             }, 2000)
 
 
@@ -62,8 +65,6 @@ $(document).ready(function() {
     function animate(i) {
         var item = $('.js-block').eq(i);
 
-
-
         item.addClass('active');
         item.find('.js-flag').css({'opacity': 1}).delay(1500).animate({
             'width': '70px',
@@ -89,7 +90,13 @@ $(document).ready(function() {
 
         setTimeout(function() {
             item.removeClass('active');
-            animate(randomInteger(0, 88)[i + 1]);
+            if (it < randomArr.length) {
+                animate(randomArr[it + 1]);
+            } else {
+                it = 0;
+                animate(randomArr[it]);
+            }
+            it++;
         }, 8000)
 
     }

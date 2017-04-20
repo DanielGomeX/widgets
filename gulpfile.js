@@ -16,6 +16,7 @@ var gulp = require('gulp')
   , watch = require('gulp-watch')
   , prefixer = require('gulp-autoprefixer')
   , sftp = require('gulp-sftp')
+  , imagemin = require('gulp-imagemin')
   ;
 
 var env
@@ -35,7 +36,8 @@ var path = {
         html: 'dev/index.html',
         js: 'dev/main.js',
         less: 'dev/main.less',
-        vendorCss: 'dev/*.css'
+        vendorCss: 'dev/*.css',
+        image: 'dev/image/*'
     }
 }
 
@@ -58,9 +60,7 @@ gulp.task('styles', function () {
 });
 
 gulp.task('scripts', function () {
-    var src = srcPath();
 
-    //console.log(src);
     var patterns = [{match: 'src', replacement: env === 'dev' ? srcPath() + path.prod.src + 'server' : 'https://js.dooh.xyz/' + path.task + '/server'}];
     return gulp.src([
         path.dev.js
@@ -73,6 +73,12 @@ gulp.task('scripts', function () {
     }))
     .pipe(rename('_main.js'))
     .pipe(gulp.dest(path.build.src))
+});
+
+gulp.task('imagemin', function(){
+    return gulp.src(path.dev.image)
+        .pipe(imagemin())
+        .pipe(gulp.dest(path.prod.src))
 });
 
 gulp.task('task', function () {
@@ -98,7 +104,7 @@ gulp.task('task', function () {
     return path;
 });
 
-gulp.task('build', ['task', 'scripts', 'styles'], function () {
+gulp.task('build', ['task', 'scripts', 'styles', 'imagemin'], function () {
 
 
     var patterns = [{match: 'type', replacement: env === 'dev' ? '_' : ''}];
