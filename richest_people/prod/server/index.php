@@ -12,9 +12,6 @@
 
     $response = array();
 
-
-    $table = $html->find('.common_rating_list')->plaintext;
-
     foreach ($html->find('tr') as $key => $value) {
 
         //echo $value;

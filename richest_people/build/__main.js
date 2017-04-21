@@ -1,32 +1,20 @@
 $(document).ready(function() {
 
     $.ajax({
-        url: 'http://widgets/richest_people/prod/server/index.php',
+        url: 'https://js.dooh.xyz/richest_people/server/index.php',
         success: function(d) {
             console.log('richest_people data', JSON.parse(d));
 
             var data = JSON.parse(d);
             createStructure(data[0], 'new');
 
-            var countPeople = 15;
-            for (var i=1; countPeople > i;i++) {
+            for (var i=1; data.length > i;i++) {
                 createStructure(data[i], 'create');
             }
-            /*var it = 0;
-            setInterval(function() {
-                if (it < countPeople) {
-                    $('.widget-block.active').removeClass('active');
-                    $('.widget-block').eq(it).addClass('active');
-                    it++;
-                } else {
-                    it = 0;
-                }
-            }, 500)*/
-
 
             var it = 0;
             var timerId = setTimeout(function tick() {
-                if (it < countPeople) {
+                if (it < data.length) {
                     setTimeout(function() {
                         $('.widget-block.active').find('.widget-block__image').animate({
                             'right': '-1165px'
@@ -40,6 +28,10 @@ $(document).ready(function() {
 
                         setTimeout(function() {
                             $('.widget-block.active').removeClass('active');
+                            setTimeout(function() {
+                                $('.widget-block').eq(it - 1).find('.widget-block__image').delay(1500).attr('style', '');
+                                $('.widget-block').eq(it - 1).find('.widget-block__wrapper').delay(1500).attr('style', '');
+                            }, 1500)
                             $('.widget-block').eq(it).fadeIn(1000, function() {
                                 $(this).addClass('active');
                             });
@@ -59,7 +51,6 @@ $(document).ready(function() {
     })
 
     function createStructure (data, type) {
-        var block = $('.widget-block');
         var elem = type === 'create' ? $('.widget-block[data-clone=true]').clone(true).attr('data-clone', 'false') : $('.widget-block[data-clone=true]');
 
         if (data.change_place.indexOf('+') == 0) {
@@ -77,7 +68,6 @@ $(document).ready(function() {
         } else if (data.change_money.indexOf('=') == 0) {
             data.change_place = 'не изменилась';
         }
-
 
         elem.find('.widget-block__place span').html(data.place);
         elem.find('.widget-block__name').html(data.name);

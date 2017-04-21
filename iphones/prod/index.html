@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Footwear news</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Alice" rel="stylesheet">
+    <style>.cssload-container{width:100%;height:49px;text-align:center}.cssload-speeding-wheel{width:49px;height:49px;margin:0 auto;border:3px solid #fff;border-radius:50%;border-left-color:transparent;border-right-color:transparent;animation:cssload-spin 1325ms infinite linear;-o-animation:cssload-spin 1325ms infinite linear;-ms-animation:cssload-spin 1325ms infinite linear;-webkit-animation:cssload-spin 1325ms infinite linear;-moz-animation:cssload-spin 1325ms infinite linear}@keyframes cssload-spin{100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes cssload-spin{100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}body,html{margin:0;padding:0;width:480px;height:360px}div{box-sizing:border-box}a{text-decoration:none;color:inherit}.placeholder{position:relative;width:100%;height:100%;overflow:hidden;font-family:Oswald,sans-serif;color:#000;box-sizing:border-box;background:#fff;border:1px solid #d4d4d4}.content{display:none;width:100%;height:276px;position:absolute;top:82px;left:0}.content__header{box-shadow:1px 4px 5px #d4d4d4;background-color:#fff;padding:10px 15px;margin-bottom:10px}.content__header__logo{display:inline-block;vertical-align:middle;width:44px;height:44px;background-image:url(https://www.iphones.ru/wp-content/themes/simpla2/images/sprites/ir-80e56.png);background-position:0 -1086px}.content__header__logo__wrapper{display:inline-block;vertical-align:middle;width:184px}.content__header__text{display:inline-block;vertical-align:middle;font-size:35px;padding-left:5px}.content__header__time{display:inline-block;vertical-align:middle;text-align:right;width:255px}.content__block{padding:15px;font-size:25px;line-height:29px}.content__block__title{font-size:30px;line-height:34px;margin-bottom:20px;max-height:68px;overflow:hidden}.content__block__description{max-height:87px;overflow:hidden}.content__footer{padding:15px 0;position:absolute;bottom:0;left:10px;width:460px;border-top:1px solid #d4d4d4}.content__tag{display:inline-block;vertical-align:middle;margin-right:15px;background:grey;color:#fff;padding:5px 10px;font-size:20px;font-weight:300;border-radius:3px}.content__tag:first-letter{text-transform:uppercase}.cssload-container.preloader{position:absolute;top:50%;margin-top:-29px;left:50%;margin-left:-29px;width:auto}.cssload-container.preloader .cssload-speeding-wheel{border-left-color:#000;border-right-color:#000}.cssload-container.preloader.error .cssload-speeding-wheel{border-left-color:#fff;border-right-color:#fff;border-top-color:red;border-bottom-color:red}</style>
+</head>
+<body>
+    <div class="placeholder">
+        <div class="content__header js-header">
+            <a href="https://www.iphones.ru/" class="content__header__logo__wrapper">
+                <span class="content__header__logo"></span>
+                <span class="content__header__text">Iphones.ru</span>
+            </a>
+            <!-- <span class="content__header__time js-time"> 21 Апреля 12:00</span> -->
+        </div>
+        <div class="content__wrapper">
+            <div class="content js-block"  data-clone="true">
+                <div class="content__block">
+                    <div class="content__block__title js-title"></div>
+                    <div class="content__block__description js-description"></div>
+                </div>
+                <div class="content__footer js-footer">
+                    <!-- <div class="content__tag">Iphone</div>
+                    <div class="content__tag">это интересно</div> -->
+                </div>
+            </div>
+        </div>
+        <div class="cssload-container preloader">
+            <div class="cssload-speeding-wheel"></div>
+        </div>
+    </div>
+<script>$(document).ready(function(){function e(e,t){var a="create"===t?$(".js-block[data-clone=true]").clone().attr("data-clone","false"):$(".js-block[data-clone=true]");e.image&&a.find(".js-image").attr("src",e.image),e.title&&a.find(".js-title").html(e.title),e.description&&a.find(".js-description").html(o(e.description,145));for(var r=0;2>r;r++)a.find(".js-footer").append('<div class="content__tag">'+e.category[r]+"</div>");a.appendTo(".content__wrapper")}function o(e,o){if(e.length>o){e=e.substr(0,o);var t=e.split(" ");return t.pop(),t.join(" ")+" ..."}return e}try{$.ajax({url:"https://js.dooh.xyz/iphones/server/index.php",success:function(o){console.log("footwear - data",JSON.parse(o));var t=JSON.parse(o);try{e(t[0],"new");for(var a=1;t.length>a;a++)e(t[a],"create");var r=1,n=setTimeout(function e(){r<t.length?($(".js-block.active").fadeOut(300),$(".js-block").eq(r).fadeIn(500).addClass("active"),r++):r=0,n=setTimeout(e,2e3)},8e3);$(".content__wrapper").show(),$(".js-block").eq(0).fadeIn(500).addClass("active"),$(".preloader").hide()}catch(e){console.log(e),console.log("ошибка внутри ajax")}},complete:function(){},error:function(e,o,t){console.log(e,o,t),$(".preloader").addClass("error")}})}catch(e){console.log(e),console.log("ошибка ajax"),$(".preloader").addClass("error")}});</script>
+</body>
+</html>

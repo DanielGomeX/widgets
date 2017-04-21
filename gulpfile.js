@@ -42,14 +42,14 @@ var path = {
 }
 
 gulp.task('styles', function () {
-    //var patterns = [{match: 'src', replacement: env === 'dev' ? srcPath : 'https://js.dooh.xyz/' + path.task + '/server/'}];
+    var patterns = [{match: 'src', replacement: env === 'dev' ? srcPath() + path.prod.src + 'server' : 'https://js.dooh.xyz/' + path.task + '/server'}];
 
     return gulp.src([
         path.dev.vendorCss,
         path.dev.less
     ])
     .pipe(concat('__main.less'))
-    //.pipe(replace({patterns: patterns}))
+    .pipe(replace({patterns: patterns}))
     .pipe(less())
     .pipe(prefixer())
     .on('error', console.log)
@@ -77,7 +77,9 @@ gulp.task('scripts', function () {
 
 gulp.task('imagemin', function(){
     return gulp.src(path.dev.image)
-        .pipe(imagemin())
+        .pipe(imagemin({
+            optimizationLevel: 1
+        }))
         .pipe(gulp.dest(path.prod.src))
 });
 
@@ -97,17 +99,19 @@ gulp.task('task', function () {
             html: task + '/dev/index.html',
             js: task + '/dev/main.js',
             less: task + '/dev/main.less',
-            vendorCss: task + '/dev/*.css'
+            vendorCss: task + '/dev/*.css',
+            image: task + '/dev/image/*'
         },
         task: task
     }
     return path;
 });
 
-gulp.task('build', ['task', 'scripts', 'styles', 'imagemin'], function () {
-
-
-    var patterns = [{match: 'type', replacement: env === 'dev' ? '_' : ''}];
+gulp.task('build', ['task', 'scripts', 'styles'], function () {
+    var patterns = [
+        {match: 'type', replacement: env === 'dev' ? '_' : ''},
+        {match: 'src', replacement: env === 'dev' ? srcPath() + path.prod.src + 'server' : 'https://js.dooh.xyz/' + path.task + '/server'}
+    ];
     var options = {
         attribute: 'inline',
         compress: false
@@ -117,7 +121,6 @@ gulp.task('build', ['task', 'scripts', 'styles', 'imagemin'], function () {
         .pipe(replace({patterns: patterns}))
         .pipe(inlinesource(options))
         .pipe(gulp.dest(path.prod.src));
-
 });
 
 gulp.task('watch', ['task'], function(){
