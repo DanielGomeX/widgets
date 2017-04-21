@@ -1,3 +1,6 @@
+@usdColor: #85BB65;
+@eurColor: blue;
+
 html,
 body {
     margin: 0;
@@ -39,6 +42,25 @@ a {
         top: 60px;
         height: 300px;
     }
+}
+
+.ct-line {
+    stroke-width: 3px;
+}
+
+.ct-point {
+    stroke-width: 7px;
+    stroke-linecap: round;
+}
+
+.ct-series-a .ct-line,
+.ct-series-a .ct-point {
+    stroke: @usdColor;
+}
+
+.ct-series-b .ct-line,
+.ct-series-b .ct-point {
+    stroke: @eurColor;
 }
 
 .cssload-container.preloader {
