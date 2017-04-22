@@ -18,6 +18,7 @@ div {
   font-family: 'Alice', serif;
   color: #000;
   box-sizing: border-box;
+  background-color: #000;
 }
 .content {
   display: none;

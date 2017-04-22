@@ -132,7 +132,6 @@ gulp.task('watch', ['task'], function(){
 gulp.task('deploy', ['task'], function () {
     var setting = sftpConnection();
     setting.remotePath = '/home/vit/www/' + task;
-
     return gulp.src([path.prod.src + '*', path.prod.src + '*/*'])
         .pipe(sftp(setting));
 });

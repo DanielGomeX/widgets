@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Footwear news</title>
+    <title>Динамика курса</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
@@ -69,6 +69,14 @@ a {
   background: #fff;
   border: 1px solid #d4d4d4;
 }
+.header {
+  font-size: 35px;
+  padding: 0 50px;
+}
+.header__title {
+  display: inline-block;
+  margin-right: 15px;
+}
 .content {
   width: 100%;
   height: 100%;
@@ -115,8 +123,13 @@ a {
 </head>
 <body>
     <div class="placeholder">
+        <div class="header">
+            <span class="header__title">Курс <span class="header__currency-name">USD</span>      </span>
+            <span class="header__mounth">Апрель</span>
+            <span class="header__year">2017 г.</span>
+        </div>
         <div class="content">
-        <div class="ct-chart ct-perfect-fourth content__chart"></div>
+            <div class="ct-chart ct-perfect-fourth content__chart"></div>
         </div>
         <div class="cssload-container preloader">
             <div class="cssload-speeding-wheel"></div>
@@ -134,7 +147,7 @@ a {
           ;
 
         $.ajax({
-            url: 'http://widgets/exchange_dynamics/prod/server/rate.json',
+            url: 'http://localhost/widgets_git/exchange_dynamics/prod/server/rate.json',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();
@@ -144,15 +157,53 @@ a {
                 console.log((time.getTime() - startTime) / 1000);
 
                 try {
-                    console.log('footwear - data', d);
+                    //console.log('footwear - data', d);
                     var days = [];
                     var currencyUSDVal = []
                       , currencyEURVal = []
                       ;
 
 
+                    var response = d;
+                    var data = {};
 
-                    for (var item in d['апрель']) {
+                    for (var mounth in response) {
+                        //console.log(mounth);
+
+                        data[mounth] = {};
+                        data[mounth].labels = [];
+                        data[mounth].series = [];
+                        var arr = [];
+
+                        for (var item in response[mounth]) {
+                            //console.log(item);
+                            //data[mounth].labels = [];
+                            data[mounth].labels.push(item);
+
+                            arr.push(parseFloat(response[mounth][item]['USD'].replace(' RUB', '').replace(',','.')));
+                            data[mounth].series = new Array(arr);
+                        }
+                    }
+
+                    console.log(data);  
+
+
+
+                    //new Chartist.Line('.ct-chart', data['апрель'], options);
+                    var delay = 6000;
+
+                    for (var mounth in data) {
+                        setTimeout(function() {
+                            Chartist.Line('.ct-chart', data[mounth], options);
+                            $('.header__mounth').html(mounth);
+                            console.log(data[mounth])
+                        },delay)
+
+                        delay = delay + delay;
+                    }    
+                
+
+                    /*for (var item in d['апрель']) {
                         days.push(item);
 
 
@@ -165,16 +216,22 @@ a {
                         labels: days,
                         series: [
                             currencyUSDVal,
-                            currencyEURVal
+                            //currencyEURVal
                         ]
-                    };
+                    };*/
 
                     var options = {
                         width: 480,
                         height: 300
                     };
 
-                    new Chartist.Line('.ct-chart', data, options);
+                    /*new Chartist.Line('.ct-chart', data, options);
+
+                    setTimeout(function() {
+                        data.series.push(currencyEURVal);
+                        Chartist.Line('.ct-chart', data, options);
+
+                    }, 3000)*/
 
                     $('.content__wrapper').show();
                     $('.js-block').eq(0).fadeIn(500).addClass('active');

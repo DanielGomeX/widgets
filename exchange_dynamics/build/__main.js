@@ -10,7 +10,7 @@ $(document).ready(function() {
           ;
 
         $.ajax({
-            url: 'http://widgets/exchange_dynamics/prod/server/rate.json',
+            url: 'http://localhost/widgets_git/exchange_dynamics/prod/server/rate.json',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();
@@ -20,15 +20,53 @@ $(document).ready(function() {
                 console.log((time.getTime() - startTime) / 1000);
 
                 try {
-                    console.log('footwear - data', d);
+                    //console.log('footwear - data', d);
                     var days = [];
                     var currencyUSDVal = []
                       , currencyEURVal = []
                       ;
 
 
+                    var response = d;
+                    var data = {};
 
-                    for (var item in d['апрель']) {
+                    for (var mounth in response) {
+                        //console.log(mounth);
+
+                        data[mounth] = {};
+                        data[mounth].labels = [];
+                        data[mounth].series = [];
+                        var arr = [];
+
+                        for (var item in response[mounth]) {
+                            //console.log(item);
+                            //data[mounth].labels = [];
+                            data[mounth].labels.push(item);
+
+                            arr.push(parseFloat(response[mounth][item]['USD'].replace(' RUB', '').replace(',','.')));
+                            data[mounth].series = new Array(arr);
+                        }
+                    }
+
+                    console.log(data);  
+
+
+
+                    //new Chartist.Line('.ct-chart', data['апрель'], options);
+                    var delay = 6000;
+
+                    for (var mounth in data) {
+                        setTimeout(function() {
+                            Chartist.Line('.ct-chart', data[mounth], options);
+                            $('.header__mounth').html(mounth);
+                            console.log(data[mounth])
+                        },delay)
+
+                        delay = delay + delay;
+                    }    
+                
+
+                    /*for (var item in d['апрель']) {
                         days.push(item);
 
 
@@ -41,16 +79,22 @@ $(document).ready(function() {
                         labels: days,
                         series: [
                             currencyUSDVal,
-                            currencyEURVal
+                            //currencyEURVal
                         ]
-                    };
+                    };*/
 
                     var options = {
                         width: 480,
                         height: 300
                     };
 
-                    new Chartist.Line('.ct-chart', data, options);
+                    /*new Chartist.Line('.ct-chart', data, options);
+
+                    setTimeout(function() {
+                        data.series.push(currencyEURVal);
+                        Chartist.Line('.ct-chart', data, options);
+
+                    }, 3000)*/
 
                     $('.content__wrapper').show();
                     $('.js-block').eq(0).fadeIn(500).addClass('active');

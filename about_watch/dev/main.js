@@ -11,7 +11,7 @@ $(document).ready(function() {
                     $('.content').css('width', data.length * 480);
 
                     createStructure (data[0], 'new');
-
+                    
                     for (var i = 1;  data.length > i; i++) {
                         createStructure (data[i], 'create');
                     }
@@ -39,6 +39,7 @@ $(document).ready(function() {
                 } catch (e) {
                     console.log(e);
                     console.log('ошибка внутри ajax');
+                    $('.js-block').html(e);
                 }
 
             },

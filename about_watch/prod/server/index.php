@@ -5,7 +5,7 @@
 
     $resultArr = array();
     $feed = simplexml_load_file('http://feeds.feedburner.com/Ablogtowatch');
-
+    $a = 0;
     foreach($feed->channel->item as $item) {
         $date = new DateTime($item->pubDate);
 
@@ -23,6 +23,8 @@
             'image' => str_replace('http://', 'https://' , $arrImg[0][1]),
             'pubDate' => (string) $date->format('d M H:i')
         );
+
+        //file_put_contents(++$a . '.jpg', file_get_contents($arrImg[0][1]));
     }
 
     echo json_encode($resultArr);
