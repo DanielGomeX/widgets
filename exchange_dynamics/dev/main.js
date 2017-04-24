@@ -10,7 +10,7 @@ $(document).ready(function() {
           ;
 
         $.ajax({
-            url: '@@src/rate.json',
+            url: '@@src/redirect.php',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();
@@ -20,18 +20,11 @@ $(document).ready(function() {
                 console.log((time.getTime() - startTime) / 1000);
 
                 try {
-                    //console.log('footwear - data', d);
-                    var days = [];
-                    var currencyUSDVal = []
-                      , currencyEURVal = []
-                      ;
-
-
-                    var response = d;
+                    console.log('exchange_dynamics data - ',JSON.parse(d));
+                    var response = JSON.parse(d);
                     var data = {};
 
                     for (var mounth in response) {
-                        //console.log(mounth);
 
                         data[mounth] = {};
                         data[mounth].labels = [];
@@ -39,64 +32,177 @@ $(document).ready(function() {
                         var arr = [];
 
                         for (var item in response[mounth]) {
-                            //console.log(item);
-                            //data[mounth].labels = [];
                             data[mounth].labels.push(item);
-
-                            arr.push(parseFloat(response[mounth][item]['USD'].replace(' RUB', '').replace(',','.')));
+                            arr.push({meta: 'descr', value: parseFloat(response[mounth][item].USD.replace(' RUB', '').replace(',','.'))});
                             data[mounth].series = new Array(arr);
                         }
                     }
 
-                    console.log(data);  
-
-                    function animate() {
-                        
+                    var mounthNamesArr = [];
+                    for (var m in data) {
+                        mounthNamesArr.push(m);
                     }
 
-                    //new Chartist.Line('.ct-chart', data['апрель'], options);
-                    /*var delay = 6000;
-
-                    for (var mounth in data) {
-                        setTimeout(function() {
-                            Chartist.Line('.ct-chart', data[mounth], options);
-                            $('.header__mounth').html(mounth);
-                            console.log(data[mounth])
-                        },delay)
-
-                        delay = delay + delay;
-                    }*/    
-                
-
-                    /*for (var item in d['апрель']) {
-                        days.push(item);
-
-
-                        currencyUSDVal.push(parseFloat(d['апрель'][item]['USD'].replace(' RUB', '').replace(',','.')));
-                        currencyEURVal.push(parseFloat(d['апрель'][item]['EUR'].replace(' RUB', '').replace(',','.')));
-                    }
-
-
-                    var data = {
-                        labels: days,
-                        series: [
-                            currencyUSDVal,
-                            //currencyEURVal
-                        ]
-                    };*/
+                    console.log(data);
 
                     var options = {
                         width: 480,
-                        height: 300
+                        height: 300,
+                        fullWidth: true/*,
+                        showArea: true,
+                        plugins: [
+                            Chartist.plugins.tooltip()
+                        ]*/
                     };
 
-                    /*new Chartist.Line('.ct-chart', data, options);
+                    $('.header__mounth').html(mounthNamesArr[0]);
+                    var chart = new Chartist.Line('.ct-chart', data[mounthNamesArr[0]], options);
 
-                    setTimeout(function() {
-                        data.series.push(currencyEURVal);
-                        Chartist.Line('.ct-chart', data, options);
 
-                    }, 3000)*/
+                    var seq = 0,
+                        delays = 80,
+                        durations = 500;
+
+                    chart.on('created', function() {
+                        seq = 0;
+                    });
+
+                    var points = [];
+
+                    var max = 0;
+                    chart.on('draw', function(data) {
+                        seq++;
+
+                        if (data.type == 'point') {
+                            points[data.index] = data.value.y;
+                            //console.log(data);
+                        }
+
+
+                        if (data.type === 'line') {
+                            data.element.animate({
+                                opacity: {
+                                    begin: seq * delays + 1000,
+                                    dur: durations,
+                                    from: 0,
+                                    to: 1
+                                }
+                            });
+                        } else if (data.type === 'label' && data.axis === 'x') {
+                            data.element.animate({
+                                y: {
+                                    begin: seq * delays,
+                                    dur: durations,
+                                    from: data.y + 100,
+                                    to: data.y,
+                                    easing: 'easeOutQuart'
+                                }
+                            });
+                        } else if (data.type === 'label' && data.axis === 'y') {
+                            data.element.animate({
+                                x: {
+                                    begin: seq * delays,
+                                    dur: durations,
+                                    from: data.x - 100,
+                                    to: data.x,
+                                    easing: 'easeOutQuart'
+                                }
+                            });
+                        } else if (data.type === 'point') {
+                            data.element.animate({
+                                x1: {
+                                    begin: seq * delays,
+                                    dur: durations,
+                                    from: data.x - 10,
+                                    to: data.x,
+                                    easing: 'easeOutQuart'
+                                },
+                                x2: {
+                                    begin: seq * delays,
+                                    dur: durations,
+                                    from: data.x - 10,
+                                    to: data.x,
+                                    easing: 'easeOutQuart'
+                                },
+                                opacity: {
+                                    begin: seq * delays,
+                                    dur: durations,
+                                    from: 0,
+                                    to: 1,
+                                    easing: 'easeOutQuart'
+                                }
+                            });
+                        } else if (data.type === 'grid') {
+                            var pos1Animation = {
+                                begin: seq * delays,
+                                dur: durations,
+                                from: data[data.axis.units.pos + '1'] - 30,
+                                to: data[data.axis.units.pos + '1'],
+                                easing: 'easeOutQuart'
+                            };
+
+                            var pos2Animation = {
+                                begin: seq * delays,
+                                dur: durations,
+                                from: data[data.axis.units.pos + '2'] - 100,
+                                to: data[data.axis.units.pos + '2'],
+                                easing: 'easeOutQuart'
+                            };
+
+                            var animations = {};
+                            animations[data.axis.units.pos + '1'] = pos1Animation;
+                            animations[data.axis.units.pos + '2'] = pos2Animation;
+                            animations['opacity'] = {
+                                begin: seq * delays,
+                                dur: durations,
+                                from: 0,
+                                to: 1,
+                                easing: 'easeOutQuart'
+                            };
+
+                            data.element.animate(animations);
+                        }
+                    });
+
+                    // For the sake of the example we update the chart every time it's created with a delay of 10 seconds
+                    var i = 1;
+                    chart.on('created', function(d) {
+                        /*console.log(d);*/
+
+                        /*console.log(points);
+
+                        console.log(Math.max.apply(Math, points));
+                        console.log(Math.min.apply(Math, points));*/
+
+                        $('.js-descr-max').html(Math.max.apply(Math, points).toFixed(2))
+                        $('.js-descr-min').html(Math.min.apply(Math, points).toFixed(2))
+                        $('.js-descr-average').html(getAverageValue(points).toFixed(2))
+
+                        setTimeout(function() {
+                            $('.js-description').addClass('active');
+                        }, 12000)
+
+
+                        if (window.__exampleAnimateTimeout) {
+                            clearTimeout(window.__exampleAnimateTimeout);
+                            window.__exampleAnimateTimeout = null;
+                        }
+
+                        window.__exampleAnimateTimeout = setTimeout(function() {
+
+                            if (i < mounthNamesArr.length){
+                                $('.header__mounth').html(mounthNamesArr[i]);
+                                $('.js-description').removeClass('active');
+                                chart.update(data[mounthNamesArr[i]]);
+                                i++;
+                            } else {
+                                i = 0;
+                                $('.header__mounth').html(mounthNamesArr[i]);
+                                $('.js-description').removeClass('active');
+                                chart.update(data[mounthNamesArr[i]]);
+                            }
+                        }, 18000);
+                    });
 
                     $('.content__wrapper').show();
                     $('.js-block').eq(0).fadeIn(500).addClass('active');
@@ -119,26 +225,14 @@ $(document).ready(function() {
         $('.preloader').addClass('error')
     }
 
-    function createStructure (data, type) {
-        var elem = type === 'create' ? $('.js-block[data-clone=true]').clone().attr('data-clone', 'false') : $('.js-block[data-clone=true]');
+    function getAverageValue(arr) {
+        var sum = 0;
 
-        if (data.image) {
-            elem.find('.js-image').attr('src',  data.image);
+        for (var i = 0; arr.length > i; i++) {
+            sum += arr[i];
         }
 
-        if (data.title) {
-            elem.find('.js-title').html(data.title);
-        }
+        return sum / arr.length;
 
-        if (data.description){
-            elem.find('.js-description').html(cutStr(data.description, 145));
-        }
-
-        for (var i = 0; 2 > i;i++) {
-            elem.find('.js-footer').append('<div class="content__tag">' + data.category[i] + '</div>');
-        }
-
-
-        elem.appendTo('.content__wrapper');
     }
 })

@@ -10,6 +10,7 @@
     <!-- Chartist.js -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
     <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <!-- <script type="text/javascript" src="prod/server/tooltip.min.js"></script> -->
     <!--  -->
     <link inline rel="stylesheet" href="../build/@@type_main.css">
 </head>
@@ -21,7 +22,23 @@
             <span class="header__year">2017 г.</span>
         </div>
         <div class="content">
-            <div class="ct-chart ct-perfect-fourth content__chart"></div>
+            <div class="ct-chart ct-perfect-fourth content__chart">
+                <div class="content__description js-description">
+                    <div class="content__description_max content__description__row">
+                        <span class="content__description__title">Максимальный</span>
+                        <span class="content__description__value js-descr-max">57.3896</span>
+                    </div>
+                    <div class="content__description_min content__description__row">
+                        <span class="content__description__title">Минимальный</span>
+                        <span class="content__description__value js-descr-min">57.3896</span>
+                    </div>
+                    <div class="content__description_average content__description__row">
+                        <span class="content__description__title">Средний</span>
+                        <span class="content__description__value js-descr-average">57.3896</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="cssload-container preloader">
             <div class="cssload-speeding-wheel"></div>

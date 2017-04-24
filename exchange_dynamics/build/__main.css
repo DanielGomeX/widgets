@@ -64,6 +64,19 @@ a {
   display: inline-block;
   margin-right: 15px;
 }
+.header__mounth {
+  text-transform: uppercase;
+}
+/*#tooltip {
+    position: absolute;
+    top: 244px;
+    left: 133px;
+    width: 150px;
+    height: 35px;
+    background: red;
+    color: #fff;
+}
+*/
 .content {
   width: 100%;
   height: 100%;
@@ -73,12 +86,80 @@ a {
   top: 60px;
   height: 300px;
 }
+.content__description {
+  opacity: 0;
+  position: absolute;
+  top: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 7;
+  height: 250px;
+  width: 415px;
+  left: 50px;
+  font-size: 30px;
+  padding: 20px 75px;
+}
+.content__description.active {
+  opacity: 1;
+  transition: All 1s ease;
+}
+.content__description__row {
+  margin-bottom: 15px;
+}
+.content__description_max .content__description__value {
+  color: green;
+}
+.content__description_min .content__description__value {
+  color: red;
+}
+.content__description__title {
+  display: inline-block;
+  vertical-align: middle;
+  width: 190px;
+}
+.content__description__value {
+  display: inline-block;
+  vertical-align: middle;
+}
+.chartist-tooltip {
+  position: absolute;
+  display: inline-block;
+  opacity: 0;
+  min-width: 5em;
+  padding: .5em;
+  background: #F4C63D;
+  color: #453D3F;
+  font-family: Oxygen, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  text-align: center;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity .2s linear;
+}
+.chartist-tooltip:before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin-left: -15px;
+  border: 15px solid transparent;
+  border-top-color: #F4C63D;
+}
+.chartist-tooltip.tooltip-show {
+  opacity: 1;
+}
+.ct-area,
+.ct-line {
+  pointer-events: none;
+}
 .ct-line {
   stroke-width: 3px;
 }
 .ct-point {
-  stroke-width: 7px;
+  stroke-width: 9px;
   stroke-linecap: round;
+  z-index: 9;
 }
 .ct-series-a .ct-line,
 .ct-series-a .ct-point {
