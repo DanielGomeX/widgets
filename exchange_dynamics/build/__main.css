@@ -120,55 +120,89 @@ a {
   display: inline-block;
   vertical-align: middle;
 }
-.chartist-tooltip {
+.content__direction {
   position: absolute;
-  display: inline-block;
+  bottom: 30px;
+  left: 50px;
+  min-width: 60px;
+  height: 60px;
   opacity: 0;
-  min-width: 5em;
-  padding: .5em;
-  background: #F4C63D;
-  color: #453D3F;
-  font-family: Oxygen, Helvetica, Arial, sans-serif;
-  font-weight: 700;
-  text-align: center;
-  pointer-events: none;
-  z-index: 1;
-  transition: opacity .2s linear;
+  padding-left: 60px;
+  font-size: 25px;
+  line-height: 60px;
 }
-.chartist-tooltip:before {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  margin-left: -15px;
-  border: 15px solid transparent;
-  border-top-color: #F4C63D;
-}
-.chartist-tooltip.tooltip-show {
+.content__direction.show {
   opacity: 1;
+  transition: All 1s ease;
+}
+.content__direction.up {
+  color: #007f00;
+  background: url('http://widgets/exchange_dynamics/prod/server/images/rate_up.svg');
+  background-size: 60px;
+  background-repeat: no-repeat;
+}
+.content__direction.down {
+  color: #ff0000;
+  background: url('http://widgets/exchange_dynamics/prod/server/images/rate_down.svg');
+  background-size: 60px;
+  background-repeat: no-repeat;
+}
+.ct-line.ct-threshold-above,
+.ct-point.ct-threshold-above,
+.ct-bar.ct-threshold-above {
+  stroke: #59922b !important;
+}
+.ct-line.ct-threshold-below,
+.ct-point.ct-threshold-below,
+.ct-bar.ct-threshold-below {
+  stroke: #f05b4f !important;
+}
+.ct-area.ct-threshold-above {
+  fill: #59922b !important;
+  /*stroke: #f05b4f !important;
+  stroke-width: 3px;*/
+}
+.ct-area.ct-threshold-below {
+  fill: #f05b4f !important;
 }
 .ct-area,
 .ct-line {
   pointer-events: none;
 }
 .ct-line {
+  stroke-opacity: 0;
   stroke-width: 3px;
+  stroke-dasharray: 5px;
+  -webkit-animation: dashoffset 1s linear infinite;
+          animation: dashoffset 1s linear infinite;
+}
+.ct-line.show {
+  stroke-opacity: 1;
+  transition: All 1s ease;
 }
 .ct-point {
   stroke-width: 9px;
   stroke-linecap: round;
-  z-index: 9;
 }
-.ct-series-a .ct-line,
+@-webkit-keyframes dashoffset {
+  to {
+    stroke-dashoffset: 10px;
+  }
+}
+@keyframes dashoffset {
+  to {
+    stroke-dashoffset: 10px;
+  }
+}
+/*.ct-series-a .ct-line,
 .ct-series-a .ct-point {
-  stroke: #85BB65;
+    stroke: @usdColor;
 }
+
 .ct-series-b .ct-line,
 .ct-series-b .ct-point {
-  stroke: blue;
-}
+    stroke: @eurColor;
+}*/
 .cssload-container.preloader {
   position: absolute;
   top: 50%;

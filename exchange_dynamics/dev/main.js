@@ -43,20 +43,24 @@ $(document).ready(function() {
                         mounthNamesArr.push(m);
                     }
 
+                    mounthNamesArr.reverse();
+
                     console.log(data);
 
                     var options = {
                         width: 480,
                         height: 300,
-                        fullWidth: true/*,
-                        showArea: true,
-                        plugins: [
-                            Chartist.plugins.tooltip()
-                        ]*/
+                        fullWidth: true,
+                        showArea: true
                     };
+
+
 
                     $('.header__mounth').html(mounthNamesArr[0]);
                     var chart = new Chartist.Line('.ct-chart', data[mounthNamesArr[0]], options);
+                    setTimeout(function() {
+                        $('.ct-line').addClass('show');
+                    }, 5500)
 
 
                     var seq = 0,
@@ -69,26 +73,11 @@ $(document).ready(function() {
 
                     var points = [];
 
-                    var max = 0;
                     chart.on('draw', function(data) {
                         seq++;
+                        //console.log(data)
 
-                        if (data.type == 'point') {
-                            points[data.index] = data.value.y;
-                            //console.log(data);
-                        }
-
-
-                        if (data.type === 'line') {
-                            data.element.animate({
-                                opacity: {
-                                    begin: seq * delays + 1000,
-                                    dur: durations,
-                                    from: 0,
-                                    to: 1
-                                }
-                            });
-                        } else if (data.type === 'label' && data.axis === 'x') {
+                        if (data.type === 'label' && data.axis === 'x') {
                             data.element.animate({
                                 y: {
                                     begin: seq * delays,
@@ -109,6 +98,7 @@ $(document).ready(function() {
                                 }
                             });
                         } else if (data.type === 'point') {
+                            points[data.index] = data.value.y;
                             data.element.animate({
                                 x1: {
                                     begin: seq * delays,
@@ -164,15 +154,27 @@ $(document).ready(function() {
                         }
                     });
 
-                    // For the sake of the example we update the chart every time it's created with a delay of 10 seconds
                     var i = 1;
                     chart.on('created', function(d) {
-                        /*console.log(d);*/
+                        //console.log(d);
 
-                        /*console.log(points);
+                        var lineDelay =  d.axisX.ticks.length * d.axisY.ticks.length * delays - 3000;
+                        console.log(points);
 
-                        console.log(Math.max.apply(Math, points));
-                        console.log(Math.min.apply(Math, points));*/
+                        var res = {};
+                        $('.js-direction').removeClass('down').removeClass('up');
+
+                        if (points[0] > points[points.length - 1]) {
+                            res.direction = 'down';
+                            res.diff = points[0] - points[points.length - 1];
+                            $('.js-direction').addClass('down').html('- ' + res.diff.toFixed(2) + ' ₽')
+                        } else {
+                            res.direction = 'up';
+                            res.diff = points[points.length - 1] - points[0];
+                            $('.js-direction').addClass('up').html('+ ' + res.diff.toFixed(2)  + ' ₽')
+                        }
+
+                        $('.js-direction').addClass('show');
 
                         $('.js-descr-max').html(Math.max.apply(Math, points).toFixed(2))
                         $('.js-descr-min').html(Math.min.apply(Math, points).toFixed(2))
@@ -180,7 +182,8 @@ $(document).ready(function() {
 
                         setTimeout(function() {
                             $('.js-description').addClass('active');
-                        }, 12000)
+                            $('.js-direction').removeClass('down').removeClass('up');
+                        }, lineDelay + 3000)
 
 
                         if (window.__exampleAnimateTimeout) {
@@ -189,8 +192,12 @@ $(document).ready(function() {
                         }
 
                         window.__exampleAnimateTimeout = setTimeout(function() {
-
                             if (i < mounthNamesArr.length){
+                                //tresholdVal = getAverageValue(points).toFixed(2);
+                                setTimeout(function() {
+                                    $('.ct-line').addClass('show');
+                                }, lineDelay);
+
                                 $('.header__mounth').html(mounthNamesArr[i]);
                                 $('.js-description').removeClass('active');
                                 chart.update(data[mounthNamesArr[i]]);
