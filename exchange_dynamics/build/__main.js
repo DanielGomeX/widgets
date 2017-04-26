@@ -65,11 +65,14 @@ $(document).ready(function() {
                       , durations = 500
                       ;
 
+                    var points = [];
+
                     chart.on('created', function() {
                         seq = 0;
+                        //points = []
                     });
 
-                    var points = [];
+
 
                     chart.on('draw', function(data) {
                         seq++;
@@ -118,7 +121,7 @@ $(document).ready(function() {
                                 }
                             });
                         } else if (data.type === 'point') {
-                            points[data.index] = data.value.y;
+                            points.push(data.value.y);
                             data.element.animate({
                                 x1: {
                                     begin: seq * delays,
@@ -181,13 +184,16 @@ $(document).ready(function() {
                     })
 
                     chart.on('created', function(d) {
-                        //console.log(d);
+                        console.log(d);
 
                         var lineDelay =  d.axisX.ticks.length * d.axisY.ticks.length * delays - 3000;
 
                         var res = {};
                         $('.js-direction').removeClass('down').removeClass('up');
                         $('.ct-area').removeClass('down').removeClass('up');
+
+                        console.log(points)
+                        console.log(points.length)
 
                         if (points[0] > points[points.length - 1]) {
                             res.direction = 'down';
@@ -210,6 +216,7 @@ $(document).ready(function() {
                         setTimeout(function() {
                             $('.js-description').addClass('active');
                             $('.js-direction').removeClass('down').removeClass('up').removeClass('show');
+                            points = [];
                         }, lineDelay + 3000)
 
 
@@ -219,7 +226,7 @@ $(document).ready(function() {
                         }
 
                         window.__exampleAnimateTimeout = setTimeout(function() {
-                            if (i < mounthNamesArr.length){
+                            /*if (i < mounthNamesArr.length){
                                 $('.header__mounth').html(mounthNamesArr[i]);
                                 $('.js-description').removeClass('active');
                                 chart.update(data[mounthNamesArr[i]]);
@@ -229,7 +236,7 @@ $(document).ready(function() {
                                 $('.header__mounth').html(mounthNamesArr[i]);
                                 $('.js-description').removeClass('active');
                                 chart.update(data[mounthNamesArr[i]]);
-                            }
+                            }*/
                         }, 18000);
                     });
 
