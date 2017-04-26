@@ -137,13 +137,13 @@ a {
 }
 .content__direction.up {
   color: #007f00;
-  background: url('http://widgets/exchange_dynamics/prod/server/images/rate_up.svg');
+  background: url('https://js.dooh.xyz/exchange_dynamics/server/images/rate_up.svg');
   background-size: 60px;
   background-repeat: no-repeat;
 }
 .content__direction.down {
   color: #ff0000;
-  background: url('http://widgets/exchange_dynamics/prod/server/images/rate_down.svg');
+  background: url('https://js.dooh.xyz/exchange_dynamics/server/images/rate_down.svg');
   background-size: 60px;
   background-repeat: no-repeat;
 }

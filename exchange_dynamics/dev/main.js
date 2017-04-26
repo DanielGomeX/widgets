@@ -45,7 +45,7 @@ $(document).ready(function() {
 
                     mounthNamesArr.reverse();
 
-                    console.log(data);
+                    console.log('exchange_dynamics  NEW data - ',data);
 
                     var options = {
                         width: 480,
@@ -184,16 +184,13 @@ $(document).ready(function() {
                     })
 
                     chart.on('created', function(d) {
-                        console.log(d);
+                        //console.log(d);
 
                         var lineDelay =  d.axisX.ticks.length * d.axisY.ticks.length * delays - 3000;
 
                         var res = {};
                         $('.js-direction').removeClass('down').removeClass('up');
                         $('.ct-area').removeClass('down').removeClass('up');
-
-                        console.log(points)
-                        console.log(points.length)
 
                         if (points[0] > points[points.length - 1]) {
                             res.direction = 'down';

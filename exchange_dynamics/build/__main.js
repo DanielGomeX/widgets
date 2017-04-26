@@ -10,7 +10,7 @@ $(document).ready(function() {
           ;
 
         $.ajax({
-            url: 'http://widgets/exchange_dynamics/prod/server/redirect.php',
+            url: 'https://js.dooh.xyz/exchange_dynamics/server/redirect.php',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();
@@ -45,7 +45,7 @@ $(document).ready(function() {
 
                     mounthNamesArr.reverse();
 
-                    console.log(data);
+                    console.log('exchange_dynamics  NEW data - ',data);
 
                     var options = {
                         width: 480,
@@ -184,16 +184,13 @@ $(document).ready(function() {
                     })
 
                     chart.on('created', function(d) {
-                        console.log(d);
+                        //console.log(d);
 
                         var lineDelay =  d.axisX.ticks.length * d.axisY.ticks.length * delays - 3000;
 
                         var res = {};
                         $('.js-direction').removeClass('down').removeClass('up');
                         $('.ct-area').removeClass('down').removeClass('up');
-
-                        console.log(points)
-                        console.log(points.length)
 
                         if (points[0] > points[points.length - 1]) {
                             res.direction = 'down';
@@ -226,7 +223,7 @@ $(document).ready(function() {
                         }
 
                         window.__exampleAnimateTimeout = setTimeout(function() {
-                            /*if (i < mounthNamesArr.length){
+                            if (i < mounthNamesArr.length){
                                 $('.header__mounth').html(mounthNamesArr[i]);
                                 $('.js-description').removeClass('active');
                                 chart.update(data[mounthNamesArr[i]]);
@@ -236,7 +233,7 @@ $(document).ready(function() {
                                 $('.header__mounth').html(mounthNamesArr[i]);
                                 $('.js-description').removeClass('active');
                                 chart.update(data[mounthNamesArr[i]]);
-                            }*/
+                            }
                         }, 18000);
                     });
 
