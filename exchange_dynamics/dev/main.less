@@ -144,28 +144,36 @@ a {
 }
 
 .ct-line.ct-threshold-above, .ct-point.ct-threshold-above, .ct-bar.ct-threshold-above {
-  stroke: #59922b !important;
+    stroke: #59922b !important;
 }
 
 .ct-line.ct-threshold-below, .ct-point.ct-threshold-below, .ct-bar.ct-threshold-below {
-  stroke: #f05b4f !important;
+    stroke: #f05b4f !important;
 }
 
 .ct-area.ct-threshold-above {
-  fill: #59922b !important;
-  /*stroke: #f05b4f !important;
-  stroke-width: 3px;*/
+    fill: #59922b !important;
 }
 
 .ct-area.ct-threshold-below {
-  fill: #f05b4f !important;
+    fill: #f05b4f !important;
+}
+
+.ct-area {
+    &.up {
+        fill: #59922b;
+    }
+
+    &.down {
+        fill: #f05b4f;
+    }
 }
 
 .ct-area, .ct-line {
-  pointer-events: none; }
+    pointer-events: none;
+}
 
 .ct-line {
-    stroke-opacity: 0;
     stroke-width: 3px;
     stroke-dasharray: 5px;
     animation: dashoffset 1s linear infinite;

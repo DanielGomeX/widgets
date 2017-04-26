@@ -58,14 +58,12 @@ $(document).ready(function() {
 
                     $('.header__mounth').html(mounthNamesArr[0]);
                     var chart = new Chartist.Line('.ct-chart', data[mounthNamesArr[0]], options);
-                    setTimeout(function() {
-                        $('.ct-line').addClass('show');
-                    }, 5500)
+                    chart.eventEmitter.addEventHandler('finishDrowingLine', function() {});
 
-
-                    var seq = 0,
-                        delays = 80,
-                        durations = 500;
+                    var seq = 0
+                      , delays = 80
+                      , durations = 500
+                      ;
 
                     chart.on('created', function() {
                         seq = 0;
@@ -75,9 +73,22 @@ $(document).ready(function() {
 
                     chart.on('draw', function(data) {
                         seq++;
+
                         //console.log(data)
 
-                        if (data.type === 'label' && data.axis === 'x') {
+                        if (data.type === 'line') {
+                            data.element.animate({
+                                opacity: {
+                                    begin: seq * delays + 1000,
+                                    dur: durations,
+                                    from: 0,
+                                    to: 1
+                                }
+                            });
+                            setTimeout(function() {
+                                chart.eventEmitter.emit('finishDrowingLine');
+                            }, seq * delays + 1000)
+                        } else if (data.type === 'label' && data.axis === 'x') {
                             data.element.animate({
                                 y: {
                                     begin: seq * delays,
@@ -85,6 +96,15 @@ $(document).ready(function() {
                                     from: data.y + 100,
                                     to: data.y,
                                     easing: 'easeOutQuart'
+                                }
+                            });
+                        } else if (data.type === 'area') {
+                            data.element.animate({
+                                opacity: {
+                                    begin: seq * delays + 1000,
+                                    dur: durations,
+                                    from: 0,
+                                    to: 0.6
                                 }
                             });
                         } else if (data.type === 'label' && data.axis === 'y') {
@@ -155,26 +175,33 @@ $(document).ready(function() {
                     });
 
                     var i = 1;
+
+                    chart.on('finishDrowingLine', function() {
+                        $('.js-direction').addClass('show');
+                    })
+
                     chart.on('created', function(d) {
                         //console.log(d);
 
                         var lineDelay =  d.axisX.ticks.length * d.axisY.ticks.length * delays - 3000;
-                        console.log(points);
 
                         var res = {};
                         $('.js-direction').removeClass('down').removeClass('up');
+                        $('.ct-area').removeClass('down').removeClass('up');
 
                         if (points[0] > points[points.length - 1]) {
                             res.direction = 'down';
                             res.diff = points[0] - points[points.length - 1];
-                            $('.js-direction').addClass('down').html('- ' + res.diff.toFixed(2) + ' ₽')
+                            $('.js-direction').addClass('down').html('- ' + res.diff.toFixed(2) + ' ₽');
+                            $('.ct-area').addClass('down');
                         } else {
                             res.direction = 'up';
                             res.diff = points[points.length - 1] - points[0];
-                            $('.js-direction').addClass('up').html('+ ' + res.diff.toFixed(2)  + ' ₽')
+                            $('.js-direction').addClass('up').html('+ ' + res.diff.toFixed(2)  + ' ₽');
+                            $('.ct-area').addClass('up');
                         }
 
-                        $('.js-direction').addClass('show');
+
 
                         $('.js-descr-max').html(Math.max.apply(Math, points).toFixed(2))
                         $('.js-descr-min').html(Math.min.apply(Math, points).toFixed(2))
@@ -182,7 +209,7 @@ $(document).ready(function() {
 
                         setTimeout(function() {
                             $('.js-description').addClass('active');
-                            $('.js-direction').removeClass('down').removeClass('up');
+                            $('.js-direction').removeClass('down').removeClass('up').removeClass('show');
                         }, lineDelay + 3000)
 
 
@@ -193,11 +220,6 @@ $(document).ready(function() {
 
                         window.__exampleAnimateTimeout = setTimeout(function() {
                             if (i < mounthNamesArr.length){
-                                //tresholdVal = getAverageValue(points).toFixed(2);
-                                setTimeout(function() {
-                                    $('.ct-line').addClass('show');
-                                }, lineDelay);
-
                                 $('.header__mounth').html(mounthNamesArr[i]);
                                 $('.js-description').removeClass('active');
                                 chart.update(data[mounthNamesArr[i]]);
