@@ -128,6 +128,6 @@
         }
     }
 
-    file_put_contents('list_full.json', trim(json_encode($resultArr)));
+    //file_put_contents('list_full_new.json', trim(json_encode($resultArr)));
     echo json_encode($resultArr);
 ?>
