@@ -83,7 +83,7 @@ $(document).ready(function() {
           ;
 
         $.ajax({
-            url: '@@src/list_en_new.json',
+            url: '@@src/redirect.php',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();
@@ -93,12 +93,13 @@ $(document).ready(function() {
                 console.log((time.getTime() - startTime) / 1000);
 
                 try {
-                    console.log('sates_usa data - ',d);
+                    console.log('sates_usa data - ', JSON.parse(d));
 
                     var obj
                       , lang
                       ;
 
+                    d = JSON.parse(d);
 
                     for (var item in d) {
                         lacalizeWidget(item);

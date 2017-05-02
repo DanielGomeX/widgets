@@ -18,7 +18,8 @@
     }
 
     $arr['ru'] = $arrRu;
+    unset($arr['ru']);
 
-    file_put_contents('list_full.json', trim(json_encode($arr)));
+    file_put_contents('list_en_new.json', trim(json_encode($arr)));
     echo json_encode($arr);
 ?>

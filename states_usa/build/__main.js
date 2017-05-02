@@ -83,7 +83,7 @@ $(document).ready(function() {
           ;
 
         $.ajax({
-            url: '@@src/list_en_new.json',
+            url: 'http://widgets/states_usa/prod/server/list_en_new.json',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();
