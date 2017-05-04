@@ -20,7 +20,7 @@
         $resultArr[] = array(
             'title' => (string) $item->title,
             'description' => (string) strip_tags($arrP[0][0]),
-            'image' => str_replace('http://', 'https://' , $arrImg[0][1]),
+            'image' => str_replace('http://', 'http://' , $arrImg[0][1]),
             'pubDate' => (string) $date->format('d M H:i')
         );
 

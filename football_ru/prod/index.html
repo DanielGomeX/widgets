@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Результаты Футбольных матчей</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Alice" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:700,800" rel="stylesheet">
+    <style>.cssload-container{width:100%;height:49px;text-align:center}.cssload-speeding-wheel{width:49px;height:49px;margin:0 auto;border:3px solid #fff;border-radius:50%;border-left-color:transparent;border-right-color:transparent;animation:cssload-spin 1325ms infinite linear;-o-animation:cssload-spin 1325ms infinite linear;-ms-animation:cssload-spin 1325ms infinite linear;-webkit-animation:cssload-spin 1325ms infinite linear;-moz-animation:cssload-spin 1325ms infinite linear}@keyframes cssload-spin{100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes cssload-spin{100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}body,html{margin:0;padding:0;width:480px;height:360px}div{box-sizing:border-box}a{text-decoration:none;color:inherit}.placeholder{position:relative;width:100%;height:100%;overflow:hidden;font-family:Alice,serif;color:#000;box-sizing:border-box;background:#fff;border:1px solid grey}.header{text-align:center}.header_date{font-size:30px;display:inline-block;text-align:center;padding:5px;font-weight:700;width:230px}.content{position:relative;width:100%;z-index:999;height:100%;display:none}.content__block{position:absolute;top:0;left:0;opacity:1;z-index:0;padding:0 15px;height:100%;width:100%;background:rgba(249,249,249,.81)}.content__block__row{font-size:0}.content__block__row:nth-child(2){padding:20px 0;position:relative;min-height:108px}.content__block__row:nth-child(2):after{display:block;content:"";position:absolute;bottom:0;left:110px;width:230px;height:1px;background:#000}.content__block__row:nth-child(2):before{display:block;content:"";position:absolute;top:0;left:110px;width:230px;height:1px;background:#000}.content__block__col{font-size:30px;max-height:68px;overflow:hidden;line-height:34px;display:inline-block;vertical-align:middle;width:35%;text-align:center}.content__block__col_score{font-size:45px;color:red;width:30%;font-weight:700}.content__block__table{border-collapse:collapse;opacity:0;font-size:21px;width:448px;margin:25px auto 0}.content__block__table tr{line-height:21px;max-height:21px;overflow:hidden}.content__block__table tr:nth-child(odd){background:rgba(249,249,250,.81)}.content__block__table tr:nth-child(even){background:rgba(249,249,249,.81)}.content__block__table td{width:45%;text-align:center;padding:5px 0}.content__block__table td.custom{text-align:center!important;font-weight:700;color:red;font-size:45px;padding:50px 0}.content__block__table td.not-start{text-align:center!important;font-weight:700;color:red;font-size:45px;line-height:49px;padding:10px 0}.content__block__table td img{max-width:30px;display:inline-block;vertical-align:middle}.content__block__table td:nth-child(2){width:10%;font-size:25px}.content__block__table td:nth-child(1){text-align:right;padding-right:5px}.content__block__table td:nth-child(3){text-align:left;padding-left:5px}.flip-container{-webkit-perspective:1000;perspective:1000}.flip-container.flip .flipper{-webkit-transform:rotateY(180deg);transform:rotateY(180deg)}.back,.flip-container,.front{width:480px;height:360px}.flipper{transition:1s;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;position:relative}.back,.front{-webkit-backface-visibility:hidden;backface-visibility:hidden;position:absolute;top:0;left:0}.front{z-index:2}.back{-webkit-transform:rotateY(180deg);transform:rotateY(180deg)}.preloader{position:absolute;top:50%;margin-top:-25px;left:50%;margin-left:-25px;width:auto;background:url(https://js.dooh.xyz/football_ru/server/images/ball.svg);width:50px;height:50px;background-size:100%;-webkit-transform:rotate(0);transform:rotate(0);-webkit-animation:rotateBall 15s infinite linear;animation:rotateBall 15s infinite linear}.preloader.slow{-webkit-animation-duration:200s;animation-duration:200s}@-webkit-keyframes rotateBall{to{-webkit-transform:rotate(3600deg);transform:rotate(3600deg)}}@keyframes rotateBall{to{-webkit-transform:rotate(3600deg);transform:rotate(3600deg)}}</style>
+</head>
+<body>
+    <div class="placeholder flip-container">
+        <div class="content flipper">
+            <div class="content__block front js-block-front" data-clone="true">
+                <div class="header">
+                    <div class="header_date js-date">3 Мая 2017</div>
+                </div>
+                <div class="content__block__row">
+                    <div class="content__block__col content__block__col_home-team js-home-team">Солярис Москва</div>
+                    <div class="content__block__col content__block__col_score js-score">2 : 0</div>
+                    <div class="content__block__col content__block__col_avay-team js-avay-team">Крылья Советов</div>
+                </div>
+                <div class="content__block__row">
+                    <table class="content__block__table js-table"></table>
+                </div>
+            </div>
+            <div class="content__block back js-block-back" data-clone="true">
+                <div class="header">
+                    <div class="header_date js-date">3 Мая 2017</div>
+                </div>
+                <div class="content__block__row">
+                    <div class="content__block__col content__block__col_home-team js-home-team">Солярис Москва</div>
+                    <div class="content__block__col content__block__col_score js-score">2 : 0</div>
+                    <div class="content__block__col content__block__col_avay-team js-avay-team">Крылья Советов</div>
+                </div>
+                <div class="content__block__row">
+                    <table class="content__block__table js-table"></table>
+                </div>
+            </div>
+        </div>
+        <div class="preloader"></div>
+    </div>
+<script>$(document).ready(function(){function t(t,a){var e="front"===a?$(".js-block-front[data-clone=true]"):$(".js-block-back[data-clone=true]");e.find(".js-table").html("");var s=t.date.split("-"),o=new Date(s[2],s[1]-1,s[0]),r={year:"numeric",month:"short",day:"numeric"};if(o=o.toLocaleString("ru",r),e.find(".js-home-team").html(t.home_team),e.find(".js-score").html(t.score),e.find(".js-avay-team").html(t.away_team),e.find(".js-date").html(o),t.descr){for(var l=0;4>l;l++)e.find(".js-table").append(t.descr[l]);$(".js-table").find("img").each(function(){switch($(this).attr("alt")){case"goal":$(this).attr("src","https://js.dooh.xyz/football_ru/server/images/ball.svg");break;case"redcard":$(this).attr("src","https://js.dooh.xyz/football_ru/server/images/redcard.svg");break;case"yellowcard":$(this).attr("src","https://js.dooh.xyz/football_ru/server/images/yellowcard.svg")}})}else e.find(".js-table").html('<tr><td class="not-start">'+t.status+"</td></tr>");switch(t.status){case"Не начался":e.find(".js-table").html('<tr><td class="not-start">'+t.status+"<div> начало в </div><div>"+t.time+"</div></td></tr>");break;case"Техн. победа":e.find(".js-table").html('<tr><td class="custom">'+t.status+"</td></tr>")}$(".js-table").animate({opacity:1},300)}try{var a,e;$.ajax({url:"https://js.dooh.xyz/football_ru/server/redirect.php",beforeSend:function(){a=new Date,e=a.getTime()},success:function(s){a=new Date,console.log((a.getTime()-e)/1e3);try{console.log("football data - ",JSON.parse(s)),s=JSON.parse(s),t(s[0],"front"),t(s[1],"back");var o=2;setInterval(function(){o<s.length?(o%2?($(".flip-container").removeClass("flip"),t(s[o],"front")):($(".flip-container").addClass("flip"),t(s[o],"back")),o++):(o%2?($(".flip-container").removeClass("flip"),t(s[0],"front"),t(s[1],"back")):($(".flip-container").addClass("flip"),t(s[0],"back"),t(s[1],"front")),o=2)},1e4),$(".preloader").animate({width:"500px",height:"500px","margin-left":"-250px","margin-top":"-250px",opacity:.2},500,function(){$(this).addClass("slow")}),setTimeout(function(){$(".content").show()},600)}catch(t){console.log(t),console.log("ошибка внутри ajax")}},complete:function(){},error:function(t,a,e){console.log(t,a,e),$(".preloader").addClass("error")}})}catch(t){console.log(t),console.log("ошибка ajax"),$(".preloader").addClass("error")}});</script>
+</body>
+</html>

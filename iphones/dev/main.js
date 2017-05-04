@@ -24,8 +24,8 @@ $(document).ready(function() {
                         } else {
                             it = 0;
                         }
-                        timerId = setTimeout(tick, 2000);
-                    }, 8000);
+                        timerId = setTimeout(tick, 10000);
+                    }, 10000);
 
 
                     $('.content__wrapper').show();
