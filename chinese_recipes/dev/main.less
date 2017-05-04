@@ -1,3 +1,5 @@
+@defaultColor: #6DAEB1;
+
 html,
 body {
     margin: 0;
@@ -29,18 +31,6 @@ a {
     border: 1px solid grey;
 }
 
-.header {
-    text-align: center;
-
-    &_date {
-        font-size: 30px;
-        display: inline-block;
-        text-align: center;
-        padding: 5px;
-        font-weight: bold;
-        width: 230px;
-    }
-}
 
 .content {
     position: relative;
@@ -48,7 +38,7 @@ a {
     height: 100%;
     z-index: 999;
     height: 100%;
-    display: none;
+    //display: none;
 
 
     &__block {
@@ -61,123 +51,165 @@ a {
         height: 100%;
         width: 100%;
         background: rgba(249, 249, 249, .81);
+        font-size: 20px;
+        background-image: url('//www.bbcgoodfood.com/sites/default/files/styles/recipe/public/recipe_images/spicy-sichuan-style-prawns.jpg?itok=N_YDLuAX');
+        background-position: center;
+        background-size: 100% auto;
+        color: #fff;
 
-        &__row {
-            font-size: 0;
-
-            &:nth-child(2) {
-                padding: 20px 0;
-                position: relative;
-                min-height: 108px;
-
-                &:after {
-                    display: block;
-                    content: "";
-                    position: absolute;
-                    bottom: 0;
-                    left: 110px;
-                    width: 230px;
-                    height: 1px;
-                    background: #000;
-                }
-
-                &:before {
-                    display: block;
-                    content: "";
-                    position: absolute;
-                    top: 0;
-                    left: 110px;
-                    width: 230px;
-                    height: 1px;
-                    background: #000;
-                }
-            }
+        &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, rgba(0,0,0, 0.8), rgba(255,255,255, 0));
+            z-index: 1;
         }
 
-        &__col {
-            font-size: 30px;
-            max-height: 68px;
-            overflow: hidden;
-            line-height: 34px;
-            display: inline-block;
-            vertical-align: middle;
-            width: 35%;
+        &:after {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 260px;
+            background: linear-gradient(to top, rgba(0,0,0, 0.8), rgba(255,255,255, 0));
+            z-index: 1;
+        }
+
+        &__title {
+            font-size: 40px;
+            line-height: 39px;
+            font-weight: bold;
             text-align: center;
-
-            &_score {
-                font-size: 45px;
-                color: red;
-                width: 30%;
-                font-weight: bold;
-            }
+            padding: 15px 25px;
+            position: relative;
+            z-index: 2;
         }
 
-        &__table {
-            border-collapse: collapse;
+        &__details {
+            position: absolute;
+            font-size: 0;
+            text-align: center;
+            z-index: 2;
+            bottom: 50px;
             opacity: 0;
-            font-size: 21px;
-            width: 448px;
-            margin: 25px auto 0;
+            transition: All 1s ease;
 
-            & tr {
-                line-height: 21px;
-                max-height: 21px;
-                overflow: hidden;
-            }
+            &.show {
+                bottom: 100px;
+                opacity: 1;
 
-            & tr:nth-child(odd) {
-                background: rgba(249, 249, 250, .81);
-            }
-
-            & tr:nth-child(even) {
-                background: rgba(249, 249, 249, .81);
-            }
-
-            & td {
-                width: 45%;
-                text-align: center;
-                padding: 5px 0;
-
-                &.custom {
-                    text-align: center !important;
-                    font-weight: bold;
-                    color: red;
-                    font-size: 45px;
-                    padding: 50px 0;
-                }
-
-                &.not-start {
-                    text-align: center !important;
-                    font-weight: bold;
-                    color: red;
-                    font-size: 45px;
-                    line-height: 49px;
-                    padding: 10px 0;
-                }
-
-                & img {
-                    max-width: 30px;
-                    display: inline-block;
-                    vertical-align: middle;
+                &.hide {
+                    bottom: 150px;
+                    opacity: 0;
                 }
             }
 
-            & td:nth-child(2) {
-                width: 10%;
-                font-size: 25px;
+            &__col {
+                display: inline-block;
+                vertical-align: middle;
+                width: 50%;
+                font-size: 30px;
             }
 
-            & td:nth-child(1) {
-                text-align: right;
-                padding-right: 5px;
+            &__val {
+                display: inline-block;
+                vertical-align: middle;
             }
 
-            & td:nth-child(3) {
+            &__text {
                 text-align: left;
-                padding-left: 5px;
+            }
+
+            &_time {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+
+            &__img {
+                border-radius: 50%;
+                background-repeat: no-repeat;
+                background-position: center;  
+                background-color: @defaultColor; 
+                width: 40px;
+                height: 40px;
+                background-size: 30px;
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 10px;
+            }
+
+            &_time & {
+                &__img {
+                    background-image: url('@@src/images/time_white.svg');
+                }
+            }
+
+            &_skill & {
+                &__img {
+                    background-image: url('@@src/images/cook_white.svg');
+                }
+            }
+
+            &_serves & {
+                &__img {
+                    background-image: url('@@src/images/serves_white.svg');
+                }
+            }
+        }
+
+        &__nutrition {
+            position: absolute;
+            bottom: 50px;
+            opacity: 1;
+            width: 100%;
+            font-size: 0;
+            z-index: 2;
+            left: 0;
+
+            &__col {
+                display: inline-block;
+                vertical-align: top;
+                width: 50%;
+                font-size: 25px;
+                text-align: center;
+
+                &__inner {
+                    display: inline-block;
+                    width: 120px;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    //background: red; 
+                }
+            }
+
+            &__name {
+                background: @defaultColor; 
+                padding-bottom: 3px; 
             }
 
         }
+
+        /*
+        font-family: gf-font-icons;
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        text-transform: none;
+        line-height: 1;
+        display: inline-block;
+        vertical-align: middle;
+        -webkit-font-smoothing: antialiased;
+        content: "";
+        font-size: 40px;
+        color: rgb(109, 174, 177);
+        font-variant: normal normal;
+        */
     }
 }
 
@@ -185,12 +217,10 @@ a {
 .flip-container {
     perspective: 1000;
 }
-    /* переверните сторону при проведении мышью */
-    //.flip-container:hover .flipper,
-    //.flip-container.hover .flipper,
-    .flip-container.flip .flipper {
-        transform: rotateY(180deg);
-    }
+/* переверните сторону при проведении мышью */
+.flip-container.flip .flipper {
+    transform: rotateY(180deg);
+}
 
 .flip-container,
 .front,

@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Alice" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Dosis:700,800" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="//www.bbcgoodfood.com/sites/default/files/advagg_css/css__Ejh1FPMXu4Ulgj_N9P5P3N4lQD5KuzWmXsUQgvRena8__a1qfBlJXbXIACiLxq58lSPSp2mca9l6Kd-QauU8eZEc__EYXdsZEO_UWRfbJS0juWCpLhSYYbDfbM6ms3RgdKSqU.css" media="all">
     <style>.cssload-container {
   width: 100%;
   height: 49px;
@@ -64,23 +65,11 @@ a {
   background: #fff;
   border: 1px solid grey;
 }
-.header {
-  text-align: center;
-}
-.header_date {
-  font-size: 30px;
-  display: inline-block;
-  text-align: center;
-  padding: 5px;
-  font-weight: bold;
-  width: 230px;
-}
 .content {
   position: relative;
   width: 100%;
   z-index: 999;
   height: 100%;
-  display: none;
 }
 .content__block {
   position: absolute;
@@ -92,105 +81,138 @@ a {
   height: 100%;
   width: 100%;
   background: rgba(249, 249, 249, 0.81);
+  font-size: 20px;
+  background-image: url('//www.bbcgoodfood.com/sites/default/files/styles/recipe/public/recipe_images/spicy-sichuan-style-prawns.jpg?itok=N_YDLuAX');
+  background-position: center;
+  background-size: 100% auto;
+  color: #fff;
+  /*
+        font-family: gf-font-icons;
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        text-transform: none;
+        line-height: 1;
+        display: inline-block;
+        vertical-align: middle;
+        -webkit-font-smoothing: antialiased;
+        content: "";
+        font-size: 40px;
+        color: rgb(109, 174, 177);
+        font-variant: normal normal;
+        */
 }
-.content__block__row {
-  font-size: 0;
-}
-.content__block__row:nth-child(2) {
-  padding: 20px 0;
-  position: relative;
-  min-height: 108px;
-}
-.content__block__row:nth-child(2):after {
-  display: block;
+.content__block:before {
   content: "";
-  position: absolute;
-  bottom: 0;
-  left: 110px;
-  width: 230px;
-  height: 1px;
-  background: #000;
-}
-.content__block__row:nth-child(2):before {
   display: block;
-  content: "";
   position: absolute;
   top: 0;
-  left: 110px;
-  width: 230px;
-  height: 1px;
-  background: #000;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0));
+  z-index: 1;
 }
-.content__block__col {
-  font-size: 30px;
-  max-height: 68px;
-  overflow: hidden;
-  line-height: 34px;
-  display: inline-block;
-  vertical-align: middle;
-  width: 35%;
-  text-align: center;
+.content__block:after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 260px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0));
+  z-index: 1;
 }
-.content__block__col_score {
-  font-size: 45px;
-  color: red;
-  width: 30%;
+.content__block__title {
+  font-size: 40px;
+  line-height: 39px;
   font-weight: bold;
+  text-align: center;
+  padding: 15px 25px;
+  position: relative;
+  z-index: 2;
 }
-.content__block__table {
-  border-collapse: collapse;
+.content__block__details {
+  position: absolute;
+  font-size: 0;
+  text-align: center;
+  z-index: 2;
+  bottom: 50px;
   opacity: 0;
-  font-size: 21px;
-  width: 448px;
-  margin: 25px auto 0;
+  transition: All 1s ease;
 }
-.content__block__table tr {
-  line-height: 21px;
-  max-height: 21px;
-  overflow: hidden;
+.content__block__details.show {
+  bottom: 100px;
+  opacity: 1;
 }
-.content__block__table tr:nth-child(odd) {
-  background: rgba(249, 249, 250, 0.81);
+.content__block__details.show.hide {
+  bottom: 150px;
+  opacity: 0;
 }
-.content__block__table tr:nth-child(even) {
-  background: rgba(249, 249, 249, 0.81);
+.content__block__details__col {
+  display: inline-block;
+  vertical-align: middle;
+  width: 50%;
+  font-size: 30px;
 }
-.content__block__table td {
-  width: 45%;
-  text-align: center;
-  padding: 5px 0;
-}
-.content__block__table td.custom {
-  text-align: center !important;
-  font-weight: bold;
-  color: red;
-  font-size: 45px;
-  padding: 50px 0;
-}
-.content__block__table td.not-start {
-  text-align: center !important;
-  font-weight: bold;
-  color: red;
-  font-size: 45px;
-  line-height: 49px;
-  padding: 10px 0;
-}
-.content__block__table td img {
-  max-width: 30px;
+.content__block__details__val {
   display: inline-block;
   vertical-align: middle;
 }
-.content__block__table td:nth-child(2) {
-  width: 10%;
-  font-size: 25px;
-}
-.content__block__table td:nth-child(1) {
-  text-align: right;
-  padding-right: 5px;
-}
-.content__block__table td:nth-child(3) {
+.content__block__details__text {
   text-align: left;
-  padding-left: 5px;
+}
+.content__block__details_time {
+  width: 100%;
+  margin-bottom: 15px;
+}
+.content__block__details__img {
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #6DAEB1;
+  width: 40px;
+  height: 40px;
+  background-size: 30px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+.content__block__details_time .content__block__details__img {
+  background-image: url('http://localhost/widgets_git/chinese_recipes/prod/server/images/time_white.svg');
+}
+.content__block__details_skill .content__block__details__img {
+  background-image: url('http://localhost/widgets_git/chinese_recipes/prod/server/images/cook_white.svg');
+}
+.content__block__details_serves .content__block__details__img {
+  background-image: url('http://localhost/widgets_git/chinese_recipes/prod/server/images/serves_white.svg');
+}
+.content__block__nutrition {
+  position: absolute;
+  bottom: 50px;
+  opacity: 1;
+  width: 100%;
+  font-size: 0;
+  z-index: 2;
+  left: 0;
+}
+.content__block__nutrition__col {
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+  font-size: 25px;
+  text-align: center;
+}
+.content__block__nutrition__col__inner {
+  display: inline-block;
+  width: 120px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.content__block__nutrition__name {
+  background: #6DAEB1;
+  padding-bottom: 3px;
 }
 /* весь контейнер поддерживает перспективу */
 .flip-container {
@@ -240,7 +262,7 @@ a {
   left: 50%;
   margin-left: -25px;
   width: auto;
-  background: url('http://widgets/chinese_recipes/prod/server/images/ball.svg');
+  background: url('http://localhost/widgets_git/chinese_recipes/prod/server/images/ball.svg');
   width: 50px;
   height: 50px;
   background-size: 100%;
@@ -271,33 +293,60 @@ a {
     <div class="placeholder flip-container">
         <div class="content flipper">
             <div class="content__block front js-block-front" data-clone="true">
-                <div class="header">
-                    <div class="header_date js-date">3 Мая 2017</div>
+                <div class="content__block__title">Spicy Sichuan-style prawns</div>
+                <div class="content__block__details">
+                    <div class="content__block__details__col content__block__details_time">
+                        <div class="content__block__details__img"></div>
+                        <div class="content__block__details__val">
+                            <div class="content__block__details__text js-cook">COOK 5 min</div>
+                            <div class="content__block__details__text js-prep">PREP 25 mins</div>
+                        </div>
+                    </div>
+                    <div class="content__block__details__col content__block__details_skill">
+                        <div class="content__block__details__img"></div>
+                        <div class="content__block__details__val">
+                            <div class="content__block__details__text js-skill">EASY</div>
+                        </div>
+                    </div>
+                    <div class="content__block__details__col content__block__details_serves">
+                        <div class="content__block__details__img"></div>
+                        <div class="content__block__details__val">
+                            <div class="content__block__details__text js-serves">SERVES 4</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="content__block__row">
-                    <div class="content__block__col content__block__col_home-team js-home-team">Солярис Москва</div>
-                    <div class="content__block__col content__block__col_score js-score">2 : 0</div>
-                    <div class="content__block__col content__block__col_avay-team js-avay-team">Крылья Советов</div>
-                </div>
-                <div class="content__block__row">
-                    <table class="content__block__table js-table"></table>
+                <div class="content__block__nutrition">
+                    <div class="content__block__nutrition__col">
+                        <div class="content__block__nutrition__col__inner">
+                            <div class="content__block__nutrition__name">kcal</div>
+                            <div class="content__block__nutrition__val">156</div>
+                        </div>
+                    </div>
+                    <div class="content__block__nutrition__col">
+                        <div class="content__block__nutrition__col__inner">
+                            <div class="content__block__nutrition__name">salt</div>
+                            <div class="content__block__nutrition__val">1.1g</div>
+                        </div>
+                    </div>
+                    <div class="content__block__nutrition__col">
+                        <div class="content__block__nutrition__col__inner">
+                            <div class="content__block__nutrition__name">sugars</div>
+                            <div class="content__block__nutrition__val">1g</div>
+                        </div>
+                    </div>
+                    <div class="content__block__nutrition__col">
+                        <div class="content__block__nutrition__col__inner">
+                            <div class="content__block__nutrition__name">protein</div>
+                            <div class="content__block__nutrition__val">20g</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="content__block back js-block-back" data-clone="true">
-                <div class="header">
-                    <div class="header_date js-date">3 Мая 2017</div>
-                </div>
-                <div class="content__block__row">
-                    <div class="content__block__col content__block__col_home-team js-home-team">Солярис Москва</div>
-                    <div class="content__block__col content__block__col_score js-score">2 : 0</div>
-                    <div class="content__block__col content__block__col_avay-team js-avay-team">Крылья Советов</div>
-                </div>
-                <div class="content__block__row">
-                    <table class="content__block__table js-table"></table>
-                </div>
+                
             </div>
         </div>
-        <div class="preloader"></div>
+        <!--<div class="preloader"></div>-->
     </div>
 <script>$(document).ready(function() {
     /* eslint no-console:0 */
@@ -306,62 +355,7 @@ a {
     function createStructure(obj, side) {
         //console.log(obj);
         var elem = side === 'front' ? $('.js-block-front[data-clone=true]') : $('.js-block-back[data-clone=true]');
-        elem.find('.js-table').html('');
-        var matchDate = obj.date.split('-');
-
-        var date = new Date(matchDate[2], matchDate[1] - 1, matchDate[0]);
-
-        var options = {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        };
-
-        date = date.toLocaleString("en", options);
-
-
-
-        elem.find('.js-home-team').html(obj.home_team);
-        elem.find('.js-score').html(obj.score);
-        elem.find('.js-avay-team').html(obj.away_team);
-        elem.find('.js-date').html(date);
-
-        if (obj.descr) {
-            for (var i=0; 4 > i;i++) {
-                elem.find('.js-table').append(obj.descr[i]);
-            }
-            var img = $('.js-table').find('img');
-
-            img.each(function() {
-                switch ($(this).attr('alt')) {
-                    case 'goal':
-                        $(this).attr('src', 'http://widgets/chinese_recipes/prod/server/images/ball.svg');
-                        break;
-                    case 'redcard':
-                        $(this).attr('src', 'http://widgets/chinese_recipes/prod/server/images/redcard.svg');
-                        break;
-                    case 'yellowcard':
-                        $(this).attr('src', 'http://widgets/chinese_recipes/prod/server/images/yellowcard.svg');
-                        break;
-                }
-            })
-        } else {
-            elem.find('.js-table').html('<tr><td class="not-start">' + obj.status + '</td></tr>')
-        }
-
-        switch (obj.status) {
-            case 'Не начался':
-                elem.find('.js-table').html('<tr><td class="not-start">Not started<div>beginning in </div><div>'+obj.time+'</div></td></tr>')
-                break;
-            case 'Техн. победа':
-                elem.find('.js-table').html('<tr><td class="custom">Technical victory</td></tr>')
-                break;
-        }
-
-
-        $('.js-table').animate({
-            opacity: 1
-        }, 300)
+        
     }
 
     try {
@@ -370,7 +364,7 @@ a {
           ;
 
         $.ajax({
-            url: 'http://widgets/chinese_recipes/prod/server/redirect.php',
+            url: 'http://localhost/widgets_git/chinese_recipes/prod/server/recipes.json',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();
@@ -380,54 +374,13 @@ a {
                 console.log((time.getTime() - startTime) / 1000);
 
                 try {
-                    console.log('football data - ', JSON.parse(d));
+                    //console.log('football data - ', JSON.parse(d));
+                    console.log('football data - ', d);
 
-                    d = JSON.parse(d);
+                    //d = JSON.parse(d);
+                    
 
-                    createStructure(d[0], 'front');
-                    createStructure(d[1], 'back');
-
-                    var i = 2;
-
-                    setInterval(function() {
-                        if (i < d.length) {
-                            if (i%2) {
-                                $('.flip-container').removeClass('flip');
-                                createStructure(d[i], 'front');
-                            } else {
-                                $('.flip-container').addClass('flip');
-                                createStructure(d[i], 'back');
-                            }
-
-                            i++;
-                        } else {
-                            if (i%2) {
-                                $('.flip-container').removeClass('flip');
-                                createStructure(d[0], 'front');
-                                createStructure(d[1], 'back');
-                            } else {
-                                $('.flip-container').addClass('flip');
-                                createStructure(d[0], 'back');
-                                createStructure(d[1], 'front');
-                            }
-
-                            i = 2;
-                        }
-                    }, 10000)
-
-                    $('.preloader').animate({
-                        'width': '500px',
-                        'height': '500px',
-                        'margin-left': '-250px',
-                        'margin-top': '-250px',
-                        'opacity': 0.2
-                    }, 500, function() {
-                        $(this).addClass('slow');
-                    });
-
-                    setTimeout(function() {
-                        $('.content').show();
-                    }, 600)
+                    
 
 
                 } catch (e) {

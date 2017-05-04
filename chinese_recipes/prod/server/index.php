@@ -29,7 +29,7 @@
         $out .= '<div class="item">' . file_get_contents($link) . '</div>';
     }*/
 
-    for ($i=0; $i < 3; $i++) {
+    for ($i=0; $i < 10; $i++) {
         $out .= '<div class="item">' . file_get_contents($linksArr[$i]) . '</div>';
     }
 
@@ -44,7 +44,7 @@
     foreach ($tableDescr as $tableDescrKey => $tableDescrValue) {
         //echo $tableDescrKey;
 
-        $name = $tableDescrValue->find('.recipe-header__title', 0);
+        $name = $tableDescrValue->find('.recipe-header__title', 0)->plaintext;
         $img = $tableDescrValue->find('.img-container  img', 0)->src . '<br>';
         $nutrition = [];
         $ingridients = [];
@@ -53,14 +53,14 @@
             if ($a = $value->find('.ingredients-list__glossary-element', 0)){
                 $a->outertext = '';
             }
-            $ingridients[] = $value->plaintext;
+            $ingridients[] = strip_tags($value);
         }
 
         foreach ($tableDescrValue->find('.recipe-details') as $key => $value) {
-            $prep = $value->find('.recipe-details__cooking-time-prep .mins', 0);
-            $cook = $value->find('.recipe-details__cooking-time-cook .mins', 0);
-            $skill = $value->find('.recipe-details__item--skill-level .recipe-details__text', 0);
-            $serves = $value->find('.recipe-details__item--servings .recipe-details__text', 0);
+            $prep = $value->find('.recipe-details__cooking-time-prep .mins', 0)->plaintext;
+            $cook = $value->find('.recipe-details__cooking-time-cook .mins', 0)->plaintext;
+            $skill = $value->find('.recipe-details__item--skill-level .recipe-details__text', 0)->plaintext;
+            $serves = $value->find('.recipe-details__item--servings .recipe-details__text', 0)->plaintext;
         }
 
         foreach ($tableDescrValue->find('.nutrition li') as $key => $value) {
@@ -68,14 +68,14 @@
         }
 
         $resultArr[] = array(
-            'name' => $name,
-            'image' => $img,
+            'name' => trim($name),
+            'image' => (string) trim($img),
             'ingridiets' => $ingridients,
             'details' => array(
-                'prep' => $prep,
-                'cook' => $cook,
-                'skill' => $skill,
-                'serves' => $serves,
+                'prep' => trim($prep),
+                'cook' => trim($cook),
+                'skill' => trim($skill),
+                'serves' => trim($serves),
             ),
             'nutrition' => $nutrition
 
@@ -83,6 +83,6 @@
 
     }
 
-    //file_put_contents('recipes.json', trim(json_encode($resultArr)));
+    file_put_contents('recipes.json', trim(json_encode($resultArr)));
     echo json_encode($resultArr);
 ?>
