@@ -43,7 +43,7 @@ $(document).ready(function() {
                         mounthNamesArr.push(m);
                     }
 
-                    mounthNamesArr.reverse();
+                    //mounthNamesArr.reverse();
 
                     console.log('exchange_dynamics  NEW data - ',data);
 
@@ -181,6 +181,9 @@ $(document).ready(function() {
 
                     chart.on('finishDrowingLine', function() {
                         $('.js-direction').addClass('show');
+                        setTimeout(function() {
+                            $('.js-description').addClass('active');
+                        }, 2000)
                     })
 
                     chart.on('created', function(d) {
@@ -189,7 +192,7 @@ $(document).ready(function() {
                         var lineDelay =  d.axisX.ticks.length * d.axisY.ticks.length * delays - 3000;
 
                         var res = {};
-                        $('.js-direction').removeClass('down').removeClass('up');
+                        $('.js-direction').removeClass('down').removeClass('up').removeClass('show');
                         $('.ct-area').removeClass('down').removeClass('up');
 
                         if (points[0] > points[points.length - 1]) {
@@ -211,7 +214,7 @@ $(document).ready(function() {
                         $('.js-descr-average').html(getAverageValue(points).toFixed(2))
 
                         setTimeout(function() {
-                            $('.js-description').addClass('active');
+                            //$('.js-description').addClass('active');
                             $('.js-direction').removeClass('down').removeClass('up').removeClass('show');
                             points = [];
                         }, lineDelay + 3000)
