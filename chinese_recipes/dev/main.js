@@ -55,30 +55,33 @@ $(document).ready(function() {
     function animate(side) {
         time = new Date();
         startTime = time.getTime();
-        console.log('animate', side);
+        //console.log('animate', side);
         var block = $('.js-block-' + side);
-
+        console.log(block);
         setTimeout(function() {
             block.find('.js-details').addClass('show');
+            console.log('js-details add show')
         }, 500)
 
         setTimeout(function() {
             block.find('.js-details').addClass('hide');
+            console.log('js-details add hide')
         }, 5500)
 
         setTimeout(function() {
             block.find('.js-nutrition').addClass('show');
+            console.log('js-nutrition add hide')
         }, 5550)
 
         setTimeout(function() {
             block.find('.js-nutrition').addClass('hide');
+            console.log('js-nutrition add hide');
+            //$('.placeholder').trigger('animateFinished', [side]);
         }, 10550)
 
 
         var i = 0;
-        var timerId = setTimeout(function tick() {
-
-            //var delay = block.find('.js-ingridiets ul').length * 8000;
+        /*var timerId = setTimeout(function tick() {
 
             if (i < block.find('.js-ingridiets ul').length) {
 
@@ -88,15 +91,16 @@ $(document).ready(function() {
                     block.find('.js-ingridiets ul.active').addClass('shake').removeClass('active');
                     console.log(123);
                     i++;
-                }, 8000)
+                }, 3000)
                 //i++;
             } else {
+                i =0;
                 time = new Date();
                 console.log((time.getTime() - startTime) / 1000);
-                $(document).trigger('animateFinished', [side]);
+                $('.placeholder').trigger('animateFinished', [side]);
             }
-            timerId = setTimeout(tick, 8000);
-        }, 11000);
+            timerId = setTimeout(tick, 3000);
+        }, 11000);*/
     }
 
     try {
@@ -129,7 +133,7 @@ $(document).ready(function() {
                     }, 1000)
                     var itm = 2;
 
-                    $(document).on('animateFinished', function(e, side) {
+                    $('.placeholder').on('animateFinished', function(e, side) {
                         console.log(side);
 
                         var sideNew = side === 'front' ? 'back' : 'front';
