@@ -64,7 +64,7 @@
         }
 
         foreach ($tableDescrValue->find('.nutrition li') as $key => $value) {
-            $nutrition[$value->find('.nutrition__label', 0)->plaintext] = $value->find('.nutrition__value', 0)->plaintext;
+            $nutrition[trim($value->find('.nutrition__label', 0)->plaintext)] = trim($value->find('.nutrition__value', 0)->plaintext);
         }
 
         $resultArr[] = array(

@@ -3,9 +3,100 @@ $(document).ready(function() {
     /* eslint eqeqeq: 0 */
 
     function createStructure(obj, side) {
-        //console.log(obj);
+        console.log('createStructure',side);
         var elem = side === 'front' ? $('.js-block-front[data-clone=true]') : $('.js-block-back[data-clone=true]');
-        
+
+        //clean
+        elem.find('.js-ingridiets').html('');
+        elem.find('.js-details').removeClass('show').removeClass('hide');
+        elem.find('.js-nutrition').removeClass('show').removeClass('hide');
+
+        elem.find('.js-title').html(obj.name);
+
+        elem.find('.js-cook').html(elem.find('.js-cook').html() + ' ' + obj.details.cook);
+        elem.find('.js-prep').html(elem.find('.js-prep').html() + ' ' + obj.details.prep);
+        elem.find('.js-skill').html(obj.details.skill);
+        elem.find('.js-serves').html(obj.details.serves);
+
+        elem.find('.js-kcal').html(obj.nutrition.kcal);
+        elem.find('.js-salt').html(obj.nutrition.salt);
+        elem.find('.js-sugars').html(obj.nutrition.sugars);
+        elem.find('.js-protein').html(obj.nutrition.protein);
+
+        var subArr = [];
+        var it = 0;
+        subArr[it] = [];
+
+        for (var i = 0; obj.ingridiets.length > i; i++) {
+            if (i % 5 == 0) {
+                it++;
+                subArr[it] = [];
+                subArr[it].push(obj.ingridiets[i]);
+            } else {
+                subArr[it].push(obj.ingridiets[i]);
+            }
+        }
+
+        subArr.splice(0, 1)
+        //console.log(subArr);
+
+        for (var i = 0; subArr.length> i;i++) {
+            var ul = '<ul class="ul_'+ i +' animated"></ul>';
+            elem.find('.js-ingridiets').append(ul);
+
+            for (var it = 0; subArr[i].length> it;it++) {
+                elem.find('.ul_' + i).append('<li>' + subArr[i][it] + '</li>');
+            }
+        }
+
+    }
+
+
+    function animate(side) {
+        time = new Date();
+        startTime = time.getTime();
+        console.log('animate', side);
+        var block = $('.js-block-' + side);
+
+        setTimeout(function() {
+            block.find('.js-details').addClass('show');
+        }, 500)
+
+        setTimeout(function() {
+            block.find('.js-details').addClass('hide');
+        }, 5500)
+
+        setTimeout(function() {
+            block.find('.js-nutrition').addClass('show');
+        }, 5550)
+
+        setTimeout(function() {
+            block.find('.js-nutrition').addClass('hide');
+        }, 10550)
+
+
+        var i = 0;
+        var timerId = setTimeout(function tick() {
+
+            //var delay = block.find('.js-ingridiets ul').length * 8000;
+
+            if (i < block.find('.js-ingridiets ul').length) {
+
+                block.find('.js-ingridiets ul').eq(i).addClass('active');
+
+                setTimeout(function() {
+                    block.find('.js-ingridiets ul.active').addClass('shake').removeClass('active');
+                    console.log(123);
+                    i++;
+                }, 8000)
+                //i++;
+            } else {
+                time = new Date();
+                console.log((time.getTime() - startTime) / 1000);
+                $(document).trigger('animateFinished', [side]);
+            }
+            timerId = setTimeout(tick, 8000);
+        }, 11000);
     }
 
     try {
@@ -14,7 +105,7 @@ $(document).ready(function() {
           ;
 
         $.ajax({
-            url: 'http://localhost/widgets_git/chinese_recipes/prod/server/recipes.json',
+            url: 'http://widgets/chinese_recipes/prod/server/recipes.json',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();
@@ -28,9 +119,35 @@ $(document).ready(function() {
                     console.log('football data - ', d);
 
                     //d = JSON.parse(d);
-                    
+                    createStructure(d[0], 'front');
+                    createStructure(d[1], 'back');
 
-                    
+                    var deg = 0;
+
+                    setTimeout(function(){
+                        animate('front');
+                    }, 1000)
+                    var itm = 2;
+
+                    $(document).on('animateFinished', function(e, side) {
+                        console.log(side);
+
+                        var sideNew = side === 'front' ? 'back' : 'front';
+
+                        deg = deg + 180;
+                        $('.flipper').css('transform', 'rotateY('+ deg +'deg)');
+                        createStructure(d[itm], side);
+                        animate(sideNew);
+
+                    });
+
+                    /*setInterval(function() {
+                        deg = deg + 180;
+                        $('.flipper').css('transform', 'rotateY('+ deg +'deg)');
+                        console.log(deg);
+
+                    }, 2000)*/
+
 
 
                 } catch (e) {

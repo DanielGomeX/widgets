@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Alice" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Dosis:700,800" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="//www.bbcgoodfood.com/sites/default/files/advagg_css/css__Ejh1FPMXu4Ulgj_N9P5P3N4lQD5KuzWmXsUQgvRena8__a1qfBlJXbXIACiLxq58lSPSp2mca9l6Kd-QauU8eZEc__EYXdsZEO_UWRfbJS0juWCpLhSYYbDfbM6ms3RgdKSqU.css" media="all">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <style>.cssload-container {
   width: 100%;
   height: 49px;
@@ -86,21 +86,6 @@ a {
   background-position: center;
   background-size: 100% auto;
   color: #fff;
-  /*
-        font-family: gf-font-icons;
-        speak: none;
-        font-style: normal;
-        font-weight: normal;
-        text-transform: none;
-        line-height: 1;
-        display: inline-block;
-        vertical-align: middle;
-        -webkit-font-smoothing: antialiased;
-        content: "";
-        font-size: 40px;
-        color: rgb(109, 174, 177);
-        font-variant: normal normal;
-        */
 }
 .content__block:before {
   content: "";
@@ -180,22 +165,38 @@ a {
   margin-right: 10px;
 }
 .content__block__details_time .content__block__details__img {
-  background-image: url('http://localhost/widgets_git/chinese_recipes/prod/server/images/time_white.svg');
+  background-image: url('http://widgets/chinese_recipes/prod/server/images/time_white.svg');
 }
 .content__block__details_skill .content__block__details__img {
-  background-image: url('http://localhost/widgets_git/chinese_recipes/prod/server/images/cook_white.svg');
+  background-image: url('http://widgets/chinese_recipes/prod/server/images/cook_white.svg');
 }
 .content__block__details_serves .content__block__details__img {
-  background-image: url('http://localhost/widgets_git/chinese_recipes/prod/server/images/serves_white.svg');
+  background-image: url('http://widgets/chinese_recipes/prod/server/images/serves_white.svg');
 }
 .content__block__nutrition {
   position: absolute;
-  bottom: 50px;
-  opacity: 1;
-  width: 100%;
+  bottom: 0px;
+  opacity: 0;
+  width: 320px;
+  margin: 0 auto;
+  left: 50%;
+  margin-left: -160px;
   font-size: 0;
   z-index: 2;
-  left: 0;
+  border-bottom: 1px solid #fff;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.3);
+  transition: All 1s ease;
+}
+.content__block__nutrition.show {
+  opacity: 1;
+  bottom: 50px;
+}
+.content__block__nutrition.show.hide {
+  bottom: 100px;
+  opacity: 0;
 }
 .content__block__nutrition__col {
   display: inline-block;
@@ -203,16 +204,63 @@ a {
   width: 50%;
   font-size: 25px;
   text-align: center;
+  border-right: 1px solid #fff;
 }
-.content__block__nutrition__col__inner {
-  display: inline-block;
-  width: 120px;
-  border-radius: 10px;
-  overflow: hidden;
+.content__block__nutrition__col:nth-child(1) {
+  border-bottom: 1px solid #fff;
+}
+.content__block__nutrition__col:nth-child(2) {
+  border-radius: 0 7px 0 0;
+  border-bottom: 1px solid #fff;
+}
+.content__block__nutrition__col:nth-child(4) {
+  border-radius: 0 0 7px 0;
 }
 .content__block__nutrition__name {
-  background: #6DAEB1;
-  padding-bottom: 3px;
+  position: relative;
+  padding: 10px 0;
+  font-weight: 600;
+}
+.content__block__nutrition__name:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 3px;
+  background: #fff;
+  left: 50%;
+  margin-left: -10px;
+  bottom: 0;
+  border-radius: 3px;
+}
+.content__block__nutrition__val {
+  padding-bottom: 10px;
+}
+.content__block__ingridiets {
+  position: absolute;
+  bottom: 30px;
+  z-index: 2;
+  opacity: 1;
+  width: 400px;
+  left: 50%;
+  margin-left: -200px;
+}
+.content__block__ingridiets ul {
+  text-align: center;
+  list-style: none;
+  font-size: 22px;
+  margin: 0;
+  transition: All 1s ease;
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+.content__block__ingridiets ul.active {
+  opacity: 1;
+}
+.content__block__ingridiets ul li {
+  padding: 3px 0;
 }
 /* весь контейнер поддерживает перспективу */
 .flip-container {
@@ -262,7 +310,7 @@ a {
   left: 50%;
   margin-left: -25px;
   width: auto;
-  background: url('http://localhost/widgets_git/chinese_recipes/prod/server/images/ball.svg');
+  background: url('http://widgets/chinese_recipes/prod/server/images/ball.svg');
   width: 50px;
   height: 50px;
   background-size: 100%;
@@ -293,13 +341,13 @@ a {
     <div class="placeholder flip-container">
         <div class="content flipper">
             <div class="content__block front js-block-front" data-clone="true">
-                <div class="content__block__title">Spicy Sichuan-style prawns</div>
-                <div class="content__block__details">
+                <div class="content__block__title js-title">Spicy Sichuan-style prawns</div>
+                <div class="content__block__details js-details">
                     <div class="content__block__details__col content__block__details_time">
                         <div class="content__block__details__img"></div>
                         <div class="content__block__details__val">
-                            <div class="content__block__details__text js-cook">COOK 5 min</div>
-                            <div class="content__block__details__text js-prep">PREP 25 mins</div>
+                            <div class="content__block__details__text js-cook">COOK</div>
+                            <div class="content__block__details__text js-prep">PREP</div>
                         </div>
                     </div>
                     <div class="content__block__details__col content__block__details_skill">
@@ -315,35 +363,84 @@ a {
                         </div>
                     </div>
                 </div>
-                <div class="content__block__nutrition">
+                <div class="content__block__nutrition js-nutrition">
                     <div class="content__block__nutrition__col">
                         <div class="content__block__nutrition__col__inner">
                             <div class="content__block__nutrition__name">kcal</div>
-                            <div class="content__block__nutrition__val">156</div>
+                            <div class="content__block__nutrition__val js-kcal">156</div>
                         </div>
                     </div>
                     <div class="content__block__nutrition__col">
                         <div class="content__block__nutrition__col__inner">
                             <div class="content__block__nutrition__name">salt</div>
-                            <div class="content__block__nutrition__val">1.1g</div>
+                            <div class="content__block__nutrition__val js-salt">1.1g</div>
                         </div>
                     </div>
                     <div class="content__block__nutrition__col">
                         <div class="content__block__nutrition__col__inner">
                             <div class="content__block__nutrition__name">sugars</div>
-                            <div class="content__block__nutrition__val">1g</div>
+                            <div class="content__block__nutrition__val js-sugars">1g</div>
                         </div>
                     </div>
                     <div class="content__block__nutrition__col">
                         <div class="content__block__nutrition__col__inner">
                             <div class="content__block__nutrition__name">protein</div>
-                            <div class="content__block__nutrition__val">20g</div>
+                            <div class="content__block__nutrition__val js-protein">20g</div>
                         </div>
                     </div>
                 </div>
+                <div class="content__block__ingridiets js-ingridiets"></div>
             </div>
             <div class="content__block back js-block-back" data-clone="true">
-                
+                <div class="content__block__title js-title">Spicy Sichuan-style prawns</div>
+                <div class="content__block__details js-details">
+                    <div class="content__block__details__col content__block__details_time">
+                        <div class="content__block__details__img"></div>
+                        <div class="content__block__details__val">
+                            <div class="content__block__details__text js-cook">COOK</div>
+                            <div class="content__block__details__text js-prep">PREP</div>
+                        </div>
+                    </div>
+                    <div class="content__block__details__col content__block__details_skill">
+                        <div class="content__block__details__img"></div>
+                        <div class="content__block__details__val">
+                            <div class="content__block__details__text js-skill">EASY</div>
+                        </div>
+                    </div>
+                    <div class="content__block__details__col content__block__details_serves">
+                        <div class="content__block__details__img"></div>
+                        <div class="content__block__details__val">
+                            <div class="content__block__details__text js-serves">SERVES 4</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content__block__nutrition js-nutrition">
+                    <div class="content__block__nutrition__col">
+                        <div class="content__block__nutrition__col__inner">
+                            <div class="content__block__nutrition__name">kcal</div>
+                            <div class="content__block__nutrition__val js-kcal">156</div>
+                        </div>
+                    </div>
+                    <div class="content__block__nutrition__col">
+                        <div class="content__block__nutrition__col__inner">
+                            <div class="content__block__nutrition__name">salt</div>
+                            <div class="content__block__nutrition__val js-salt">1.1g</div>
+                        </div>
+                    </div>
+                    <div class="content__block__nutrition__col">
+                        <div class="content__block__nutrition__col__inner">
+                            <div class="content__block__nutrition__name">sugars</div>
+                            <div class="content__block__nutrition__val js-sugars">1g</div>
+                        </div>
+                    </div>
+                    <div class="content__block__nutrition__col">
+                        <div class="content__block__nutrition__col__inner">
+                            <div class="content__block__nutrition__name">protein</div>
+                            <div class="content__block__nutrition__val js-protein">20g</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content__block__ingridiets js-ingridiets"></div>
             </div>
         </div>
         <!--<div class="preloader"></div>-->
@@ -353,9 +450,100 @@ a {
     /* eslint eqeqeq: 0 */
 
     function createStructure(obj, side) {
-        //console.log(obj);
+        console.log('createStructure',side);
         var elem = side === 'front' ? $('.js-block-front[data-clone=true]') : $('.js-block-back[data-clone=true]');
-        
+
+        //clean
+        elem.find('.js-ingridiets').html('');
+        elem.find('.js-details').removeClass('show').removeClass('hide');
+        elem.find('.js-nutrition').removeClass('show').removeClass('hide');
+
+        elem.find('.js-title').html(obj.name);
+
+        elem.find('.js-cook').html(elem.find('.js-cook').html() + ' ' + obj.details.cook);
+        elem.find('.js-prep').html(elem.find('.js-prep').html() + ' ' + obj.details.prep);
+        elem.find('.js-skill').html(obj.details.skill);
+        elem.find('.js-serves').html(obj.details.serves);
+
+        elem.find('.js-kcal').html(obj.nutrition.kcal);
+        elem.find('.js-salt').html(obj.nutrition.salt);
+        elem.find('.js-sugars').html(obj.nutrition.sugars);
+        elem.find('.js-protein').html(obj.nutrition.protein);
+
+        var subArr = [];
+        var it = 0;
+        subArr[it] = [];
+
+        for (var i = 0; obj.ingridiets.length > i; i++) {
+            if (i % 5 == 0) {
+                it++;
+                subArr[it] = [];
+                subArr[it].push(obj.ingridiets[i]);
+            } else {
+                subArr[it].push(obj.ingridiets[i]);
+            }
+        }
+
+        subArr.splice(0, 1)
+        //console.log(subArr);
+
+        for (var i = 0; subArr.length> i;i++) {
+            var ul = '<ul class="ul_'+ i +' animated"></ul>';
+            elem.find('.js-ingridiets').append(ul);
+
+            for (var it = 0; subArr[i].length> it;it++) {
+                elem.find('.ul_' + i).append('<li>' + subArr[i][it] + '</li>');
+            }
+        }
+
+    }
+
+
+    function animate(side) {
+        time = new Date();
+        startTime = time.getTime();
+        console.log('animate', side);
+        var block = $('.js-block-' + side);
+
+        setTimeout(function() {
+            block.find('.js-details').addClass('show');
+        }, 500)
+
+        setTimeout(function() {
+            block.find('.js-details').addClass('hide');
+        }, 5500)
+
+        setTimeout(function() {
+            block.find('.js-nutrition').addClass('show');
+        }, 5550)
+
+        setTimeout(function() {
+            block.find('.js-nutrition').addClass('hide');
+        }, 10550)
+
+
+        var i = 0;
+        var timerId = setTimeout(function tick() {
+
+            //var delay = block.find('.js-ingridiets ul').length * 8000;
+
+            if (i < block.find('.js-ingridiets ul').length) {
+
+                block.find('.js-ingridiets ul').eq(i).addClass('active');
+
+                setTimeout(function() {
+                    block.find('.js-ingridiets ul.active').addClass('shake').removeClass('active');
+                    console.log(123);
+                    i++;
+                }, 8000)
+                //i++;
+            } else {
+                time = new Date();
+                console.log((time.getTime() - startTime) / 1000);
+                $(document).trigger('animateFinished', [side]);
+            }
+            timerId = setTimeout(tick, 8000);
+        }, 11000);
     }
 
     try {
@@ -364,7 +552,7 @@ a {
           ;
 
         $.ajax({
-            url: 'http://localhost/widgets_git/chinese_recipes/prod/server/recipes.json',
+            url: 'http://widgets/chinese_recipes/prod/server/recipes.json',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();
@@ -378,9 +566,35 @@ a {
                     console.log('football data - ', d);
 
                     //d = JSON.parse(d);
-                    
+                    createStructure(d[0], 'front');
+                    createStructure(d[1], 'back');
 
-                    
+                    var deg = 0;
+
+                    setTimeout(function(){
+                        animate('front');
+                    }, 1000)
+                    var itm = 2;
+
+                    $(document).on('animateFinished', function(e, side) {
+                        console.log(side);
+
+                        var sideNew = side === 'front' ? 'back' : 'front';
+
+                        deg = deg + 180;
+                        $('.flipper').css('transform', 'rotateY('+ deg +'deg)');
+                        createStructure(d[itm], side);
+                        animate(sideNew);
+
+                    });
+
+                    /*setInterval(function() {
+                        deg = deg + 180;
+                        $('.flipper').css('transform', 'rotateY('+ deg +'deg)');
+                        console.log(deg);
+
+                    }, 2000)*/
+
 
 
                 } catch (e) {
