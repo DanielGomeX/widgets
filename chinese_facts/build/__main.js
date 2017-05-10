@@ -108,7 +108,7 @@ $(document).ready(function() {
           ;
 
         $.ajax({
-            url: '@@src/redirect.php',
+            url: 'http://localhost/widgets_git/chinese_facts/prod/server/redirect.php',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();

@@ -3,7 +3,7 @@ $(document).ready(function() {
     /* eslint eqeqeq: 0 */
 
     function createStructure(obj, side) {
-        console.log('createStructure',side);
+        //console.log('createStructure',side);
         var elem = side === 'front' ? $('.js-block-front[data-clone=true]') : $('.js-block-back[data-clone=true]');
 
         //clean
@@ -13,8 +13,8 @@ $(document).ready(function() {
 
         elem.find('.js-title').html(obj.name);
 
-        elem.find('.js-cook').html(elem.find('.js-cook').html() + ' ' + obj.details.cook);
-        elem.find('.js-prep').html(elem.find('.js-prep').html() + ' ' + obj.details.prep);
+        elem.find('.js-cook').html(obj.details.cook);
+        elem.find('.js-prep').html(obj.details.prep);
         elem.find('.js-skill').html(obj.details.skill);
         elem.find('.js-serves').html(obj.details.serves);
 
@@ -55,52 +55,51 @@ $(document).ready(function() {
     function animate(side) {
         time = new Date();
         startTime = time.getTime();
-        //console.log('animate', side);
         var block = $('.js-block-' + side);
         console.log(block);
         setTimeout(function() {
             block.find('.js-details').addClass('show');
-            console.log('js-details add show')
         }, 500)
 
         setTimeout(function() {
             block.find('.js-details').addClass('hide');
-            console.log('js-details add hide')
         }, 5500)
 
         setTimeout(function() {
             block.find('.js-nutrition').addClass('show');
-            console.log('js-nutrition add hide')
         }, 5550)
 
         setTimeout(function() {
             block.find('.js-nutrition').addClass('hide');
-            console.log('js-nutrition add hide');
-            $('.placeholder').trigger('animateFinished', [side]);
         }, 10550)
 
-
         var i = 0;
-        /*var timerId = setTimeout(function tick() {
+        var delay = block.find('.js-ingridiets ul').length * 3000;
+
+        var timerId = setTimeout(function tick() {
 
             if (i < block.find('.js-ingridiets ul').length) {
 
-                block.find('.js-ingridiets ul').eq(i).addClass('active');
+                block.find('.js-ingridiets ul').eq(i).addClass('active')                    
 
                 setTimeout(function() {
                     block.find('.js-ingridiets ul.active').addClass('shake').removeClass('active');
                     console.log(123);
                     i++;
                 }, 3000)
-                //i++;
             } else {
                 i =0;
                 time = new Date();
                 console.log((time.getTime() - startTime) / 1000);
-                $('.placeholder').trigger('animateFinished', [side]);
             }
+            console.log('i',i)
             timerId = setTimeout(tick, 3000);
-        }, 11000);*/
+        }, 11000);
+
+        setTimeout(function() {
+            clearTimeout(timerId);
+            $('.placeholder').trigger('animateFinished', [side]);
+        }, 11000 + delay)
     }
 
     try {
@@ -109,7 +108,7 @@ $(document).ready(function() {
           ;
 
         $.ajax({
-            url: 'http://widgets/chinese_recipes/prod/server/recipes.json',
+            url: 'https://js.dooh.xyz/chinese_recipes/server/redirect.php',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();
@@ -119,13 +118,15 @@ $(document).ready(function() {
                 console.log((time.getTime() - startTime) / 1000);
 
                 try {
-                    //console.log('football data - ', JSON.parse(d));
-                    console.log('football data - ', d);
+                    console.log('football data - ', JSON.parse(d));
+                    //console.log('football data - ', d);
 
-                    //d = JSON.parse(d);
+                    d = JSON.parse(d);
                     createStructure(d[0], 'front');
                     createStructure(d[1], 'back');
 
+                    $('.content').show();
+                    $('.preloader').hide();
                     var deg = 0;
 
                     setTimeout(function(){
@@ -142,21 +143,13 @@ $(document).ready(function() {
                         $('.flipper').css('transform', 'rotateY('+ deg +'deg)');
                         createStructure(d[itm], side);
                         animate(sideNew);
-
+                        itm++;
                     });
-
-                    /*setInterval(function() {
-                        deg = deg + 180;
-                        $('.flipper').css('transform', 'rotateY('+ deg +'deg)');
-                        console.log(deg);
-
-                    }, 2000)*/
-
-
 
                 } catch (e) {
                     console.log(e);
                     console.log('ошибка внутри ajax');
+                    $('.preloader').addClass('error');
                 }
 
             },
