@@ -2,105 +2,60 @@ $(document).ready(function() {
     /* eslint no-console:0 */
     /* eslint eqeqeq: 0 */
 
-    function createStructure(obj, side) {
-        //console.log('createStructure',side);
-        var elem = side === 'front' ? $('.js-block-front[data-clone=true]') : $('.js-block-back[data-clone=true]');
+    var blockType = [
+        'star',
+        'black',
+        'red'
+    ];
 
-        //clean
-        elem.find('.js-ingridiets').html('');
-        elem.find('.js-details').removeClass('show').removeClass('hide');
-        elem.find('.js-nutrition').removeClass('show').removeClass('hide');
+    var blockPos = [
+        'left',
+        'right',
+        'top',
+        'bottom'
+    ];
 
-        elem.find('.js-title').html(obj.name);
-
-        elem.find('.js-cook').html(obj.details.cook);
-        elem.find('.js-prep').html(obj.details.prep);
-        elem.find('.js-skill').html(obj.details.skill);
-        elem.find('.js-serves').html(obj.details.serves);
-
-        elem.find('.js-kcal').html(obj.nutrition.kcal);
-        elem.find('.js-salt').html(obj.nutrition.salt);
-        elem.find('.js-sugars').html(obj.nutrition.sugars);
-        elem.find('.js-protein').html(obj.nutrition.protein);
-
-        var subArr = [];
-        var it = 0;
-        subArr[it] = [];
-
-        for (var i = 0; obj.ingridiets.length > i; i++) {
-            if (i % 5 == 0) {
-                it++;
-                subArr[it] = [];
-                subArr[it].push(obj.ingridiets[i]);
-            } else {
-                subArr[it].push(obj.ingridiets[i]);
-            }
-        }
-
-        subArr.splice(0, 1)
-        //console.log(subArr);
-
-        for (var i = 0; subArr.length> i;i++) {
-            var ul = '<ul class="ul_'+ i +' animated"></ul>';
-            elem.find('.js-ingridiets').append(ul);
-
-            for (var it = 0; subArr[i].length> it;it++) {
-                elem.find('.ul_' + i).append('<li>' + subArr[i][it] + '</li>');
-            }
-        }
-
+    function getRandomInRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    function createStructure(obj) {
 
-    function animate(side) {
-        time = new Date();
-        startTime = time.getTime();
-        var block = $('.js-block-' + side);
-        console.log(block);
-        setTimeout(function() {
-            block.find('.js-details').addClass('show');
-        }, 500)
+        var _class = '';
+        var bg = '';
+        var $elem;
 
-        setTimeout(function() {
-            block.find('.js-details').addClass('hide');
-        }, 5500)
-
-        setTimeout(function() {
-            block.find('.js-nutrition').addClass('show');
-        }, 5550)
-
-        setTimeout(function() {
-            block.find('.js-nutrition').addClass('hide');
-        }, 10550)
-
-        var i = 0;
-        var delay = block.find('.js-ingridiets ul').length * 3000;
-
-        var timerId = setTimeout(function tick() {
-
-            if (i < block.find('.js-ingridiets ul').length) {
-
-                block.find('.js-ingridiets ul').eq(i).addClass('active')                    
-
-                setTimeout(function() {
-                    block.find('.js-ingridiets ul.active').addClass('shake').removeClass('active');
-                    console.log(123);
-                    i++;
-                }, 3000)
-            } else {
-                i =0;
-                time = new Date();
-                console.log((time.getTime() - startTime) / 1000);
-            }
-            console.log('i',i)
-            timerId = setTimeout(tick, 3000);
-        }, 11000);
-
-        setTimeout(function() {
-            clearTimeout(timerId);
-            $('.placeholder').trigger('animateFinished', [side]);
-        }, 11000 + delay)
+        if (!obj.img) {
+            _class = blockType[getRandomInRange(0, blockType.length - 1)];
+            $elem = '<div class="content__block js-block '+ _class +'"><div class="content__block__title">'+ obj.fact +'</div><div class="fake"></div></div>';
+        } else {
+            _class = 'bg';
+            bg = obj.img;
+            $elem = '<div class="content__block js-block '+ _class +'" style="background-image: url('+ bg +')"><div class="content__block__title">'+ obj.fact +'</div><div class="fake"></div></div>';
+        }
+        //var $elem = '<div class="content__block js-block '+ _class +'" style="background-image: url('+ bg +')"><div class="content__block__title">'+ obj.fact +'</div><div class="fake"></div></div>';
+        $('.js-content').append($elem);
     }
+
+    function generateArrayRandomNumber (min, max) {
+        var totalNumbers        = max - min + 1,
+            arrayTotalNumbers   = [],
+            arrayRandomNumbers  = [],
+            tempRandomNumber;
+
+        while (totalNumbers--) {
+            arrayTotalNumbers.push(totalNumbers + min);
+        }
+
+        while (arrayTotalNumbers.length) {
+            tempRandomNumber = Math.round(Math.random() * (arrayTotalNumbers.length - 1));
+            arrayRandomNumbers.push(arrayTotalNumbers[tempRandomNumber]);
+            arrayTotalNumbers.splice(tempRandomNumber, 1);
+        }
+
+        return arrayRandomNumbers;
+    }
+
 
     try {
         var time
@@ -108,7 +63,7 @@ $(document).ready(function() {
           ;
 
         $.ajax({
-            url: '@@src/redirect.php',
+            url: '@@src/index.php',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();
@@ -118,34 +73,41 @@ $(document).ready(function() {
                 console.log((time.getTime() - startTime) / 1000);
 
                 try {
-                    console.log('football data - ', JSON.parse(d));
+                    console.log('chinese_facts data - ', JSON.parse(d));
                     //console.log('football data - ', d);
 
                     d = JSON.parse(d);
-                    createStructure(d[0], 'front');
-                    createStructure(d[1], 'back');
 
-                    $('.content').show();
-                    $('.preloader').hide();
-                    var deg = 0;
+                    createStructure(d[1]);
 
-                    setTimeout(function(){
-                        animate('front');
-                    }, 1000)
-                    var itm = 2;
+                    for (var item in d) {
+                        if (item != 1) {
+                            createStructure(d[item]);
+                        }
+                    }
 
-                    $('.placeholder').on('animateFinished', function(e, side) {
-                        console.log(side);
+                    var $block = $('.js-block');
+                    var randArr = generateArrayRandomNumber(0, $block.length - 1);
 
-                        var sideNew = side === 'front' ? 'back' : 'front';
+                    for (var i = 0; $block.length > i;i++) {
+                        $block.eq(randArr[i]).addClass(blockPos[getRandomInRange(0, blockPos.length - 1)]);
+                    }
 
-                        deg = deg + 180;
-                        $('.flipper').css('transform', 'rotateY('+ deg +'deg)');
-                        createStructure(d[itm], side);
-                        animate(sideNew);
-                        itm++;
-                    });
+                    $block.eq(0).addClass('show');
 
+                    var it = 1;
+                    setInterval(function(){
+                        if (it < $block.length){
+
+                            $block.eq(it).addClass('show');
+                            it++;
+
+                        } else {
+                            it = 0;
+                            $block.removeClass('show');
+                            $block.eq(it).addClass('show');
+                        }
+                    }, 8000)
                 } catch (e) {
                     console.log(e);
                     console.log('ошибка внутри ajax');

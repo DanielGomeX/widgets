@@ -13,10 +13,28 @@
     $html->load_file($url);
     $html->save();
 
-    $table = $html->find('юarticle-sheet', 0);
+    $table = $html->find('.article-sheet', 0);
+    $num = 1;
 
     foreach ($table->find('p') as $key => $item) {
-        echo $item;
+        if ($key > 0 && $key <= 35) {
+            //echo $item;
+
+            $num = explode(")", $item->plaintext)[0];
+            if ($item->find('strong', 0) != '') {
+                $item->find('strong', 0)->outertext = '';
+            }
+            //echo $str;
+            //$fact = trim(explode(")", $item->innertext)[1]);
+            //$item->find('strong', 0)->attr[' class'] = 'num';
+            //echo $item->innertext . '<br>';
+            if ($item->find('img', 0) != '') {
+                $resultArr[$key - 1]['img'] = $item->find('img', 0)->src;
+            } else {
+                $resultArr[$num]['fact'] = $item->innertext;
+            }
+        }
+
     }
 
     //file_put_contents('facts.json', trim(json_encode($resultArr)));

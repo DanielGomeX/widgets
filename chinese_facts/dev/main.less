@@ -27,11 +27,140 @@ a {
     box-sizing: border-box;
     background: #fff;
     border: 1px solid grey;
+}
 
-    & > div {
+.content {
+    width: 100%;
+    height: 100%;
+
+    &__block {
         width: 100%;
         height: 100%;
+        position: absolute;
+        transition:All 1s ease;
+        background-image: url('http://cdn.prtl.eu/svg/c/cn.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+
+        &__title {
+            font-size: 41px;
+            line-height: 47px;
+            color: #fff;
+            display: inline-block;
+            vertical-align: middle;
+            width: 473px;
+            text-align: center;
+            font-weight: bold;
+            padding:  0 20px;
+            max-height: 141px;
+            overflow: hidden;
+
+            & strong {
+                color: #FACC05;
+            }
+        }
+
+        &.left {
+            left: -100%;
+            top: 0;
+
+            &.show {
+                left: 0;
+            }
+        }
+
+        &.right {
+            right: -100%;
+            top: 0;
+
+            &.show {
+                right: 0;
+            }
+        }
+
+        &.top {
+            top: -100%;
+            left: 0;
+
+            &.show {
+                top: 0;
+            }
+        }
+
+        &.bottom {
+            bottom: -100%;
+            left: 0;
+
+            &.show {
+                bottom: 0;
+            }
+        }
+
+        &.star {
+            background-image: url('http://www.factslides.com/imgs/china-patt.jpg');
+            background-size: 14%;
+            background-repeat: repeat;
+        }
+
+        &.black {
+            background-color: #000;
+
+        }
+
+        &.red {
+            background-color: #e65858;
+        }
+
+        &.bg {
+            background-size: auto 100%;
+            background-position: center;
+        }
+
+        &.bg & {
+            &__title {
+                color: #FACC05;
+
+                & strong {
+                    color: #fff;
+                }
+            }
+        }
+
+        &.red & {
+            &__title {
+                & strong {
+                    color: #91DC91;
+                }
+            }
+        }
+
+        &.star & {
+            &__title {
+                color: #fff;
+
+                & strong {
+                    color: #FACC05;
+                }
+            }
+        }
+
+        &.black & {
+            &__title {
+                color: #fff;
+
+                & strong {
+                    color: #73D4EC;
+                }
+            }
+        }
+
     }
+}
+
+.fake {
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
 }
 
 .preloader {

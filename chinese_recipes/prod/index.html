@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Results of Football matches England</title>
+    <title>Chinese Recipes</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
@@ -130,7 +130,7 @@
                 </div>
                 <div class="cssload-bubble"></div>
                 <div class="cssload-bubble"></div>
-            </div> 
+            </div>
         </div>
     </div>
 <script>$(document).ready(function(){function e(e,i){var s="front"===i?$(".js-block-front[data-clone=true]"):$(".js-block-back[data-clone=true]");s.find(".js-ingridiets").html(""),s.find(".js-details").removeClass("show").removeClass("hide"),s.find(".js-nutrition").removeClass("show").removeClass("hide"),s.find(".js-title").html(e.name),s.find(".js-cook").html(e.details.cook),s.find(".js-prep").html(e.details.prep),s.find(".js-skill").html(e.details.skill),s.find(".js-serves").html(e.details.serves),s.find(".js-kcal").html(e.nutrition.kcal),s.find(".js-salt").html(e.nutrition.salt),s.find(".js-sugars").html(e.nutrition.sugars),s.find(".js-protein").html(e.nutrition.protein);var t=[],n=0;t[n]=[];for(var o=0;e.ingridiets.length>o;o++)o%5==0?(n++,t[n]=[],t[n].push(e.ingridiets[o])):t[n].push(e.ingridiets[o]);t.splice(0,1);for(var o=0;t.length>o;o++){var l='<ul class="ul_'+o+' animated"></ul>';s.find(".js-ingridiets").append(l);for(var n=0;t[o].length>n;n++)s.find(".ul_"+o).append("<li>"+t[o][n]+"</li>")}}function i(e){s=new Date,t=s.getTime();var i=$(".js-block-"+e);console.log(i),setTimeout(function(){i.find(".js-details").addClass("show")},500),setTimeout(function(){i.find(".js-details").addClass("hide")},5500),setTimeout(function(){i.find(".js-nutrition").addClass("show")},5550),setTimeout(function(){i.find(".js-nutrition").addClass("hide")},10550);var n=0,o=3e3*i.find(".js-ingridiets ul").length,l=setTimeout(function e(){n<i.find(".js-ingridiets ul").length?(i.find(".js-ingridiets ul").eq(n).addClass("active"),setTimeout(function(){i.find(".js-ingridiets ul.active").addClass("shake").removeClass("active"),console.log(123),n++},3e3)):(n=0,s=new Date,console.log((s.getTime()-t)/1e3)),console.log("i",n),l=setTimeout(e,3e3)},11e3);setTimeout(function(){clearTimeout(l),$(".placeholder").trigger("animateFinished",[e])},11e3+o)}try{var s,t;$.ajax({url:"https://js.dooh.xyz/chinese_recipes/server/redirect.php",beforeSend:function(){s=new Date,t=s.getTime()},success:function(n){s=new Date,console.log((s.getTime()-t)/1e3);try{console.log("football data - ",JSON.parse(n)),n=JSON.parse(n),e(n[0],"front"),e(n[1],"back"),$(".content").show(),$(".preloader").hide();var o=0;setTimeout(function(){i("front")},1e3);var l=2;$(".placeholder").on("animateFinished",function(s,t){console.log(t);var a="front"===t?"back":"front";o+=180,$(".flipper").css("transform","rotateY("+o+"deg)"),e(n[l],t),i(a),l++})}catch(e){console.log(e),console.log("ошибка внутри ajax"),$(".preloader").addClass("error")}},complete:function(){},error:function(e,i,s){console.log(e,i,s),$(".preloader").addClass("error")}})}catch(e){console.log(e),console.log("ошибка ajax"),$(".preloader").addClass("error")}});</script>

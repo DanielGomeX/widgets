@@ -232,8 +232,102 @@ a {
   background: #fff;
   border: 1px solid grey;
 }
-.placeholder > div {
+.content {
   width: 100%;
+  height: 100%;
+}
+.content__block {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transition: All 1s ease;
+  background-image: url('http://cdn.prtl.eu/svg/c/cn.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.content__block__title {
+  font-size: 41px;
+  line-height: 47px;
+  color: #fff;
+  display: inline-block;
+  vertical-align: middle;
+  width: 473px;
+  text-align: center;
+  font-weight: bold;
+  padding: 0 20px;
+  max-height: 141px;
+  overflow: hidden;
+}
+.content__block__title strong {
+  color: #FACC05;
+}
+.content__block.left {
+  left: -100%;
+  top: 0;
+}
+.content__block.left.show {
+  left: 0;
+}
+.content__block.right {
+  right: -100%;
+  top: 0;
+}
+.content__block.right.show {
+  right: 0;
+}
+.content__block.top {
+  top: -100%;
+  left: 0;
+}
+.content__block.top.show {
+  top: 0;
+}
+.content__block.bottom {
+  bottom: -100%;
+  left: 0;
+}
+.content__block.bottom.show {
+  bottom: 0;
+}
+.content__block.star {
+  background-image: url('http://www.factslides.com/imgs/china-patt.jpg');
+  background-size: 14%;
+  background-repeat: repeat;
+}
+.content__block.black {
+  background-color: #000;
+}
+.content__block.red {
+  background-color: #e65858;
+}
+.content__block.bg {
+  background-size: auto 100%;
+  background-position: center;
+}
+.content__block.bg .content__block__title {
+  color: #FACC05;
+}
+.content__block.bg .content__block__title strong {
+  color: #fff;
+}
+.content__block.red .content__block__title strong {
+  color: #91DC91;
+}
+.content__block.star .content__block__title {
+  color: #fff;
+}
+.content__block.star .content__block__title strong {
+  color: #FACC05;
+}
+.content__block.black .content__block__title {
+  color: #fff;
+}
+.content__block.black .content__block__title strong {
+  color: #73D4EC;
+}
+.fake {
+  display: inline-block;
+  vertical-align: middle;
   height: 100%;
 }
 .preloader {
