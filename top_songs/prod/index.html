@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Top songs</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Alice" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:700,800" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <style>#wall{position:relative;width:100%;height:146px;top:-10px;background:#fff;text-align:center;padding-top:29px;color:#000}#eye-l,#eye-r{position:absolute;z-index:20;width:10px;height:10px;border-radius:50%;background:#fff;margin-top:5px;left:5px;margin-left:-5px;animation:search 2.3s infinite;-o-animation:search 2.3s infinite;-ms-animation:search 2.3s infinite;-webkit-animation:search 2.3s infinite;-moz-animation:search 2.3s infinite;box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;border:3px solid #000}#eye-r{margin-left:5px}#nose{position:relative;width:15px;height:15px;border:3px solid #000;border-radius:50%;border-top-color:transparent;background:#fff;top:12px;left:-7px;transform:rotate(35deg);-o-transform:rotate(35deg);-ms-transform:rotate(35deg);-webkit-transform:rotate(35deg);-moz-transform:rotate(35deg);animation:noser 2.3s infinite;-o-animation:noser 2.3s infinite;-ms-animation:noser 2.3s infinite;-webkit-animation:noser 2.3s infinite;-moz-animation:noser 2.3s infinite}#mouth{position:relative;width:6px;height:6px;border-radius:50%;background:#000;margin-top:19px;float:left;margin-left:3px;animation:search 2.3s infinite;-o-animation:search 2.3s infinite;-ms-animation:search 2.3s infinite;-webkit-animation:search 2.3s infinite;-moz-animation:search 2.3s infinite}#man{position:relative;width:49px;height:68px;border:5px solid #000;border-radius:50%;margin-left:50%;left:-24px;animation:pop 9.2s infinite;-o-animation:pop 9.2s infinite;-ms-animation:pop 9.2s infinite;-webkit-animation:pop 9.2s infinite;-moz-animation:pop 9.2s infinite}@keyframes search{0%,100%{-webkit-transform:translate(0,0);transform:translate(0,0)}50%{-webkit-transform:translate(31px,0);transform:translate(31px,0)}}@-webkit-keyframes search{0%,100%{-webkit-transform:translate(0,0)}50%{-webkit-transform:translate(31px,0)}}@keyframes noser{0%,100%{-webkit-transform:translate(0,0) rotate(35deg);transform:translate(0,0) rotate(35deg)}50%{-webkit-transform:translate(42px,0) rotate(-35deg);transform:translate(42px,0) rotate(-35deg)}}@-webkit-keyframes noser{0%,100%{-webkit-transform:translate(0,0) rotate(35deg)}50%{-webkit-transform:translate(42px,0) rotate(-35deg)}}@keyframes pop{0%,100%{-webkit-transform:translate(0,78px);transform:translate(0,78px)}20%,80%{-webkit-transform:translate(0,10px);transform:translate(0,10px)}}@-webkit-keyframes pop{0%,100%{-webkit-transform:translate(0,78px)}20%,80%{-webkit-transform:translate(0,10px)}}body,html{margin:0;padding:0;width:480px;height:360px}div{box-sizing:border-box}a{text-decoration:none;color:inherit}.placeholder{position:relative;width:100%;height:100%;overflow:hidden;font-family:Alice,serif;color:#000;box-sizing:border-box;background:#fff;border:1px solid grey}.content{display:none;width:100%;height:100%}.content__block{width:100%;height:100%;font-size:0}.content__block__raiting{position:absolute;top:265px;left:10px;z-index:9}.content__block__raiting__round{display:none;width:75px;height:75px;background-color:#fff;border-radius:37.5px;box-shadow:0 0 10px #777;transition:All 1s ease}.content__block__raiting__round.open{width:440px}.content__block__raiting__details{display:none;position:absolute;left:100px;width:338px;font-size:16px;margin-top:11px}.content__block__raiting__detail{display:inline-block;vertical-align:top;width:108px;margin-right:2px;padding:0 5px}.content__block__raiting__detail__val{font-weight:700}.content__block__raiting__arrow{display:none;width:75px;height:75px;background:url(https://js.dooh.xyz/top_songs/server/images/arrow.svg) center no-repeat;background-size:80%;float:left;margin-right:40px}.content__block__raiting__arrow.up{background:url(https://js.dooh.xyz/top_songs/server/images/arrow_green.svg) center no-repeat;background-size:80%}.content__block__raiting__arrow.down{background:url(https://js.dooh.xyz/top_songs/server/images/arrow_red.svg) center no-repeat;background-size:80%}.content__block__content{position:absolute;height:72px;top:144px;left:0;width:0;padding-top:15px;background:#ff9800;transition:All .8s ease}.content__block__content.open{width:100%}.content__block__content_before{position:absolute;bottom:214px;left:0;background:#ff9800;width:100%;height:0;transition:All .8s ease}.content__block__content_before.open{height:144px}.content__block__content__inner{display:none;position:absolute;width:100%;top:-135px;z-index:999}.content__block__content_after{position:absolute;top:216px;left:0;background:#ff9800;width:100%;height:0;transition:All .8s ease}.content__block__content_after.open{height:180px}.content__block__col{position:relative;display:inline-block;vertical-align:top;font-size:18px}.content__block__col_place{width:100px;height:100%;text-align:center;font-size:30px}.content__block__col_content{width:378px;height:100%}.content__block__row_place{background-color:grey;height:100%;color:#fff;font-weight:700;padding-top:75px}.content__block__row_rait{position:absolute;bottom:0;width:100%;height:180px;background-image:url(https://js.dooh.xyz/top_songs/server/images/down.svg);background-position:center;background-repeat:no-repeat;background-size:auto 100%}.content__block__place{margin-bottom:15px}.content__block__arrow{width:35px;height:35px;background:url(https://js.dooh.xyz/top_songs/server/images/arrow_white.svg) center no-repeat;background-size:100%;margin:0 auto}.content__block__num{font-size:60px;line-height:72px;font-weight:700;z-index:2;position:relative;color:#2196f3}.content__block__counter{height:100%;background:grey;color:#fff}.content__block__counter__inner{position:relative;top:0}.content__block__counter__cursor{position:absolute;width:100%;height:72px;top:144px;background-color:#ff9800;z-index:1;box-shadow:1px 0 5px #545454}.content__block__counter__cursor_before{display:block;position:absolute;bottom:214px;left:0;width:100%;height:450px;background:#2196f3;z-index:3;box-shadow:1px 0 5px #545454}.content__block__counter__cursor_after{display:block;position:absolute;top:216px;left:0;width:100%;height:450px;background:#2196f3;z-index:3;box-shadow:1px 0 5px #545454}.content__block__image{display:block;margin:0 auto 5px;max-height:135px}.content__block__song{text-align:center;font-weight:700;font-size:35px;line-height:40px;max-height:40px;overflow:hidden;text-decoration:underline;margin-bottom:3px}.content__block__artist{text-align:center;font-weight:700;font-size:30px;color:#000;line-height:34px;max-height:68px;overflow:hidden}.preloader{position:absolute;left:0;width:100%;bottom:-156px}</style>
+</head>
+<body>
+    <div class="placeholder">
+        <div class="content js-content1">
+            <div class="content__block js-block" data-clone="true">
+                <div class="content__block__col content__block__col_place">
+                    <div class="content__block__counter">
+                        <div class="content__block__counter__cursor_before"></div>
+                        <div class="content__block__counter__cursor"></div>
+                        <div class="content__block__counter__cursor_after"></div>
+                        <div class="content__block__counter__inner">
+                            <div class="content__block__num">1</div>
+                            <div class="content__block__num">2</div>
+                            <div class="content__block__num">3</div>
+                            <div class="content__block__num">4</div>
+                            <div class="content__block__num">5</div>
+                            <div class="content__block__num">6</div>
+                            <div class="content__block__num">7</div>
+                            <div class="content__block__num">8</div>
+                            <div class="content__block__num">9</div>
+                            <div class="content__block__num">10</div>
+                            <div class="content__block__num">11</div>
+                            <div class="content__block__num">12</div>
+                            <div class="content__block__num">13</div>
+                            <div class="content__block__num">14</div>
+                            <div class="content__block__num">15</div>
+                            <div class="content__block__num">16</div>
+                            <div class="content__block__num">17</div>
+                            <div class="content__block__num">18</div>
+                            <div class="content__block__num">19</div>
+                            <div class="content__block__num">20</div>
+                            <div class="content__block__num">21</div>
+                            <div class="content__block__num">22</div>
+                            <div class="content__block__num">23</div>
+                            <div class="content__block__num">24</div>
+                            <div class="content__block__num">25</div>
+                            <div class="content__block__num">26</div>
+                            <div class="content__block__num">27</div>
+                            <div class="content__block__num">28</div>
+                            <div class="content__block__num">29</div>
+                            <div class="content__block__num">30</div>
+                            <div class="content__block__num">31</div>
+                            <div class="content__block__num">32</div>
+                            <div class="content__block__num">33</div>
+                            <div class="content__block__num">34</div>
+                            <div class="content__block__num">35</div>
+                            <div class="content__block__num">36</div>
+                            <div class="content__block__num">37</div>
+                            <div class="content__block__num">38</div>
+                            <div class="content__block__num">39</div>
+                            <div class="content__block__num">40</div>
+                            <div class="content__block__num">41</div>
+                            <div class="content__block__num">42</div>
+                            <div class="content__block__num">43</div>
+                            <div class="content__block__num">44</div>
+                            <div class="content__block__num">45</div>
+                            <div class="content__block__num">46</div>
+                            <div class="content__block__num">47</div>
+                            <div class="content__block__num">48</div>
+                            <div class="content__block__num">49</div>
+                            <div class="content__block__num">50</div>
+                        </div>
+                    </div>
+                    <div class="content__block__raiting">
+                        <div class="content__block__raiting__round js-round">
+                            <div class="content__block__raiting__arrows js-arrows">
+                                <div class="content__block__raiting__arrow js-arrow" data-clone="true"></div>
+                            </div>
+                            <div class="content__block__raiting__details js-details" data-clone="true">
+                                <div class="content__block__raiting__detail">
+                                    <div class="content__block__raiting__detail__name">Peak<br>position</div>
+                                    <div class="content__block__raiting__detail__val js-peak-val">1</div>
+                                </div>
+                                <div class="content__block__raiting__detail">
+                                    <div class="content__block__raiting__detail__name">Last<br>week</div>
+                                    <div class="content__block__raiting__detail__val js-last-val">2</div>
+                                </div>
+                                <div class="content__block__raiting__detail">
+                                    <div class="content__block__raiting__detail__name">Weeks on chart</div>
+                                    <div class="content__block__raiting__detail__val js-on-chart-val">16</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content__block__col content__block__col_content">
+                    <div class="content__block__content_before js-content-ucho"></div>
+                    <div class="content__block__content js-content">
+                        <div class="content__block__content__inner js-content-inner" data-clone="true">
+                            <img src="http://www.billboard.com/images/pref_images/q59725qvpol.jpg" class="content__block__image js-image">
+                            <div class="content__block__song js-song">That&#039;s What I Like</div>
+                            <div class="content__block__artist js-artist">Bruno Mars</div>
+                        </div>
+                    </div>
+                    <div class="content__block__content_after js-content-ucho"></div>
+                </div>
+            </div>
+        </div>
+        <div class="preloader">
+            <div id="man">
+                <div id="eye-l"></div>
+                <div id="eye-r"></div>
+                <div id="nose"></div>
+                <div id="mouth"></div>
+            </div>
+            <div id="wall"></div>
+        </div>
+    </div>
+<script>$(document).ready(function(){function e(e,n){var t=e-.5+Math.random()*(n-e+1);return t=Math.round(t)}function n(e,n){var t="create"===n?$(".js-content-inner[data-clone=true]").clone().attr("data-clone","false"):$(".js-content-inner[data-clone=true]"),o="create"===n?$(".js-details[data-clone=true]").clone().attr("data-clone","false"):$(".js-details[data-clone=true]"),a="create"===n?$(".js-arrow[data-clone=true]").clone().attr("data-clone","false"):$(".js-arrow[data-clone=true]");t.find(".js-song").html(e.song),t.find(".js-artist").html(e.artist),t.find(".js-image").attr("src",e.image),o.find(".js-peak-val").html(e.peakPosition),o.find(".js-last-val").html(e.lastWeek),o.find(".js-on-chart-val").html(e.wksOnChart),e.lastWeek<e.place?a.addClass("down"):e.lastWeek>e.place&&a.addClass("up"),a.appendTo(".js-arrows"),t.appendTo(".js-content"),o.appendTo(".js-round")}function t(e){var n=e.targetNum-1;i.animate({top:144-e.position},1e3,function(){setTimeout(function(){$(".js-content").addClass("open")},200),setTimeout(function(){$(".js-content-ucho").addClass("open")},1e3),setTimeout(function(){$(".js-content-inner").eq(n).fadeIn(300)},1900),setTimeout(function(){$(".js-round").fadeIn(300).delay(300).addClass("open")},2300),setTimeout(function(){$(".js-details").eq(n).fadeIn(300),$(".js-arrow").eq(n).fadeIn(300),$(document).trigger("AnimationOpenFinished",[n])},3e3)})}function o(e){$(".js-details").eq(e).fadeOut(100),setTimeout(function(){$(".js-round").removeClass("open")},100),setTimeout(function(){$(".js-arrow").eq(e).fadeOut(300)},600),setTimeout(function(){$(".js-content-inner").eq(e).fadeOut(300)},600),setTimeout(function(){$(".js-content-ucho").removeClass("open")},800),setTimeout(function(){$(".js-content").removeClass("open")},1600),setTimeout(function(){var e=s();t(e),console.log(e)},2200)}function a(){var e=$(".content__block__num"),n=e.clone();i.append(n)}function s(){var n=e(1,50),t=$(".content__block__num"),o=[];return t.each(function(){$(this).html()==n&&o.push($(this))}),o[3].addClass("active"),{position:o[3].position().top,targetNum:n}}var c=$(".preloader"),r=$(".js-content1"),i=$(".content__block__counter__inner");try{var l,u;$.ajax({url:"https://js.dooh.xyz/top_songs/server/index.php",beforeSend:function(){l=new Date,u=l.getTime()},success:function(e){l=new Date,console.log((l.getTime()-u)/1e3);try{console.log("top songs data - ",JSON.parse(e)),e=JSON.parse(e);for(var i=0;2>i;i++)a();n(e[0],"new");for(var i=1;e.length>i;i++)n(e[i],"create");setTimeout(function(){var e=s();t(e),console.log(e)},600),$(document).on("AnimationOpenFinished",function(e,n){setTimeout(function(){o(n)},1e4)}),c.hide(),r.show()}catch(e){console.log(e),console.log("ошибка внутри ajax"),c.addClass("error")}},complete:function(){},error:function(e,n,t){console.log(e,n,t),c.addClass("error")}})}catch(e){console.log(e),console.log("ошибка ajax"),c.addClass("error")}});</script>
+</body>
+</html>

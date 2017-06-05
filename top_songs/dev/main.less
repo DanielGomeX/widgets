@@ -1,0 +1,308 @@
+@sidebarColor: #2196f3;
+@contentColor: #ff9800;
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 480px;
+    height: 360px;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    //font-family: 'Oswald', sans-serif;
+    //font-family: 'Playfair Display', serif;
+    font-family: 'Alice', serif;
+    color: #000;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid grey;
+}
+
+
+.content {
+    display: none;
+    width: 100%;
+    height: 100%;
+
+    &__block {
+        width: 100%;
+        height: 100%;
+        font-size: 0;
+
+        &__raiting {
+            @roundSize: 75px;
+            position: absolute;
+            top: 265px;
+            left: 10px;
+            z-index: 9;
+
+            &__round {
+                display: none;
+                width: @roundSize;
+                height: @roundSize;
+                background-color: #fff;
+                border-radius: @roundSize / 2;
+                box-shadow: 0px 0px 10px #777;
+                transition: All 1s ease;
+
+                &.open {
+                    width: 440px;
+                }
+            }
+
+            &__details {
+                display: none;
+                position: absolute;
+                left: 100px;
+                width: 338px;
+                font-size: 16px;
+                margin-top: 11px;
+            }
+
+            &__detail {
+                display: inline-block;
+                vertical-align: top;
+                width: 108px;
+                margin-right: 2px;
+                padding: 0 5px;
+
+                &__val {
+                    font-weight: bold;
+                }
+            }
+
+            &__arrow {
+                display: none;
+                width: @roundSize;
+                height: @roundSize;
+                background: url('@@src/images/arrow.svg') center no-repeat;
+                background-size: 80%;
+                float: left;
+                margin-right: 40px;
+
+                &.up {
+                    background: url('@@src/images/arrow_green.svg') center no-repeat;
+                    background-size: 80%;
+                }
+
+                &.down {
+                    background: url('@@src/images/arrow_red.svg') center no-repeat;
+                    background-size: 80%;
+                }
+            }
+        }
+
+        &__content {
+            position: absolute;
+            height: 72px;
+            top: 144px;
+            left: 0;
+            width: 0;
+            padding-top: 15px;
+            background: @contentColor;
+            transition: All 0.8s ease;
+
+            &.open {
+                width: 100%;
+            }
+
+            &_before {
+                position: absolute;
+                bottom: 214px;
+                left: 0;
+                background: @contentColor;
+                width: 100%;
+                height: 0;
+                transition: All 0.8s ease;
+
+
+                &.open {
+                    height: 144px;
+                }
+            }
+
+            &__inner {
+                display: none;
+                position: absolute;
+                width: 100%;
+                top: -135px;
+                z-index: 999;
+            }
+
+            &_after {
+                position: absolute;
+                top: 216px;
+                left: 0;
+                background: @contentColor;
+                width: 100%;
+                height: 0;
+                transition: All 0.8s ease;
+
+
+                &.open {
+                    height: 180px;
+                }
+            }
+        }
+
+        &__col {
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+            font-size: 18px;
+
+            &_place {
+                width: 100px;
+                height: 100%;
+                text-align: center;
+                font-size: 30px;
+            }
+
+            &_content {
+                width: 378px;
+                height: 100%;
+            }
+        }
+
+        &__row {
+            &_place {
+                background-color: grey;
+                height: 100%;
+                color: #fff;
+                font-weight: bold;
+                padding-top: 75px;
+            }
+
+            &_rait {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 180px;
+                //background-color: #000;
+                background-image: url('@@src/images/down.svg');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: auto 100%;
+            }
+        }
+
+        &__place {
+            margin-bottom: 15px;
+        }
+
+        &__arrow {
+            width: 35px;
+            height: 35px;
+            background: url('@@src/images/arrow_white.svg') center no-repeat;
+            background-size: 100%;
+            margin: 0 auto;
+        }
+
+        &__num {
+            font-size: 60px;
+            line-height: 72px;
+            font-weight: bold;
+            z-index: 2;
+            position: relative;
+            color: @sidebarColor;
+        }
+
+        &__counter {
+            height: 100%;
+            background: grey;
+            color: #fff;
+
+            &__inner {
+                position: relative;
+                top: 0;
+            }
+
+            &__cursor {
+                position: absolute;
+                width: 100%;
+                height: 72px;
+                top: 144px;
+                background-color: @contentColor;
+                z-index: 1;
+                box-shadow: 1px 0 5px #545454;
+
+                &_before {
+                    display: block;
+                    position: absolute;
+                    bottom: 214px;
+                    left: 0;
+                    width: 100%;
+                    height: 450px;
+                    //background: linear-gradient(to top, rgba(0,0,0, 0.7), rgba(255,255,255, 0));
+                    background: @sidebarColor;
+                    z-index: 3;
+                    box-shadow: 1px 0 5px #545454;
+                }
+
+                &_after {
+                    display: block;
+                    position: absolute;
+                    top: 216px;
+                    left: 0;
+                    width: 100%;
+                    height: 450px;
+                    //background: linear-gradient(to bottom, rgba(0,0,0, 0.7), rgba(255,255,255, 0));
+                    background: @sidebarColor;
+                    z-index: 3;
+                    box-shadow: 1px 0 5px #545454;
+                }
+            }
+        }
+
+        &__image {
+            display: block;
+            margin: 0 auto 5px;
+            max-height: 135px;
+        }
+
+        &__song {
+            text-align: center;
+            font-weight: bold;
+            font-size: 35px;
+            line-height: 40px;
+            max-height: 40px;
+            overflow: hidden;
+            text-decoration: underline;
+            margin-bottom: 3px;
+        }
+
+        &__artist {
+            text-align: center;
+            font-weight: bold;
+            font-size: 30px;
+            color: #000;
+            line-height: 34px;
+            max-height: 68px;
+            overflow: hidden;
+        }
+
+
+    }
+}
+
+
+.preloader {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    bottom: -156px;
+}
