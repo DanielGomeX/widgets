@@ -131,7 +131,7 @@ $(document).ready(function() {
                         it++;
 
                         timerId = setTimeout(tick, 10000);
-                    }, 10000);
+                    }, 15000);
 
                     $('.preloader').hide();
                     $('.content').show();
