@@ -33,7 +33,6 @@ $(document).ready(function() {
             bg = obj.img;
             $elem = '<div class="content__block js-block '+ _class +'" style="background-image: url('+ bg +')"><div class="content__block__title">'+ obj.fact +'</div><div class="fake"></div></div>';
         }
-        //var $elem = '<div class="content__block js-block '+ _class +'" style="background-image: url('+ bg +')"><div class="content__block__title">'+ obj.fact +'</div><div class="fake"></div></div>';
         $('.js-content').append($elem);
     }
 
@@ -63,7 +62,7 @@ $(document).ready(function() {
           ;
 
         $.ajax({
-            url: '@@src/index.php',
+            url: '@@src/redirect.php',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();

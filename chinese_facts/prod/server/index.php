@@ -18,16 +18,11 @@
 
     foreach ($table->find('p') as $key => $item) {
         if ($key > 0 && $key <= 35) {
-            //echo $item;
 
             $num = explode(")", $item->plaintext)[0];
             if ($item->find('strong', 0) != '') {
                 $item->find('strong', 0)->outertext = '';
             }
-            //echo $str;
-            //$fact = trim(explode(")", $item->innertext)[1]);
-            //$item->find('strong', 0)->attr[' class'] = 'num';
-            //echo $item->innertext . '<br>';
             if ($item->find('img', 0) != '') {
                 $resultArr[$key - 1]['img'] = $item->find('img', 0)->src;
             } else {
@@ -37,6 +32,6 @@
 
     }
 
-    //file_put_contents('facts.json', trim(json_encode($resultArr)));
+    file_put_contents('facts.json', trim(json_encode($resultArr)));
     echo json_encode($resultArr);
 ?>
