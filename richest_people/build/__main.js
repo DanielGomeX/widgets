@@ -42,7 +42,7 @@ $(document).ready(function() {
                 }
 
                 timerId = setTimeout(tick, 8000);
-            }, 100);
+            }, 8000);
 
 
 

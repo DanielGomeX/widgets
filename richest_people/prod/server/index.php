@@ -31,7 +31,7 @@
             $response[] = array(
                 'place' => (string) $value->find('td', 0)->plaintext,
                 'change_place' => (string) $value->find('td', 1)->plaintext,
-                'image' => (string) $src,
+                'image' => (string) (string) str_replace('http://', 'https://' , $src),
                 'name' => (string) $name,
                 'career' => (string) $career,
                 'money' => (string) $value->find('td', 3)->plaintext,

@@ -31,7 +31,7 @@
         foreach($value->find('a') as $a){
             foreach ($linksArr as $val) {
                 if (stristr($a->href, $val) != FALSE) {
-                    $arr[$val][] = $a->href;
+                    $arr[$val][] = 'http://' . str_replace('//','' , $a->href);
                 }
             }
         }
@@ -41,13 +41,6 @@
 
     }
     unset($table);
-
-    $promArr = array('апрель' => array(
-            'http://www.kursvaliut.ru/%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BD%D1%8B%D0%B9-%D0%BA%D1%83%D1%80%D1%81-1-%D0%B0%D0%BF%D1%80%D0%B5%D0%BB%D1%8C-2017',
-            'http://www.kursvaliut.ru/%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BD%D1%8B%D0%B9-%D0%BA%D1%83%D1%80%D1%81-4-%D0%B0%D0%BF%D1%80%D0%B5%D0%BB%D1%8C-2017',
-            'http://www.kursvaliut.ru/%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BD%D1%8B%D0%B9-%D0%BA%D1%83%D1%80%D1%81-5-%D0%B0%D0%BF%D1%80%D0%B5%D0%BB%D1%8C-2017',
-            'http://www.kursvaliut.ru/%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BD%D1%8B%D0%B9-%D0%BA%D1%83%D1%80%D1%81-6-%D0%B0%D0%BF%D1%80%D0%B5%D0%BB%D1%8C-2017'
-        ));
 
     $arr = array();
 
