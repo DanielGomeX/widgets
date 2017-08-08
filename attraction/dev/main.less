@@ -1,0 +1,274 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 480px;
+    height: 360px;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.fake {
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Oswald', sans-serif;
+     //font-family: 'Playfair Display', serif;
+    //font-family: 'Alice', serif;
+    color: #222;
+    box-sizing: border-box;
+
+    &__bg {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+}
+
+.content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    height: 100%;
+    display: block;
+    z-index: 2;
+
+    &__block {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        color: #222;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        transition:All .4s ease;
+
+        &.active {
+            opacity: 1;
+        }
+
+        &__logo {
+            width: 100%;
+            height: 120px;
+        }
+
+        &__num {
+            font-size: 65px;
+            line-height: 1;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        &__text {
+            font-size: 35px;
+            line-height: 40px;
+            padding: 0 40px;
+        }
+
+        &_fb {
+            background: #C2D4FC;
+        }
+
+        &_fb & {
+            &__logo {
+                background: url('@@src/images/facebook.png') center no-repeat;
+                background-size: 50%;
+            }
+        }
+
+        &_message {
+            background: #C3FBE0;
+        }
+
+        &_message & {
+            &__logo {
+                background: url('https://support.apple.com/content/dam/edam/applecare/images/en_US/iphone/featured-content-messages-notification-icon_2x.png') center no-repeat;
+                background-size: 20%;
+            }
+        }
+
+        &_youtube {
+            background: #FDC3C2;
+        }
+
+        &_youtube & {
+            &__logo {
+                background: url('https://www.seeklogo.net/wp-content/uploads/2016/11/youtube-logo-preview-1.png') center no-repeat;
+                background-size: 60%;
+            }
+        }
+
+        &_app {
+            background: #FCE1C3;
+        }
+
+        &_app & {
+            &__logo {
+                background: url('http://www.techsnapr.com/wp-content/uploads/2015/02/app-store-play-store.png') center no-repeat;
+                background-size: 50%;
+            }
+        }
+
+        &_ig {
+            background: #E1C2FE;
+        }
+
+        &_ig & {
+            &__logo {
+                background: url('http://pngimg.com/uploads/instagram/instagram_PNG12.png') center no-repeat;
+                background-size: 21%;
+            }
+        }
+
+        &_tw {
+            background: #C2EDFD;
+        }
+
+        &_tw & {
+            &__logo {
+                background: url('http://logomecca.com/wp-content/uploads/2015/07/twitter_blue_text_logo_png_font_typeface_square_android_icon_vector_png_eps_button_download_font_black_and_white_transparent_background_maker_ai_file_adobe_illustrator_free.png') center no-repeat;
+                background-size: 60%;
+            }
+        }
+
+        &_tinder {
+            background: #F8BE96;
+        }
+
+        &_tinder & {
+            &__logo {
+                background: url('http://az616578.vo.msecnd.net/files/2016/06/30/636028945308257384-33551996_Logo-Tinder.svg.png') center no-repeat;
+                background-size: 45%;
+            }
+        }
+
+        &_e-mail {
+            background: #F0FBBF;
+        }
+
+        &_e-mail & {
+            &__logo {
+                background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Email_Shiny_Icon.svg/2000px-Email_Shiny_Icon.svg.png') center no-repeat;
+                background-size: 20%;
+            }
+        }
+
+        &_spotify {
+            background: #D2FBC1;
+        }
+
+        &_spotify & {
+            &__logo {
+                background: url('https://spotifypresscom.files.wordpress.com/2015/01/spotify_logo_rgb_green.png?w=300&h=90') center no-repeat;
+                background-size: 60%;
+            }
+        }
+
+        &_amazon {
+            background: #FCC2F4;
+        }
+
+        &_amazon & {
+            &__logo {
+                background: url('https://home-assistant.io/images/supported_brands/amazon-echo.png') center no-repeat;
+                background-size: 60%;
+            }
+        }
+
+        &_linkedin {
+            background: #CEC3FD;
+        }
+
+        &_linkedin & {
+            &__logo {
+                background: url('@@src/images/linkedin.png') center no-repeat;
+                background-size: 60%;
+            }
+        }
+
+        &_gif {
+            background: #C3D7FA;
+        }
+
+        &_gif & {
+            &__logo {
+                background: url('http://focalizmarketing.fr/wp-content/uploads/2016/09/facebook-messenger-297x300.png') center no-repeat;
+                background-size: 20%;
+            }
+        }
+
+        &_snap {
+            background: #C3D7FA;
+        }
+
+        &_snap & {
+            &__logo {
+                background: url('https://logodownload.org/wp-content/uploads/2015/03/snapchat-logo-5.png') center no-repeat;
+                background-size: 60%;
+            }
+        }
+
+        &_spend {
+            background: #FBC2EB;
+        }
+
+        &_spend & {
+            &__logo {
+                background: url('https://pngimg.com/uploads/shopping_cart/shopping_cart_PNG7.png') center no-repeat;
+                background-size: 25%;
+            }
+        }
+
+        &_netflix {
+            background: #FDCFC2;
+        }
+
+        &_netflix & {
+            &__logo {
+                background: url('https://i2.wp.com/freepngimages.com/wp-content/uploads/2016/10/netflix-logo.png?fit=624%2C390') center no-repeat;
+                background-size: 45%;
+            }
+        }
+
+        &_google {
+            background: #FFE1E6;
+        }
+
+        &_google & {
+            &__logo {
+                background: url('https://www.google.com.ph/doodle4google/images/splashes/featured.png') center no-repeat;
+                background-size: 45%;
+            }
+        }
+
+    }
+}
+
+.preloader {
+    display: none;
+    position: absolute;
+    top: 35%;
+    margin-top: -48px;
+    left: 50%;
+    z-index: 99999;
+}
+

@@ -1,0 +1,268 @@
+.bubblingG {
+  text-align: center;
+  width: 78px;
+  height: 49px;
+  margin: auto;
+}
+.bubblingG span {
+  display: inline-block;
+  vertical-align: middle;
+  width: 10px;
+  height: 10px;
+  margin: 24px auto;
+  background: #000000;
+  border-radius: 49px;
+  -o-border-radius: 49px;
+  -ms-border-radius: 49px;
+  -webkit-border-radius: 49px;
+  -moz-border-radius: 49px;
+  animation: bubblingG 1.5s infinite alternate;
+  -o-animation: bubblingG 1.5s infinite alternate;
+  -ms-animation: bubblingG 1.5s infinite alternate;
+  -webkit-animation: bubblingG 1.5s infinite alternate;
+  -moz-animation: bubblingG 1.5s infinite alternate;
+}
+#bubblingG_1 {
+  animation-delay: 0s;
+  -o-animation-delay: 0s;
+  -ms-animation-delay: 0s;
+  -webkit-animation-delay: 0s;
+  -moz-animation-delay: 0s;
+}
+#bubblingG_2 {
+  animation-delay: 0.45s;
+  -o-animation-delay: 0.45s;
+  -ms-animation-delay: 0.45s;
+  -webkit-animation-delay: 0.45s;
+  -moz-animation-delay: 0.45s;
+}
+#bubblingG_3 {
+  animation-delay: 0.9s;
+  -o-animation-delay: 0.9s;
+  -ms-animation-delay: 0.9s;
+  -webkit-animation-delay: 0.9s;
+  -moz-animation-delay: 0.9s;
+}
+@keyframes bubblingG {
+  0% {
+    width: 10px;
+    height: 10px;
+    background-color: #000000;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    width: 23px;
+    height: 23px;
+    background-color: #ffffff;
+    -webkit-transform: translateY(-20px);
+            transform: translateY(-20px);
+  }
+}
+@-webkit-keyframes bubblingG {
+  0% {
+    width: 10px;
+    height: 10px;
+    background-color: #000000;
+    -webkit-transform: translateY(0);
+  }
+  100% {
+    width: 23px;
+    height: 23px;
+    background-color: #ffffff;
+    -webkit-transform: translateY(-20px);
+  }
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 480px;
+  height: 360px;
+}
+div {
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.fake {
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+.placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Oswald', sans-serif;
+  color: #222;
+  box-sizing: border-box;
+}
+.placeholder__bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.content {
+  position: relative;
+  width: 100%;
+  z-index: 999;
+  height: 100%;
+  display: block;
+  z-index: 2;
+}
+.content__block {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  color: #222;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: All .4s ease;
+}
+.content__block.active {
+  opacity: 1;
+}
+.content__block__logo {
+  width: 100%;
+  height: 120px;
+}
+.content__block__num {
+  font-size: 65px;
+  line-height: 1;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+.content__block__text {
+  font-size: 35px;
+  line-height: 40px;
+  padding: 0 40px;
+}
+.content__block_fb {
+  background: #C2D4FC;
+}
+.content__block_fb .content__block__logo {
+  background: url('http://widgets/attraction/prod/server/images/facebook.png') center no-repeat;
+  background-size: 50%;
+}
+.content__block_message {
+  background: #C3FBE0;
+}
+.content__block_message .content__block__logo {
+  background: url('https://support.apple.com/content/dam/edam/applecare/images/en_US/iphone/featured-content-messages-notification-icon_2x.png') center no-repeat;
+  background-size: 20%;
+}
+.content__block_youtube {
+  background: #FDC3C2;
+}
+.content__block_youtube .content__block__logo {
+  background: url('https://www.seeklogo.net/wp-content/uploads/2016/11/youtube-logo-preview-1.png') center no-repeat;
+  background-size: 60%;
+}
+.content__block_app {
+  background: #FCE1C3;
+}
+.content__block_app .content__block__logo {
+  background: url('http://www.techsnapr.com/wp-content/uploads/2015/02/app-store-play-store.png') center no-repeat;
+  background-size: 50%;
+}
+.content__block_ig {
+  background: #E1C2FE;
+}
+.content__block_ig .content__block__logo {
+  background: url('http://pngimg.com/uploads/instagram/instagram_PNG12.png') center no-repeat;
+  background-size: 21%;
+}
+.content__block_tw {
+  background: #C2EDFD;
+}
+.content__block_tw .content__block__logo {
+  background: url('http://logomecca.com/wp-content/uploads/2015/07/twitter_blue_text_logo_png_font_typeface_square_android_icon_vector_png_eps_button_download_font_black_and_white_transparent_background_maker_ai_file_adobe_illustrator_free.png') center no-repeat;
+  background-size: 60%;
+}
+.content__block_tinder {
+  background: #F8BE96;
+}
+.content__block_tinder .content__block__logo {
+  background: url('http://az616578.vo.msecnd.net/files/2016/06/30/636028945308257384-33551996_Logo-Tinder.svg.png') center no-repeat;
+  background-size: 45%;
+}
+.content__block_e-mail {
+  background: #F0FBBF;
+}
+.content__block_e-mail .content__block__logo {
+  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Email_Shiny_Icon.svg/2000px-Email_Shiny_Icon.svg.png') center no-repeat;
+  background-size: 20%;
+}
+.content__block_spotify {
+  background: #D2FBC1;
+}
+.content__block_spotify .content__block__logo {
+  background: url('https://spotifypresscom.files.wordpress.com/2015/01/spotify_logo_rgb_green.png?w=300&h=90') center no-repeat;
+  background-size: 60%;
+}
+.content__block_amazon {
+  background: #FCC2F4;
+}
+.content__block_amazon .content__block__logo {
+  background: url('https://home-assistant.io/images/supported_brands/amazon-echo.png') center no-repeat;
+  background-size: 60%;
+}
+.content__block_linkedin {
+  background: #CEC3FD;
+}
+.content__block_linkedin .content__block__logo {
+  background: url('http://widgets/attraction/prod/server/images/linkedin.png') center no-repeat;
+  background-size: 60%;
+}
+.content__block_gif {
+  background: #C3D7FA;
+}
+.content__block_gif .content__block__logo {
+  background: url('http://focalizmarketing.fr/wp-content/uploads/2016/09/facebook-messenger-297x300.png') center no-repeat;
+  background-size: 20%;
+}
+.content__block_snap {
+  background: #C3D7FA;
+}
+.content__block_snap .content__block__logo {
+  background: url('https://logodownload.org/wp-content/uploads/2015/03/snapchat-logo-5.png') center no-repeat;
+  background-size: 60%;
+}
+.content__block_spend {
+  background: #FBC2EB;
+}
+.content__block_spend .content__block__logo {
+  background: url('https://pngimg.com/uploads/shopping_cart/shopping_cart_PNG7.png') center no-repeat;
+  background-size: 25%;
+}
+.content__block_netflix {
+  background: #FDCFC2;
+}
+.content__block_netflix .content__block__logo {
+  background: url('https://i2.wp.com/freepngimages.com/wp-content/uploads/2016/10/netflix-logo.png?fit=624%2C390') center no-repeat;
+  background-size: 45%;
+}
+.content__block_google {
+  background: #FFE1E6;
+}
+.content__block_google .content__block__logo {
+  background: url('https://www.google.com.ph/doodle4google/images/splashes/featured.png') center no-repeat;
+  background-size: 45%;
+}
+.preloader {
+  display: none;
+  position: absolute;
+  top: 35%;
+  margin-top: -48px;
+  left: 50%;
+  z-index: 99999;
+}
