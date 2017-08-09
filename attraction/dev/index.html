@@ -5,19 +5,56 @@
     <title>Attraction</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="@@src/handlebars-latest.js"></script>
+    <script type="text/javascript" src="@@src/slick.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Alice" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Dosis:700,800" rel="stylesheet">
     <link inline rel="stylesheet" href="../build/@@type_main.css">
+    <link inline rel="stylesheet" src="../prod/server/slick.css">
 </head>
 <body>
     <div class="placeholder">
         <div class="content js-content">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                       width="0" height="0" viewBox="0 0 1366 768" xml:space="preserve">
+              <defs>
+                <filter id="blur0">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="0 0" />
+                </filter>
+                <filter id="blur1">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="5 0" />
+                </filter>
+                <filter id="blur2">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="12 0" />
+                </filter>
+                <filter id="blur3">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="20 0" />
+                </filter>
+                <filter id="blur4">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="35 1" />
+                </filter>
+                <filter id="blur5">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="50 1" />
+                </filter>
+              </defs>
+            </svg>
+
             <script id="template" type="text/x-handlebars-template">
                 {{#each results}}
                     <div class="content__block js-block">
-                        <div>{{ title }}</div>
+                        <div class="content__block__header">
+                            <div class="content__block__title">{{ short_title }}</div>
+                            <div class="content__block__address">{{ images.thumbnails.['640x384'] }}</div>
+                        </div>
+                        <div class="slider">
+                            {{#each images}}
+                                <div>
+                                    <img src="{{ thumbnails.['640x384'] }}" alt="">
+                                </div>
+                            {{/each}}
+                        </div>
+                        <marquee class="content__block__description" behavior="scroll" direction="left" bgcolor="">{{ description }}</marquee>
                     </div>
                 {{/each}}
             </script>
