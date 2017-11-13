@@ -7,6 +7,8 @@
 
     $url = 'https://coinranking.com/';
 
+    $lastRaiting = json_decode(file_get_contents('raiting.json'), true);
+
     $resultArr= [];
     $cryptoInfo = [];
 
@@ -36,12 +38,10 @@
         );
     }
 
-    $resultArr[date('d-m-Y')][] = $cryptoInfo
+    $lastRaiting[date('d-m-Y')][date('H:i:s')] = $cryptoInfo;
 
 
 
-    echo json_encode($cryptoInfo);
-    /*file_put_contents('poems.json', json_encode($linksArr));
-    file_put_contents('poems-all.json', json_encode($resultArr));
-    echo json_encode($resultArr);*/
+    //echo json_encode($lastRaiting);
+    file_put_contents('raiting.json', json_encode($lastRaiting));
 ?>
