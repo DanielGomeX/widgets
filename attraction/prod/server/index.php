@@ -8,16 +8,26 @@
     $url = "https://kudago.com/public-api/v1.3/places/?";
 
     $params = array(
-        'fields' => 'short_title,address,images,description,categories,-online-shopping',
+        'fields' => 'id,title,slug,short_title,address,images,description,interesting-places',
         'location' => 'msk',
-        'expand' => 'images',
-        'categories' => 'attractions',
-        'text_format' => 'text'
+        'expand' => 'images,tags',
+        'categories' => 'attractions,-online-shopping,-bazy-otdyha,-inn,-houses,-hotels,-hostels',
+        'text_format' => 'text',
     );
     //echo http_build_query($params)
     //
     $url .=  http_build_query($params);
 
-    echo file_get_contents($url);
+    $arr = json_decode(file_get_contents($url), true);
+
+
+    $resultsArr = $arr['results'];
+    shuffle($arr['results']);
+
+    /*echo '<pre>';
+    var_dump($resultsArr);
+    echo '</pre>';*/
+
+    echo json_encode($arr);
 
 ?>

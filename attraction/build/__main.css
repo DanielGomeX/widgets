@@ -1,76 +1,103 @@
-.bubblingG {
-  text-align: center;
+.cssload-container {
+  width: 117px;
+  margin: 0 auto;
+}
+.cssload-circle-1 {
+  height: 117px;
+  width: 117px;
+  background: #612e8d;
+}
+.cssload-circle-2 {
+  height: 97px;
+  width: 97px;
+  background: #c22286;
+}
+.cssload-circle-3 {
+  height: 78px;
   width: 78px;
-  height: 49px;
-  margin: auto;
+  background: #ea225e;
 }
-.bubblingG span {
-  display: inline-block;
-  vertical-align: middle;
-  width: 10px;
+.cssload-circle-4 {
+  height: 58px;
+  width: 58px;
+  background: #ed5b35;
+}
+.cssload-circle-5 {
+  height: 39px;
+  width: 39px;
+  background: #f5b52e;
+}
+.cssload-circle-6 {
+  height: 19px;
+  width: 19px;
+  background: #81c540;
+}
+.cssload-circle-7 {
   height: 10px;
-  margin: 24px auto;
-  background: #000000;
-  border-radius: 49px;
-  -o-border-radius: 49px;
-  -ms-border-radius: 49px;
-  -webkit-border-radius: 49px;
-  -moz-border-radius: 49px;
-  animation: bubblingG 1.5s infinite alternate;
-  -o-animation: bubblingG 1.5s infinite alternate;
-  -ms-animation: bubblingG 1.5s infinite alternate;
-  -webkit-animation: bubblingG 1.5s infinite alternate;
-  -moz-animation: bubblingG 1.5s infinite alternate;
+  width: 10px;
+  background: #00a396;
 }
-#bubblingG_1 {
-  animation-delay: 0s;
-  -o-animation-delay: 0s;
-  -ms-animation-delay: 0s;
-  -webkit-animation-delay: 0s;
-  -moz-animation-delay: 0s;
+.cssload-circle-8 {
+  height: 5px;
+  width: 5px;
+  background: #1674bc;
 }
-#bubblingG_2 {
-  animation-delay: 0.45s;
-  -o-animation-delay: 0.45s;
-  -ms-animation-delay: 0.45s;
-  -webkit-animation-delay: 0.45s;
-  -moz-animation-delay: 0.45s;
+.cssload-circle-1,
+.cssload-circle-2,
+.cssload-circle-3,
+.cssload-circle-4,
+.cssload-circle-5,
+.cssload-circle-6,
+.cssload-circle-7,
+.cssload-circle-8 {
+  border-bottom: none;
+  border-radius: 50%;
+  -o-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  animation-name: cssload-spin;
+  -o-animation-name: cssload-spin;
+  -ms-animation-name: cssload-spin;
+  -webkit-animation-name: cssload-spin;
+  -moz-animation-name: cssload-spin;
+  animation-duration: 4600ms;
+  -o-animation-duration: 4600ms;
+  -ms-animation-duration: 4600ms;
+  -webkit-animation-duration: 4600ms;
+  -moz-animation-duration: 4600ms;
+  animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  -ms-animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  -o-animation-timing-function: linear;
+  -ms-animation-timing-function: linear;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-timing-function: linear;
 }
-#bubblingG_3 {
-  animation-delay: 0.9s;
-  -o-animation-delay: 0.9s;
-  -ms-animation-delay: 0.9s;
-  -webkit-animation-delay: 0.9s;
-  -moz-animation-delay: 0.9s;
-}
-@keyframes bubblingG {
-  0% {
-    width: 10px;
-    height: 10px;
-    background-color: #000000;
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
+@keyframes cssload-spin {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
   }
-  100% {
-    width: 23px;
-    height: 23px;
-    background-color: #ffffff;
-    -webkit-transform: translateY(-20px);
-            transform: translateY(-20px);
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
   }
 }
-@-webkit-keyframes bubblingG {
-  0% {
-    width: 10px;
-    height: 10px;
-    background-color: #000000;
-    -webkit-transform: translateY(0);
+@-webkit-keyframes cssload-spin {
+  from {
+    -webkit-transform: rotate(0deg);
   }
-  100% {
-    width: 23px;
-    height: 23px;
-    background-color: #ffffff;
-    -webkit-transform: translateY(-20px);
+  to {
+    -webkit-transform: rotate(360deg);
   }
 }
 html,
@@ -102,8 +129,6 @@ a {
   box-sizing: border-box;
   background-color: #FF3CAC;
   background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
-  -webkit-filter: drop-shadow(0px 10px 40px rgba(0, 0, 0, 0.55));
-          filter: drop-shadow(0px 10px 40px rgba(0, 0, 0, 0.55));
 }
 .placeholder__bg {
   width: 100%;
@@ -114,11 +139,11 @@ a {
   z-index: 1;
 }
 .content {
+  display: block;
   position: relative;
   width: 100%;
   z-index: 999;
   height: 100%;
-  display: block;
   z-index: 2;
 }
 .content__block {
@@ -141,16 +166,18 @@ a {
   color: #fff;
   box-sizing: border-box;
   left: 0;
-  padding: 0 40px;
+  padding: 0 20px;
 }
 .content__block__title {
-  font-size: 30px;
-  line-height: 30px;
+  font-size: 28px;
+  line-height: 28px;
   font-weight: bold;
 }
 .content__block__address {
   font-size: 20px;
   line-height: 22px;
+  max-height: 22px;
+  overflow: hidden;
 }
 .content__block__description {
   position: absolute;
@@ -203,6 +230,20 @@ body {
 .slick-slide img {
   max-width: 60%;
   margin: 0 auto;
+}
+.slider-image-cont {
+  width: 280px;
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+  text-align: center;
+}
+.slider-image-cont img {
+  position: absolute;
+  max-width: 100%;
+  left: 0;
+  top: 0;
 }
 [type="button"] {
   position: fixed;

@@ -5,6 +5,7 @@
     <title>Attraction</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="@@src/handlebars-latest.js"></script>
+    <script type="text/javascript" src="@@src/helper.js"></script>
     <script type="text/javascript" src="@@src/slick.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
@@ -42,29 +43,51 @@
 
             <script id="template" type="text/x-handlebars-template">
                 {{#each results}}
-                    <div class="content__block js-block">
-                        <div class="content__block__header">
-                            <div class="content__block__title">{{ short_title }}</div>
-                            <div class="content__block__address">{{ images.thumbnails.['640x384'] }}</div>
-                        </div>
-                        <div class="slider">
-                            {{#each images}}
-                                <div>
-                                    <img src="{{ thumbnails.['640x384'] }}" alt="">
+                    {{#if_eq slug 'internet-magazin-servis-poiska-otelej-room-guru' }}
+                        <div class="content__block js-block">
+                            <div class="content__block__header">
+                                <div class="content__block__title">
+                                    {{~#if short_title }}
+                                        {{ short_title }}
+                                    {{~^~}}
+                                        {{ title }}
+                                    {{~/if~}}
                                 </div>
-                            {{/each}}
+                                <div class="content__block__address">{{ address }}</div>
+                            </div>
+                            <div class="slider">
+                                {{#each images}}
+                                    <div>
+                                        <div class="slider-image-cont">
+                                            <img src='{{ thumbnails.[640x384] }}' alt="">
+                                        </div>
+                                    </div>
+                                {{/each}}
+                            </div>
                         </div>
-                        <marquee class="content__block__description" behavior="scroll" direction="left" bgcolor="">{{ description }}</marquee>
-                    </div>
+                    {{/if_eq}}
                 {{/each}}
             </script>
         </div>
         <div class="cssload-wrapper preloader">
-            <div class="cssload-square"></div>
-            <div class="cssload-square"></div>
-            <div class="cssload-square"></div>
-            <div class="cssload-square"></div>
-            <div class="cssload-square"></div>
+            <div class="cssload-container">
+                <div class="cssload-circle-1">
+                    <div class="cssload-circle-2">
+                        <div class="cssload-circle-3">
+                            <div class="cssload-circle-4">
+                                <div class="cssload-circle-5">
+                                    <div class="cssload-circle-6">
+                                        <div class="cssload-circle-7">
+                                            <div class="cssload-circle-8">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="placeholder__bg js-bg"></div>
     </div>

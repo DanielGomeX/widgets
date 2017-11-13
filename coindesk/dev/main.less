@@ -1,0 +1,132 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 480px;
+    height: 360px;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 5px;
+    background: url('https://dooh.xyz/bitrix/templates/eshop_bootstrap_black/images/bg.jpg') no-repeat;
+    background-size: 100%;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.fake {
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Oswald', sans-serif;
+    //font-family: 'Playfair Display', serif;
+    //font-family: 'Alice', serif;
+    color: #222;
+    box-sizing: border-box;
+    border: 2px solid #b9d2f1;
+
+    &__bg {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+}
+
+.content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    height: 100%;
+    display: block;
+    z-index: 2;
+
+    &__block {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        color: #222;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        transition:All .4s ease;
+        padding: 20px;
+
+        &.active {
+            display: block;
+        }
+
+
+        &__title {
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 36px;
+        }
+
+        &__text {
+            font-size: 26px;
+            line-height: 32px;
+        }
+
+        &__footer {
+            position: absolute;
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            bottom: 0;
+            left: 0;
+            text-align: right;
+            padding-right: 20px;
+            padding-bottom: 10px;
+
+            & div {
+                display: inline-block;
+                vertical-align: middle;
+
+            }
+        }
+
+        &__date {
+            margin-right: 10px;
+        }
+    }
+}
+
+.sorry {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+
+    & img {
+        max-height: 100%;
+    }
+}
+
+.preloader {
+    display: none;
+    position: absolute;
+    top: 35%;
+    margin-top: -48px;
+    left: 50%;
+    z-index: 99999;
+}
+

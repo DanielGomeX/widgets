@@ -1,7 +1,7 @@
 /*eslint no-console: 0*/
 'use strict'
 
-var srcPath = require('./gulp_variables');
+var vars = require('./gulp_variables');
 var sftpConnection = require('./sftp_connection');
 
 var gulp = require('gulp')
@@ -42,7 +42,7 @@ var path = {
 }
 
 gulp.task('styles', function () {
-    var patterns = [{match: 'src', replacement: env === 'dev' ? srcPath() + path.prod.src + 'server' : 'https://js.dooh.xyz/' + path.task + '/server'}];
+    var patterns = [{match: 'src', replacement: env === 'dev' ? vars.srcPath + path.prod.src + 'server' : 'https://js.dooh.xyz/' + path.task + '/server'}];
 
     return gulp.src([
         path.dev.vendorCss,
@@ -61,7 +61,7 @@ gulp.task('styles', function () {
 
 gulp.task('scripts', function () {
 
-    var patterns = [{match: 'src', replacement: env === 'dev' ? srcPath() + path.prod.src + 'server' : 'https://js.dooh.xyz/' + path.task + '/server'}];
+    var patterns = [{match: 'src', replacement: env === 'dev' ? vars.srcPath + path.prod.src + 'server' : 'https://js.dooh.xyz/' + path.task + '/server'}];
     return gulp.src([
         path.dev.js
     ])
@@ -110,7 +110,8 @@ gulp.task('task', function () {
 gulp.task('build', ['task', 'scripts', 'styles'], function () {
     var patterns = [
         {match: 'type', replacement: env === 'dev' ? '_' : ''},
-        {match: 'src', replacement: env === 'dev' ? srcPath() + path.prod.src + 'server' : 'https://js.dooh.xyz/' + path.task + '/server'}
+        {match: 'src', replacement: env === 'dev' ? vars.srcPath + path.prod.src + 'server' : 'https://js.dooh.xyz/' + path.task + '/server'},
+        {match: 'commonPath', replacement: env === 'dev' ? vars.commonPath : 'https://js.dooh.xyz/COMMON'}
     ];
     var options = {
         attribute: 'inline',

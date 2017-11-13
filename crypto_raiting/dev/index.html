@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Crypto Raiting</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <link inline rel="stylesheet" href="../build/@@type_main.css">
+
+</head>
+<body>
+    <div class="placeholder">
+        <script id="template" type="text/x-handlebars-template">
+            <% for ( var i = 0; i < data.length; i++ ) { %>
+                <div class="content__block js-block">
+                    <div class="content__block__title"><%= data[i].title %></div>
+                    <div class="content__block__text"><%= data[i].text %></div>
+                    <div class="content__block__footer">
+                        <span class="content__block__date"><%= data[i].date %></span>
+                        <span class="content__block__author"><%= data[i].author %></span>
+                    </div>
+                </div>
+            <% } %>
+        </script>
+        <div class="content js-content">
+
+        </div>
+        <div class="sorry"><img src="@@commonPath/images/sorry.gif"></div>
+        <div class="cssload-wrapper preloader">
+            <div class="cssload-square"></div>
+            <div class="cssload-square"></div>
+            <div class="cssload-square"></div>
+            <div class="cssload-square"></div>
+            <div class="cssload-square"></div>
+        </div>
+        <div class="placeholder__bg js-bg"></div>
+    </div>
+    <script inline src="../build/@@type_main.js" ></script>
+</body>
+
+</html>

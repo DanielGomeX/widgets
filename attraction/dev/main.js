@@ -10,7 +10,7 @@ $(document).ready(function() {
       , $content = $('.content')
       ;
 
-
+    var globalData;
 
     $.ajax({
         url: '@@src/index.php',
@@ -20,23 +20,20 @@ $(document).ready(function() {
         },
         success: function(d) {
             time = new Date();
-            console.log((time.getTime() - startTime) / 1000);
 
             try {
                 console.log('attractions - ', JSON.parse(d));
 
                 d = JSON.parse(d);
 
-                var data = d;
-
-                console.log('123',data.results[0].images[0].thumbnails['640x384']);
+                var data = globalData = d;
 
                 var template = Handlebars.compile( $('#template').html() );
                 $content.append( template(data) );
 
 
                 $('.slider').eq(0).on('init', function(slick){
-                    $('.js-block').eq(0).addClass('active');
+                    $('.js-block').eq(0).addClass('active').append('<marquee class="content__block__description" behavior="scroll" direction="left" bgcolor="">'+ globalData.results[0].description +'</marquee>');;
                     animateImg(0);
                 })
 
@@ -62,8 +59,8 @@ $(document).ready(function() {
 
 
 
-                /*$preloader.hide();
-                $content.show();*/
+                /*$('.preloader').hide();
+                $('.content').show();*/
             } catch (e) {
                 console.log(e);
                 console.log('ошибка внутри ajax');
@@ -97,8 +94,8 @@ $(document).ready(function() {
                 return;
             }
 
-            timerId = setTimeout(tick, 2000);
-        }, 2000);
+            timerId = setTimeout(tick, 3000);
+        }, 3000);
 
     }
 
@@ -106,8 +103,14 @@ $(document).ready(function() {
         var activeIndex = $('.js-block.active').index();
         $('.js-block.active').removeClass('active');
 
-        $('.js-block').eq(activeIndex + 1).addClass('active');
-        animateImg(activeIndex + 1);
+        if (activeIndex == $('.js-block').length) {
+            $('.js-block').eq(0).addClass('active').append('<marquee class="content__block__description" behavior="scroll" direction="left" bgcolor="">'+ globalData.results[0].description +'</marquee>');
+            animateImg(0);
+        } else {
+            $('.content__block__description').remove();
+            animateImg(activeIndex - 1);
+            $('.js-block').eq(activeIndex - 1).addClass('active').append('<marquee class="content__block__description" behavior="scroll" direction="left" bgcolor="">'+ globalData.results[activeIndex - 1].description +'</marquee>');
+        }
     });
 
 
