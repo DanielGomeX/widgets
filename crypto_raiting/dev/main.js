@@ -1,10 +1,14 @@
 /* eslint no-console:0 */
 /* eslint eqeqeq: 0 */
 
-var $container = $('.js-content')
-  , $block
-  ;
+var $container = $('.js-content'),
+    $block, $title = $('.js-title'),
+    $icon = $('.js-icon');
 
+
+var curentDate = new Date(),
+    curentDateFormat = curentDate.getFullYear() + '-' + (curentDate.getMonth() + 1) + '-' + curentDate.getDate(),
+    curentTimeFormat = curentDate.getHours() + ':' + curentDate.getMinutes();
 
 function updateVars() {
     $container = $('.js-content');
@@ -21,69 +25,43 @@ function init() {
 
     try {
         $.ajax({
-            url: '@@src/index.php',
+            url: '@@src/redirect.php',
             dataType: 'json',
-            beforeSend: function(){
+            beforeSend: function() {
                 time = new Date();
                 startTime = time.getTime();
             },
-            success: function(d) {
-                data = d;
-                var first = random(0, data.length);
-                var html = tmpl("template", data);
-                var i = 0;
+            success: function(data) {
 
-                $container.html( html );
+                var arr = {};
 
-                updateVars();
+                console.log(data);
 
-                $block.eq(i).addClass('active');
+                function ChartData() {
+                    this.labels = [];
+                    this.series = [];
+                }
 
-                var timerId = setTimeout(function tick() {
-                    if (i == data.length - 1) {
-                        i = 0;
-                        $block.removeClass('active').eq(0).addClass('active');
-                    } else {
-                        i++;
-                        $block.removeClass('active').eq(i).addClass('active');
-                    }
+                data = data[curentDateFormat];
 
-                    timerId = setTimeout(tick, 10000);
-                }, 10000);
+
+                for (var cur in data) {
+                  console.log(cur);
+
+                  arr[cur].labels = data[cur];
+
+                }
+
+                console.log(arr);
+
             }
         });
-    } catch(err) {
+    } catch (err) {
         $container.hide();
-        console.log('Coindesk ajax err', err);
+        console.log('crypto_raiting ajax err', err);
     }
 
 }
-
-(function() {
-    var cache = {};
-
-    this.tmpl = function tmpl( str, data ) {
-        var fn = /^[\w-]+$/.test(str) ?
-            cache[str] = cache[str] || tmpl(document.getElementById(str).innerHTML) :
-
-        new Function("obj",
-            "var p=[],print=function(){p.push.apply(p,arguments);};" +
-
-            "with(obj){p.push('" +
-
-            str
-                .replace(/[\r\t\n]/g, " ")
-                .split("<%").join("\t")
-                .replace(/((^|%>)[^\t]*)'/g, "$1\r")
-                .replace(/\t=(.*?)%>/g, "',$1,'")
-                .split("\t").join("');")
-                .split("%>").join("p.push('")
-                .split("\r").join("\\'")
-            + "');}return p.join('');");
-
-        return data ? fn( data ) : fn;
-    };
-})();
 
 function random(min, max) {
     var rand = min - 0.5 + Math.random() * (max - min + 1)
@@ -92,4 +70,3 @@ function random(min, max) {
 }
 
 init();
-

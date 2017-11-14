@@ -2,30 +2,205 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Coindesk News</title>
+    <title>Crypto Raiting</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
-    <style>.bubblingG{text-align:center;width:78px;height:49px;margin:auto}.bubblingG span{display:inline-block;vertical-align:middle;width:10px;height:10px;margin:24px auto;background:#000;border-radius:49px;-o-border-radius:49px;-ms-border-radius:49px;-webkit-border-radius:49px;-moz-border-radius:49px;animation:bubblingG 1.5s infinite alternate;-o-animation:bubblingG 1.5s infinite alternate;-ms-animation:bubblingG 1.5s infinite alternate;-webkit-animation:bubblingG 1.5s infinite alternate;-moz-animation:bubblingG 1.5s infinite alternate}#bubblingG_1{animation-delay:0s;-o-animation-delay:0s;-ms-animation-delay:0s;-webkit-animation-delay:0s;-moz-animation-delay:0s}#bubblingG_2{animation-delay:.45s;-o-animation-delay:.45s;-ms-animation-delay:.45s;-webkit-animation-delay:.45s;-moz-animation-delay:.45s}#bubblingG_3{animation-delay:.9s;-o-animation-delay:.9s;-ms-animation-delay:.9s;-webkit-animation-delay:.9s;-moz-animation-delay:.9s}@keyframes bubblingG{0%{width:10px;height:10px;background-color:#000;-webkit-transform:translateY(0);transform:translateY(0)}100%{width:23px;height:23px;background-color:#fff;-webkit-transform:translateY(-20px);transform:translateY(-20px)}}@-webkit-keyframes bubblingG{0%{width:10px;height:10px;background-color:#000;-webkit-transform:translateY(0)}100%{width:23px;height:23px;background-color:#fff;-webkit-transform:translateY(-20px)}}body,html{margin:0;padding:0;width:480px;height:360px;box-sizing:border-box}body{padding:5px;background:url(https://dooh.xyz/bitrix/templates/eshop_bootstrap_black/images/bg.jpg) no-repeat;background-size:100%}div{box-sizing:border-box}a{text-decoration:none;color:inherit}.fake{display:inline-block;vertical-align:middle;height:100%}.placeholder{position:relative;width:100%;height:100%;overflow:hidden;font-family:Oswald,sans-serif;color:#222;box-sizing:border-box;border:2px solid #b9d2f1}.placeholder__bg{width:100%;height:100%;position:absolute;top:0;left:0;z-index:1}.content{position:relative;width:100%;z-index:999;height:100%;display:block;z-index:2}.content__block{width:100%;height:100%;text-align:center;color:#222;position:absolute;top:0;left:0;display:none;transition:All .4s ease;padding:20px}.content__block.active{display:block}.content__block__title{font-size:30px;font-weight:600;margin-bottom:36px}.content__block__text{font-size:26px;line-height:32px}.content__block__footer{position:absolute;width:100%;height:30px;line-height:30px;bottom:0;left:0;text-align:right;padding-right:20px;padding-bottom:10px}.content__block__footer div{display:inline-block;vertical-align:middle}.content__block__date{margin-right:10px}.sorry{width:100%;height:100%;text-align:center}.sorry img{max-height:100%}.preloader{display:none;position:absolute;top:35%;margin-top:-48px;left:50%;z-index:99999}</style>
-
+    <!-- <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet"> -->
+    <link rel="stylesheet" type="text/css" href="http://widgets/COMMON/styles/chartist/chartist.min.css">
+    <style>.bubblingG {
+  text-align: center;
+  width: 78px;
+  height: 49px;
+  margin: auto;
+}
+.bubblingG span {
+  display: inline-block;
+  vertical-align: middle;
+  width: 10px;
+  height: 10px;
+  margin: 24px auto;
+  background: #000000;
+  border-radius: 49px;
+  -o-border-radius: 49px;
+  -ms-border-radius: 49px;
+  -webkit-border-radius: 49px;
+  -moz-border-radius: 49px;
+  animation: bubblingG 1.5s infinite alternate;
+  -o-animation: bubblingG 1.5s infinite alternate;
+  -ms-animation: bubblingG 1.5s infinite alternate;
+  -webkit-animation: bubblingG 1.5s infinite alternate;
+  -moz-animation: bubblingG 1.5s infinite alternate;
+}
+#bubblingG_1 {
+  animation-delay: 0s;
+  -o-animation-delay: 0s;
+  -ms-animation-delay: 0s;
+  -webkit-animation-delay: 0s;
+  -moz-animation-delay: 0s;
+}
+#bubblingG_2 {
+  animation-delay: 0.45s;
+  -o-animation-delay: 0.45s;
+  -ms-animation-delay: 0.45s;
+  -webkit-animation-delay: 0.45s;
+  -moz-animation-delay: 0.45s;
+}
+#bubblingG_3 {
+  animation-delay: 0.9s;
+  -o-animation-delay: 0.9s;
+  -ms-animation-delay: 0.9s;
+  -webkit-animation-delay: 0.9s;
+  -moz-animation-delay: 0.9s;
+}
+@keyframes bubblingG {
+  0% {
+    width: 10px;
+    height: 10px;
+    background-color: #000000;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    width: 23px;
+    height: 23px;
+    background-color: #ffffff;
+    -webkit-transform: translateY(-20px);
+            transform: translateY(-20px);
+  }
+}
+@-webkit-keyframes bubblingG {
+  0% {
+    width: 10px;
+    height: 10px;
+    background-color: #000000;
+    -webkit-transform: translateY(0);
+  }
+  100% {
+    width: 23px;
+    height: 23px;
+    background-color: #ffffff;
+    -webkit-transform: translateY(-20px);
+  }
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 480px;
+  height: 360px;
+  box-sizing: border-box;
+}
+body {
+  padding: 5px;
+  background: url('https://dooh.xyz/bitrix/templates/eshop_bootstrap_black/images/bg.jpg') no-repeat;
+  background-size: 100%;
+}
+div {
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.fake {
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+.placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Oswald', sans-serif;
+  color: #222;
+  box-sizing: border-box;
+  border: 2px solid #b9d2f1;
+}
+.placeholder__bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.content {
+  position: relative;
+  width: 100%;
+  z-index: 999;
+  height: 100%;
+  display: block;
+  z-index: 2;
+}
+.content__block {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  color: #222;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  transition: All .4s ease;
+  padding: 20px;
+}
+.content__block.active {
+  display: block;
+}
+.content__block__title {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 36px;
+}
+.content__block__text {
+  font-size: 26px;
+  line-height: 32px;
+}
+.content__block__footer {
+  position: absolute;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  bottom: 0;
+  left: 0;
+  text-align: right;
+  padding-right: 20px;
+  padding-bottom: 10px;
+}
+.content__block__footer div {
+  display: inline-block;
+  vertical-align: middle;
+}
+.content__block__date {
+  margin-right: 10px;
+}
+.sorry {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.sorry img {
+  max-height: 100%;
+}
+.preloader {
+  display: none;
+  position: absolute;
+  top: 35%;
+  margin-top: -48px;
+  left: 50%;
+  z-index: 99999;
+}
+</style>
 </head>
 <body>
     <div class="placeholder">
-        <script id="template" type="text/x-handlebars-template">
-            <% for ( var i = 0; i < data.length; i++ ) { %>
-                <div class="content__block js-block">
-                    <div class="content__block__title"><%= data[i].title %></div>
-                    <div class="content__block__text"><%= data[i].text %></div>
-                    <div class="content__block__footer">
-                        <span class="content__block__date"><%= data[i].date %></span>
-                        <span class="content__block__author"><%= data[i].author %></span>
-                    </div>
-                </div>
-            <% } %>
-        </script>
-        <div class="content js-content">
 
+        <div class="content js-content">
+            <div class="ct-chart ct-perfect-fourth"></div>
+            <div class="content__title js-title"></div>
+            <div class="content__icon js-icon"></div>
         </div>
-        <div class="sorry"><img src="https://js.dooh.xyz/COMMON/images/sorry.gif"></div>
+        <div class="sorry"><img src="http://widgets/COMMON/images/sorry.gif"></div>
         <div class="cssload-wrapper preloader">
             <div class="cssload-square"></div>
             <div class="cssload-square"></div>
@@ -35,7 +210,79 @@
         </div>
         <div class="placeholder__bg js-bg"></div>
     </div>
-    <script>function updateVars(){$container=$(".js-content"),$block=$(".js-block")}function init(){updateVars();try{$.ajax({url:"https://js.dooh.xyz/coindesk/server/index.php",dataType:"json",beforeSend:function(){time=new Date,startTime=time.getTime()},success:function(t){data=t;var e=(random(0,data.length),tmpl("template",data)),n=0;$container.html(e),updateVars(),$block.eq(n).addClass("active");var a=setTimeout(function t(){n==data.length-1?(n=0,$block.removeClass("active").eq(0).addClass("active")):(n++,$block.removeClass("active").eq(n).addClass("active")),a=setTimeout(t,1e4)},1e4)}})}catch(t){$container.hide(),console.log("Coindesk ajax err",t)}}function random(t,e){var n=t-.5+Math.random()*(e-t+1);return n=Math.round(n)}var $container=$(".js-content"),$block;!function(){var t={};this.tmpl=function e(n,a){var o=/^[\w-]+$/.test(n)?t[n]=t[n]||e(document.getElementById(n).innerHTML):new Function("obj","var p=[],print=function(){p.push.apply(p,arguments);};with(obj){p.push('"+n.replace(/[\r\t\n]/g," ").split("<%").join("\t").replace(/((^|%>)[^\t]*)'/g,"$1\r").replace(/\t=(.*?)%>/g,"',$1,'").split("\t").join("');").split("%>").join("p.push('").split("\r").join("\\'")+"');}return p.join('');");return a?o(a):o}}(),init();</script>
+    <script type="text/javascript" src="http://widgets/COMMON/scripts/chartist/chartist.min.js"></script>
+    <script>/* eslint no-console:0 */
+/* eslint eqeqeq: 0 */
+
+var $container = $('.js-content'),
+    $block, $title = $('.js-title'),
+    $icon = $('.js-icon');
+
+
+var curentDate = new Date(),
+    curentDateFormat = curentDate.getFullYear() + '-' + (curentDate.getMonth() + 1) + '-' + curentDate.getDate(),
+    curentTimeFormat = curentDate.getHours() + ':' + curentDate.getMinutes();
+
+function updateVars() {
+    $container = $('.js-content');
+    $block = $('.js-block');
+
+    var data = [];
+}
+
+
+
+function init() {
+
+    updateVars();
+
+    try {
+        $.ajax({
+            url: 'http://widgets/crypto_raiting/prod/server/redirect.php',
+            dataType: 'json',
+            beforeSend: function() {
+                time = new Date();
+                startTime = time.getTime();
+            },
+            success: function(data) {
+
+                var arr = {};
+
+                console.log(data);
+
+                function ChartData() {
+                    this.labels = [];
+                    this.series = [];
+                }
+
+                data = data[curentDateFormat];
+
+
+                for (var cur in data) {
+                  console.log(cur);
+
+                  arr[cur].labels = data[cur];
+
+                }
+
+                console.log(arr);
+
+            }
+        });
+    } catch (err) {
+        $container.hide();
+        console.log('crypto_raiting ajax err', err);
+    }
+
+}
+
+function random(min, max) {
+    var rand = min - 0.5 + Math.random() * (max - min + 1)
+    rand = Math.round(rand);
+    return rand;
+}
+
+init();</script>
 </body>
 
 </html>

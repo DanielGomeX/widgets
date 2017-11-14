@@ -17,6 +17,7 @@ var gulp = require('gulp')
   , prefixer = require('gulp-autoprefixer')
   , sftp = require('gulp-sftp')
   , imagemin = require('gulp-imagemin')
+  , gzip = require('gulp-gzip')
   ;
 
 var env
@@ -38,7 +39,11 @@ var path = {
         less: 'dev/main.less',
         vendorCss: 'dev/*.css',
         image: 'dev/image/*'
+    },
+    common: {
+        js: 'COMMON/scripts/*/*.js'
     }
+
 }
 
 gulp.task('styles', function () {
@@ -73,6 +78,24 @@ gulp.task('scripts', function () {
     }))
     .pipe(rename('_main.js'))
     .pipe(gulp.dest(path.build.src))
+});
+
+gulp.task('gzip', function () {
+
+    return gulp.src([
+        path.common.js
+    ])
+    .pipe(uglify().on('error', function(e){
+        console.log(e);
+    }))
+    .pipe(gzip())
+    .pipe(rename(function(path) {
+        console.log(path);
+        //path.basename = "-goodbye";
+    }))
+    .pipe(gulp.dest(function(file){
+        return file.base;
+    }))
 });
 
 gulp.task('imagemin', function(){

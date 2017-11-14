@@ -21,7 +21,7 @@ function init() {
 
     try {
         $.ajax({
-            url: 'https://js.dooh.xyz/coindesk/server/index.php',
+            url: 'http://widgets/coindesk/prod/server/index.php',
             dataType: 'json',
             beforeSend: function(){
                 time = new Date();
