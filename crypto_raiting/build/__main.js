@@ -4,7 +4,8 @@
 var $container = $('.js-content'),
     $block,
     $title = $('.js-title'),
-    $icon = $('.js-icon');
+    $icon = $('.js-icon'),
+    $tooltipWrapper = $('.js-tooltip-wrapper');
 
 
 var curentDate = new Date(),
@@ -33,6 +34,8 @@ var chartOption = {
   height: 300
 }
 
+var delay = 30000;
+
 function updateVars() {
     $container = $('.js-content');
     $block = $('.js-block');
@@ -57,6 +60,10 @@ function init() {
             success: function(data) {
 
                 var arr = {};
+                var hiLow;
+                var i = 0;
+                var minPos = {};
+                var maxPos = {};
 
                 console.log(data);
 
@@ -84,17 +91,8 @@ function init() {
                   }
                 }
 
-                var i = 0;
-
                 var chart = new Chartist.Line('.ct-chart', resultArr[currency[i].name], chartOption);
-                chart.on('draw', function(context) {
 
-                  if (context.type == 'point' || context.type == 'line') {
-                    context.element.attr({
-                        style: 'stroke: ' + currency[i].color
-                    });
-                  }
-                });
                 $title.html(currency[i].name);
                 $icon.find('img').attr('src', currency[i].icon);
 
@@ -107,14 +105,42 @@ function init() {
                   }
 
                   chart.update(resultArr[currency[i].name], chartOption);
+
                   $title.html(currency[i].name);
                   $icon.find('img').attr('src', currency[i].icon);
 
-                  timerId = setTimeout(tick, 60000 / currency.length);
-                }, 60000 / currency.length);
+                  timerId = setTimeout(tick, delay / currency.length);
+                }, delay / currency.length);
 
 
+                chart.on('draw', function(context) {
 
+                  if (context.type == 'point' || context.type == 'line') {
+                    context.element.attr({
+                        style: 'stroke: ' + currency[i].color
+                    });
+                  }
+                });
+
+                chart.on('created', function() {
+                  hiLow = getMinMax(resultArr[currency[i].name].series[0]);
+
+                  $('.ct-point').each(function() {
+                    var x1 = $(this).attr('x1'),
+                        y1 = $(this).attr('y1'),
+                        x2 = $(this).attr('x2'),
+                        y2 = $(this).attr('y2'),
+                        val = $(this).attr('ct:value');
+
+                    if (val == hiLow.min) {
+                      $(this).addClass('min');
+                      createTooltip('min', x1, y1, x2, y2, val);
+                    } else if (val == hiLow.max) {
+                      $(this).addClass('max')
+                      createTooltip('max', x1, y1, x2, y2, val);
+                    }
+                  })
+                })
             }
         });
     } catch (err) {
@@ -122,6 +148,42 @@ function init() {
         console.log('crypto_raiting ajax err', err);
     }
 
+}
+
+function createTooltip(lohi, x1, y1, x2, y2, val) {
+  /*var contWidth = 466;
+  var xMargin = 15;
+  var yMargin = 15;
+
+  var $tooltip = $('.js-tooltip-' + lohi);
+  var x = parseInt(x1),
+      y = parseInt(y1);
+
+  $tooltip.html(val);
+
+  var tooltipWidth = parseInt($tooltip.outerWidth());
+
+  if (contWidth < parseInt(x1) + tooltipWidth + xMargin ) {
+    x = x1 - tooltipWidth - xMargin;
+  } else {
+    x = x + xMargin;
+  }
+
+  $('.js-tooltip-' + lohi).css({
+    "top": y1 - yMargin + 'px',
+    "left": x + 'px'
+  }).html(val);*/
+}
+
+function getMinMax(arr) {
+  min = arr[0];
+  max = min;
+  for (i = 1; i < arr.length; ++i) {
+      if (arr[i] > max) max = arr[i];
+      if (arr[i] < min) min = arr[i];
+  }
+
+  return {min: min, max: max}
 }
 
 function random(min, max) {

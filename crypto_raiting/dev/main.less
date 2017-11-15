@@ -89,11 +89,37 @@ a {
         font-weight: bold;
         color: rgb(138, 181, 234);
     }
+
+    &__tooltip {
+        position: absolute;
+        font-size: 25px;
+        opacity: 1;
+        z-index: 1;
+
+        &-wrapper {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+        }
+    }
 }
 
-.ct-chart > svg {
-    top: auto;
-    bottom: 0;
+.ct-chart {
+    z-index: 2;
+
+    & > svg {
+        top: auto;
+        bottom: 0;
+    }
+}
+
+.ct-point {
+    &.min,
+    &.max {
+        stroke-width: 17px;
+    }
 }
 
 .sorry {
