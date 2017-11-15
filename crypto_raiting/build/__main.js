@@ -1,6 +1,3 @@
-/* eslint no-console:0 */
-/* eslint eqeqeq: 0 */
-
 var $container = $('.js-content'),
     $block,
     $title = $('.js-title'),
@@ -34,7 +31,7 @@ var chartOption = {
   height: 300
 }
 
-var delay = 30000;
+var delay = 60000;
 
 function updateVars() {
     $container = $('.js-content');
@@ -46,7 +43,6 @@ function updateVars() {
 
 
 function init() {
-
     updateVars();
 
     try {
@@ -109,6 +105,7 @@ function init() {
                   $title.html(currency[i].name);
                   $icon.find('img').attr('src', currency[i].icon);
 
+
                   timerId = setTimeout(tick, delay / currency.length);
                 }, delay / currency.length);
 
@@ -124,18 +121,20 @@ function init() {
 
                 chart.on('created', function() {
                   hiLow = getMinMax(resultArr[currency[i].name].series[0]);
+                  $('.js-min-val').html(hiLow.min)
+                  $('.js-max-val').html(hiLow.max)
 
                   $('.ct-point').each(function() {
                     var x1 = $(this).attr('x1'),
                         y1 = $(this).attr('y1'),
                         x2 = $(this).attr('x2'),
                         y2 = $(this).attr('y2'),
-                        val = $(this).attr('ct:value');
+                        val = Number($(this).attr('ct:value'));
 
-                    if (val == hiLow.min) {
+                    if (val === Number(hiLow.min)) {
                       $(this).addClass('min');
                       createTooltip('min', x1, y1, x2, y2, val);
-                    } else if (val == hiLow.max) {
+                    } else if (val === Number(hiLow.max)) {
                       $(this).addClass('max')
                       createTooltip('max', x1, y1, x2, y2, val);
                     }
@@ -151,28 +150,32 @@ function init() {
 }
 
 function createTooltip(lohi, x1, y1, x2, y2, val) {
-  /*var contWidth = 466;
-  var xMargin = 15;
-  var yMargin = 15;
+  var contWidth  = 466,
+      contHeight = 250;
+  var xMargin = 0;
+  var yMargin = 0;
 
   var $tooltip = $('.js-tooltip-' + lohi);
   var x = parseInt(x1),
-      y = parseInt(y1);
+      y = parseInt(y1) + 3;
 
   $tooltip.html(val);
 
-  var tooltipWidth = parseInt($tooltip.outerWidth());
+  var tooltipWidth = parseInt($tooltip.outerWidth() + 20);
+  var tooltipHeight = parseInt($tooltip.outerHeight());
 
-  if (contWidth < parseInt(x1) + tooltipWidth + xMargin ) {
-    x = x1 - tooltipWidth - xMargin;
-  } else {
-    x = x + xMargin;
+  if (contWidth < parseInt(x1) + tooltipWidth ) {
+    x = x1 - tooltipWidth;
+  }
+
+  if (contHeight < parseInt(y1) + tooltipHeight) {
+    y = y1 - tooltipHeight + 7
   }
 
   $('.js-tooltip-' + lohi).css({
-    "top": y1 - yMargin + 'px',
+    "top": y - yMargin + 'px',
     "left": x + 'px'
-  }).html(val);*/
+  }).html(val + '&nbsp;$');
 }
 
 function getMinMax(arr) {

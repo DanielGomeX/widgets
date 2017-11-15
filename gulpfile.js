@@ -130,6 +130,10 @@ gulp.task('task', function () {
     return path;
 });
 
+gulp.task('b-watch',['build'], function () {
+    gulp.start('watch');
+});
+
 gulp.task('build', ['task', 'scripts', 'styles'], function () {
     var patterns = [
         {match: 'type', replacement: env === 'dev' ? '_' : ''},
