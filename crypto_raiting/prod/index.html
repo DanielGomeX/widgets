@@ -132,47 +132,35 @@ a {
   display: block;
   z-index: 2;
 }
-.content__block {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  color: #222;
+.content__header {
   position: absolute;
+  width: 100%;
   top: 0;
   left: 0;
-  display: none;
-  transition: All .4s ease;
-  padding: 20px;
+  padding: 10px 0 10px 0;
 }
-.content__block.active {
-  display: block;
-}
-.content__block__title {
-  font-size: 30px;
-  font-weight: 600;
-  margin-bottom: 36px;
-}
-.content__block__text {
-  font-size: 26px;
-  line-height: 32px;
-}
-.content__block__footer {
-  position: absolute;
-  width: 100%;
-  height: 30px;
-  line-height: 30px;
-  bottom: 0;
-  left: 0;
-  text-align: right;
-  padding-right: 20px;
-  padding-bottom: 10px;
-}
-.content__block__footer div {
+.content__title,
+.content__icon {
   display: inline-block;
   vertical-align: middle;
+  height: 35px;
 }
-.content__block__date {
-  margin-right: 10px;
+.content__icon {
+  width: 50px;
+}
+.content__icon img {
+  display: block;
+  width: 35px;
+  margin: 0 auto;
+}
+.content__title {
+  font-size: 35px;
+  font-weight: bold;
+  color: #8ab5ea;
+}
+.ct-chart > svg {
+  top: auto;
+  bottom: 0;
 }
 .sorry {
   width: 100%;
@@ -197,8 +185,10 @@ a {
 
         <div class="content js-content">
             <div class="ct-chart ct-perfect-fourth"></div>
-            <div class="content__title js-title"></div>
-            <div class="content__icon js-icon"></div>
+            <div class="content__header">
+                <div class="content__icon js-icon"><img src=""></div>
+                <div class="content__title js-title"></div>
+            </div>
         </div>
         <div class="sorry"><img src="http://widgets/COMMON/images/sorry.gif"></div>
         <div class="cssload-wrapper preloader">
@@ -215,13 +205,36 @@ a {
 /* eslint eqeqeq: 0 */
 
 var $container = $('.js-content'),
-    $block, $title = $('.js-title'),
+    $block,
+    $title = $('.js-title'),
     $icon = $('.js-icon');
 
 
 var curentDate = new Date(),
     curentDateFormat = curentDate.getFullYear() + '-' + (curentDate.getMonth() + 1) + '-' + curentDate.getDate(),
     curentTimeFormat = curentDate.getHours() + ':' + curentDate.getMinutes();
+
+var currency = [
+    {
+      name: 'Bitcoin',
+      icon: 'https://cdn.coinranking.com/Sy33Krudb/btc.svg',
+      color: '#f7931a'
+    },
+    {
+      name: 'Ethereum',
+      icon: 'https://cdn.coinranking.com/rk4RKHOuW/eth.svg',
+      color: '#8c8c8c'
+    },
+    {
+      name: 'Ripple',
+      icon: 'https://cdn.coinranking.com/Bkuz9Hd_-/xrp.svg',
+      color: '#046fa6'
+    }
+]
+
+var chartOption = {
+  height: 300
+}
 
 function updateVars() {
     $container = $('.js-content');
@@ -250,22 +263,60 @@ function init() {
 
                 console.log(data);
 
-                function ChartData() {
-                    this.labels = [];
-                    this.series = [];
-                }
-
                 data = data[curentDateFormat];
 
+                var resultArr = {};
 
                 for (var cur in data) {
-                  console.log(cur);
+                  var labels = [],
+                      series = [],
+                      seriesArr = [];
+                  for (var time in data[cur]) {
+                    var raitTime = new Date(curentDateFormat + 'T' + time),
+                        diff = curentDate - raitTime;
 
-                  arr[cur].labels = data[cur];
+                    if (diff / 3600000 < 4) {
+                      labels.push(time);
+                      seriesArr.push(data[cur][time].price.replace(',', ''));
+                    }
+                  }
 
+                  resultArr[cur] = {
+                    labels: labels,
+                    series: [seriesArr]
+                  }
                 }
 
-                console.log(arr);
+                var i = 0;
+
+                var chart = new Chartist.Line('.ct-chart', resultArr[currency[i].name], chartOption);
+                chart.on('draw', function(context) {
+
+                  if (context.type == 'point' || context.type == 'line') {
+                    context.element.attr({
+                        style: 'stroke: ' + currency[i].color
+                    });
+                  }
+                });
+                $title.html(currency[i].name);
+                $icon.find('img').attr('src', currency[i].icon);
+
+                var timerId = setTimeout(function tick() {
+
+                  if (i < currency.length - 1) {
+                    i++;
+                  } else {
+                    i = 0;
+                  }
+
+                  chart.update(resultArr[currency[i].name], chartOption);
+                  $title.html(currency[i].name);
+                  $icon.find('img').attr('src', currency[i].icon);
+
+                  timerId = setTimeout(tick, 60000 / currency.length);
+                }, 60000 / currency.length);
+
+
 
             }
         });

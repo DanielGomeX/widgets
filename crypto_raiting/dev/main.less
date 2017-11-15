@@ -59,56 +59,41 @@ a {
     display: block;
     z-index: 2;
 
-    &__block {
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        color: #222;
+    &__header {
         position: absolute;
+        width: 100%;
         top: 0;
         left: 0;
-        display: none;
-        transition:All .4s ease;
-        padding: 20px;
+        padding: 10px 0 10px 0;
+    }
 
-        &.active {
+    &__title,
+    &__icon {
+        display: inline-block;
+        vertical-align: middle;
+        height: 35px;
+    }
+
+    &__icon {
+        width: 50px;
+
+        img {
             display: block;
-        }
-
-
-        &__title {
-            font-size: 30px;
-            font-weight: 600;
-            margin-bottom: 36px;
-        }
-
-        &__text {
-            font-size: 26px;
-            line-height: 32px;
-        }
-
-        &__footer {
-            position: absolute;
-            width: 100%;
-            height: 30px;
-            line-height: 30px;
-            bottom: 0;
-            left: 0;
-            text-align: right;
-            padding-right: 20px;
-            padding-bottom: 10px;
-
-            & div {
-                display: inline-block;
-                vertical-align: middle;
-
-            }
-        }
-
-        &__date {
-            margin-right: 10px;
+            width: 35px;
+            margin: 0 auto;
         }
     }
+
+    &__title {
+        font-size: 35px;
+        font-weight: bold;
+        color: rgb(138, 181, 234);
+    }
+}
+
+.ct-chart > svg {
+    top: auto;
+    bottom: 0;
 }
 
 .sorry {
