@@ -60,6 +60,7 @@ function init() {
 }
 
 (function() {
+    //console.log(data);
     var cache = {};
 
     this.tmpl = function tmpl( str, data ) {

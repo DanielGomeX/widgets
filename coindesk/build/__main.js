@@ -21,7 +21,7 @@ function init() {
 
     try {
         $.ajax({
-            url: 'http://widgets/coindesk/prod/server/index.php',
+            url: 'https://js.dooh.xyz/coindesk/server/index.php',
             dataType: 'json',
             beforeSend: function(){
                 time = new Date();
@@ -60,6 +60,7 @@ function init() {
 }
 
 (function() {
+    //console.log(data);
     var cache = {};
 
     this.tmpl = function tmpl( str, data ) {
