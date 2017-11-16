@@ -52,8 +52,14 @@ function init() {
             beforeSend: function() {
                 time = new Date();
                 startTime = time.getTime();
+                $('.wait').show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.log('crypto_raiting ajax error -- ' + textStatus);
             },
             success: function(data) {
+                $('.wait').hide();
+                $container.show();
 
                 var arr = {};
                 var hiLow;
@@ -144,6 +150,7 @@ function init() {
         });
     } catch (err) {
         $container.hide();
+        $('.sorry').show();
         console.log('crypto_raiting ajax err', err);
     }
 

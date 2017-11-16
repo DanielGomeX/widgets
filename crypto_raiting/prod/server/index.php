@@ -8,6 +8,7 @@
     $url = 'https://coinranking.com/';
 
     $lastRaiting = json_decode(file_get_contents(__DIR__ . '/raiting.json'), true);
+    var_dump($lastRaiting);
 
     $resultArr= [];
     $cryptoInfo = [];
@@ -40,16 +41,13 @@
 
 
     foreach ($cryptoInfo as $key => $value) {
-        //$resultArr[date('Y-n-j')][$value['name']][date('H:i')] = $value;
         $lastRaiting[date('Y-n-j')][$value['name']][date('H:i')] = $value;
     }
 
-    echo '<pre>';
-    var_dump($lastRaiting);
-    echo '</pre>';
 
-    /*$lastRaiting[date('Y-n-j')][date('H:i')] = $cryptoInfo;
-
-    //echo json_encode($lastRaiting);*/
-    file_put_contents(__DIR__ . '/raiting.json', json_encode($lastRaiting));
+    if (file_put_contents(__DIR__ . '/raiting.json', json_encode($lastRaiting))) {
+        echo date('d-m-Y H:i') . ' file ' . __DIR__ . '/raiting.json was created';
+    } else {
+        echo date('d-m-Y H:i') . ' Error in crypto_raiting creating file';
+    }
 ?>
