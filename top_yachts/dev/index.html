@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Динамика курса</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Alice" rel="stylesheet">
+    <!-- Chartist.js -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <!--  -->
+    <link inline rel="stylesheet" href="../build/@@type_main.css">
+</head>
+<body>
+    <div class="placeholder">
+        <div class="header">
+            <span class="header__title">Курс <span class="header__currency-name">USD</span>      </span>
+            <span class="header__mounth">Апрель</span>
+            <span class="header__year">2017 г.</span>
+        </div>
+        <div class="content">
+            <div class="ct-chart ct-perfect-fourth content__chart">
+                <div class="content__description js-description">
+                    <div class="content__description_max content__description__row">
+                        <span class="content__description__title">Максимальный</span>
+                        <span class="content__description__value js-descr-max">57.3896</span>
+                    </div>
+                    <div class="content__description_min content__description__row">
+                        <span class="content__description__title">Минимальный</span>
+                        <span class="content__description__value js-descr-min">57.3896</span>
+                    </div>
+                    <div class="content__description_average content__description__row">
+                        <span class="content__description__title">Средний</span>
+                        <span class="content__description__value js-descr-average">57.3896</span>
+                    </div>
+                </div>
+                <div class="content__direction js-direction"></div>
+            </div>
+
+        </div>
+        <div class="cssload-container preloader">
+            <div class="cssload-speeding-wheel"></div>
+        </div>
+    </div>
+<script inline src="../build/@@type_main.js" ></script>
+</body>
+</html>

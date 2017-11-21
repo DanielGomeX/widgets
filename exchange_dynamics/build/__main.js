@@ -10,7 +10,7 @@ $(document).ready(function() {
           ;
 
         $.ajax({
-            url: 'https://js.dooh.xyz/exchange_dynamics/server/redirect.php',
+            url: 'http://widgets/exchange_dynamics/prod/server/redirect.php',
             beforeSend: function(){
                 time = new Date();
                 startTime = time.getTime();

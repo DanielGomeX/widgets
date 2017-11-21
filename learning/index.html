@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Learning JS</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <style type="text/css">
+        html,
+        body {
+            position: relative;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .flower {
+            position: absolute;
+            top: 50%;
+            margin-top: -300px;
+            left: 50%;
+            margin-left: -300px;
+            width: 600px;
+            height: 600px;
+            font-size: 0;
+        }
+
+        .flower__leaf,
+        .flower__center {
+            display: inline-block;
+            vertical-align: top;
+            width: 200px;
+            height: 200px;
+            box-sizing: border-box;
+            border: 1px solid green;
+            background: yellow;
+        }
+
+        .flower__center {
+            border-color: #4e0000;
+            background: #4e0000;
+        }
+
+        .left-top {
+            border-radius: 50% 0 0 0;
+        }
+
+        .right-top {
+            border-radius: 0 50% 0 0;
+        }
+
+        .left-bottom {
+            border-radius: 0 0 0 50%;
+        }
+
+        .right-bottom {
+            border-radius: 0 0 50% 0;
+        }
+
+        .handler {
+            width: 500px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .handler__button {
+          display: inline-block;
+          vertical-align: middle;
+          min-width: 50px;
+          margin: 80px 0 0;
+          cursor: pointer;
+        }
+
+        .handler__button:hover {
+          background-color: red;
+          color: white;
+        }
+    </style>
+</head>
+<body>
+    <h3>Learning JS</h3>
+    <div class="handler">
+       <div class="handler__button js-btn-start">Start</div>
+       <div class="handler__button js-btn-stop">Stop</div>
+       <div class="handler__button js-btn-pause">Pause</div>
+    </div>
+    <div class="flower js-flower">
+        <div class="flower__leaf left-top js-flower-leaf" data-num="0"></div>
+        <div class="flower__leaf js-flower-leaf" data-num="1"></div>
+        <div class="flower__leaf right-top js-flower-leaf" data-num="2"></div>
+        <div class="flower__leaf js-flower-leaf" data-num="7"></div>
+        <div class="flower__center"></div>
+        <div class="flower__leaf js-flower-leaf" data-num="3"></div>
+        <div class="flower__leaf left-bottom js-flower-leaf" data-num="6"></div>
+        <div class="flower__leaf js-flower-leaf" data-num="5"></div>
+        <div class="flower__leaf right-bottom js-flower-leaf"  data-num="4"></div>
+    </div>
+</body>
+</html>
