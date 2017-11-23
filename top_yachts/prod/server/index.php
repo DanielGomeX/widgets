@@ -19,7 +19,7 @@
     $out = '';
 
     foreach ($table->find('tr') as $key => $value) {
-        if ($key !== 0) {
+        if ($key !== 0 && $key <= 30) {
             $name = $value->find('td', 0)->plaintext;
             $link = $value->find('td', 0)->find('a', 0);
 
@@ -84,7 +84,6 @@
         }
     }
 
-
-    file_put_contents('table.json', trim(json_encode($resultArr)));
+    file_put_contents(__DIR__ . '/table.json', trim(json_encode($resultArr)));
     //echo json_encode($resultArr);
 ?>

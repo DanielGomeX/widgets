@@ -3,5 +3,5 @@
     header('Content-Type: text/html; charset=utf-8');
     header("Access-Control-Allow-Origin:" . "*");
 
-    echo file_get_contents('rate.json');
+    echo file_get_contents('table.json');
 ?>
