@@ -5,7 +5,7 @@ $(document).ready(function() {
     var $container = $('.js-content');
 
     $.ajax({
-        url: 'http://widgets/top_yachts/prod/server/redirect.php',
+        url: 'https://js.dooh.xyz/top_yachts/server/redirect.php',
         dataType: 'json',
         beforeSend: function() {
             $('.wait').show();

@@ -5,94 +5,7 @@
     <title>Top Yachts</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400" rel="stylesheet">
-    <style>.cssload-container {
-  width: 100%;
-  height: 49px;
-  text-align: center;
-}
-.cssload-speeding-wheel {
-  width: 49px;
-  height: 49px;
-  margin: 0 auto;
-  border: 3px solid #fff;
-  border-radius: 50%;
-  border-left-color: transparent;
-  border-right-color: transparent;
-  animation: cssload-spin 1325ms infinite linear;
-  -o-animation: cssload-spin 1325ms infinite linear;
-  -ms-animation: cssload-spin 1325ms infinite linear;
-  -webkit-animation: cssload-spin 1325ms infinite linear;
-  -moz-animation: cssload-spin 1325ms infinite linear;
-}
-@keyframes cssload-spin {
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes cssload-spin {
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 480px;
-  height: 360px;
-}
-div {
-  box-sizing: border-box;
-}
-a {
-  text-decoration: none;
-  color: inherit;
-}
-.placeholder {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: 'Oswald', sans-serif;
-  /*font-family: 'Playfair Display', serif;
-    font-family: 'Alice', serif;*/
-  color: #000;
-  box-sizing: border-box;
-  background: #fff;
-  border: 1px solid #d4d4d4;
-}
-.content {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-}
-.noise {
-  background: rgba(255, 255, 255, 0.9);
-  height: 100%;
-  padding: 20px;
-  display: none;
-  text-align: center;
-}
-.noise__row {
-  margin-bottom: 15px;
-  font-size: 25px;
-}
-.noise__row span {
-  font-weight: bold;
-}
-.title {
-  font-size: 40px;
-  font-weight: bold;
-  line-height: 42px;
-  margin-bottom: 20px;
-}
-.owner-img {
-  display: none;
-}
-</style>
+    <style>.cssload-container{width:100%;height:49px;text-align:center}.cssload-speeding-wheel{width:49px;height:49px;margin:0 auto;border:3px solid #fff;border-radius:50%;border-left-color:transparent;border-right-color:transparent;animation:cssload-spin 1325ms infinite linear;-o-animation:cssload-spin 1325ms infinite linear;-ms-animation:cssload-spin 1325ms infinite linear;-webkit-animation:cssload-spin 1325ms infinite linear;-moz-animation:cssload-spin 1325ms infinite linear}@keyframes cssload-spin{100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes cssload-spin{100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}body,html{margin:0;padding:0;width:480px;height:360px}div{box-sizing:border-box}a{text-decoration:none;color:inherit}.placeholder{position:relative;width:100%;height:100%;overflow:hidden;font-family:Oswald,sans-serif;color:#000;box-sizing:border-box;background:#fff;border:1px solid #d4d4d4}.content{width:100%;height:100%;background-size:cover;background-position:center}.noise{background:rgba(255,255,255,.9);height:100%;padding:20px;display:none;text-align:center}.noise__row{margin-bottom:15px;font-size:25px}.noise__row span{font-weight:700}.title{font-size:40px;font-weight:700;line-height:42px;margin-bottom:20px}.owner-img{display:none}</style>
 </head>
 <body>
     <div class="placeholder">
@@ -116,64 +29,10 @@ a {
                 </div>
             </div>
         </div>
-        <div class="sorry"><img src="http://widgets/COMMON/images/sorry.gif"></div>
-        <div class="wait"><img src="http://widgets/COMMON/images/wait.gif"></div>
+        <div class="sorry"><img src="https://js.dooh.xyz/COMMON/images/sorry.gif"></div>
+        <div class="wait"><img src="https://js.dooh.xyz/COMMON/images/wait.gif"></div>
     </div>
-    <script>$(document).ready(function() {
-    /* eslint no-console:0 */
-    /* eslint eqeqeq: 0 */
-
-    var $container = $('.js-content');
-
-    $.ajax({
-        url: 'http://widgets/top_yachts/prod/server/redirect.php',
-        dataType: 'json',
-        beforeSend: function() {
-            $('.wait').show();
-        },
-        error: function(jqXHR, textStatus) {
-            console.log('crypto_raiting ajax error -- ' + textStatus);
-        },
-        success: function(data) {
-            $('.wait').hide();
-            $container.show();
-            console.log(data);
-
-            anim(data[0]);
-
-            var i = 1;
-
-            setInterval(function() {
-                anim(data[i]);
-                i++;
-            }, 10000);
-
-
-        }
-    });
-
-
-    function anim(d) {
-        $container.css('background-image', 'url(' + d.image + ')');
-
-        var timeout = setTimeout(function() {
-            $('.noise').fadeIn(300);
-
-        }, 3000);
-
-        setTimeout(function() {
-            $('.noise').fadeOut(300);
-        }, 9800)
-
-        $('.title').html(d.title);
-        $('.js-size').html(d.size);
-        $('.js-built').html(d.built);
-        $('.js-builder').html(d.builder);
-        $('.js-owner').html(d.owner.name);
-    }
-
-
-})</script>
+    <script>$(document).ready(function(){function e(e){t.css("background-image","url("+e.image+")");setTimeout(function(){$(".noise").fadeIn(300)},3e3);setTimeout(function(){$(".noise").fadeOut(300)},9800),$(".title").html(e.title),$(".js-size").html(e.size),$(".js-built").html(e.built),$(".js-builder").html(e.builder),$(".js-owner").html(e.owner.name)}var t=$(".js-content");$.ajax({url:"https://js.dooh.xyz/top_yachts/server/redirect.php",dataType:"json",beforeSend:function(){$(".wait").show()},error:function(e,t){console.log("crypto_raiting ajax error -- "+t)},success:function(o){$(".wait").hide(),t.show(),console.log(o),e(o[0]);var n=1;setInterval(function(){e(o[n]),n++},1e4)}})});</script>
 </body>
 
 </html>
