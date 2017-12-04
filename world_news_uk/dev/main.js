@@ -1,16 +1,27 @@
+/* eslint no-console: 0 */
 $(document).ready(function() {
 
     var $content = $('.js-content'),
-        animationSpeed = 250,
-        index = 0;
+        animationSpeed = 350,
+        index = 0,
+        respLength = 0;
+
+    var start,
+        stop,
+        total;
+
 
     $.ajax({
         url: '@@src/index.php',
         dataType: 'json',
         success: function(resp) {
-            console.log('World News en data - ', resp);
-
             var i = 0;
+            start = Date.now();
+
+            resp = shuffle(resp);
+            respLength = resp.length;
+
+            console.log('World News uk data - ', resp);
 
             for (var item in resp) {
                 var $block = $("<div/>", {
@@ -49,10 +60,6 @@ $(document).ready(function() {
                     $block.addClass('big').appendTo($content);
                 }
 
-                if (i === 0) {
-                    //$block.addClass('active');
-                }
-
                 i++;
 
                 if (i === resp.length) {
@@ -62,11 +69,15 @@ $(document).ready(function() {
         }
     })
 
+    function shuffle(o) {
+        for (var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+        return o;
+    }
+
     function runingString() {
         var $title = $('.js-block').eq(index).find('.js-title'),
             width = parseInt($title.css('width')),
             length = $title.html().length;
-        console.log(animationSpeed * length);
 
         $('.js-block').eq(index).find('.js-title').animate({
             left: -width + 'px'
@@ -98,16 +109,30 @@ $(document).ready(function() {
 
     $content.on('start', function() {
         var type = $('.js-block').eq(index).find($('.js-title')).data('type');
-        console.log(type);
-        if (type == 'big') {
-            runingString();
 
-        } else if (type == 'small') {
+        if (index <= respLength - 1) {
+            if (type === 'big') {
+                runingString();
+
+            } else if (type === 'small') {
+                setTimeout(function() {
+                    index++;
+                    switchBlock();
+                    $content.trigger('start');
+                }, 10000)
+            }
+        } else {
+            stop = Date.now();
+            total = stop - start;
+
             setTimeout(function() {
-                index++;
-                switchBlock();
-                $content.trigger('start');
-            }, 2000)
+                location.reload();
+            }, total * 4)
+
+            index = 0;
+            $('.js-block').eq(index).addClass('active').show();
+            $('.js-title').css('left', '1440px');
+            $content.trigger('start');
         }
     })
 })

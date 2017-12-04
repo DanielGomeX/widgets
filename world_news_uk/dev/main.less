@@ -27,15 +27,40 @@ div {
 }
 
 .content {
+    position: relative;
     font-size: 0;
     height: 100%;
     color: #fff;
+
+    &:before {
+        position: absolute;
+        content: "";
+        display: block;
+        height: 100%;
+        width: 5px;
+        left: -7px;
+        background: #222;
+        z-index: 999;
+    }
+
+    &:after {
+        position: absolute;
+        content: "";
+        display: block;
+        height: 100%;
+        width: 5px;
+        top: 0;
+        right: -7px;
+        background: #222;
+        z-index: 999;
+    }
 
     &__block {
         font-size: 14px;
         display: block;
         padding: 10px;
         visibility: hidden;
+        height: 100%;
 
         &.big {
             height: 100%;
@@ -62,6 +87,7 @@ div {
             font-size: 30px;
             line-height: 34px;
             font-weight: 500;
+            visibility: visible;
         }
     }
 }
